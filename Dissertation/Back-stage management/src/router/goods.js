@@ -181,15 +181,21 @@ Router.post('/xiaoleibie',function(req,res){
 	var {leibie}=req.body;
 	console.log(req.body);
 	const xiaoleibie=[];
+	var xiaolb=[]
 	goodsModel.find({leibie})
 	.then(function(data){		
-		for(var i=0;i<data.length;i++){			
+		for(var i=0;i<data.length;i++){
+			var xiao={};
 			var lnum=xiaoleibie.indexOf(data[i].xiaoleibie);			
 			if(lnum==-1){
+				var img=data[i].img.split(",")[0];
 				xiaoleibie.push(data[i].xiaoleibie);
+				xiao.leibie=data[i].xiaoleibie;
+				xiao.img=img;
+				xiaolb.push(xiao);
 			}			
 		}
-		res.send(msg.sendData(0,'商品类别',xiaoleibie));
+		res.send(msg.sendData(0,'商品类别',xiaolb));
 	})
 	.catch(function(err){
 		console.log(err)

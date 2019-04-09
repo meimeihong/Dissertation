@@ -10,6 +10,12 @@
                  {{item}}
 			</li>
 		</ul>
+		<ul class="right">
+			<li  v-for="(item,index) in xiaoleibie" :key="index" @click="classifycont(item.leibie)">
+                <img :src="item.img" alt="">
+				<p>{{item.leibie}}</p>
+			</li>
+		</ul>
 	</div>
 </template>
 <script>
@@ -21,7 +27,8 @@ import tab from './tab.vue';
 				name:"分类",
 				listname:'classify',
 				daleibie:[],
-				checkdaleibie:''
+				checkdaleibie:'',
+				xiaoleibie:[]
 			}
 		},
 		components: {
@@ -52,18 +59,23 @@ import tab from './tab.vue';
 						 }
 					)
 					.then((res) => {
-                       
+                       this.xiaoleibie=res.data.data;
 						console.log(res);
 					})
 					.catch((err) => {
 						console.log(err);
 					})
 					
-			}			
+			},
+			classifycont(xiaol){
+				localStorage.setItem('dleibie', this.checkdaleibie);
+				localStorage.setItem('xleibie', xiaol);
+				this.$router.push({name:'classifycontent'});
+			}
+					
 		},
 		created() {
 			this.daleibies();
-			// this.checkda(this.checkdaleibie);
 		}
 	}
 </script>
@@ -110,8 +122,7 @@ import tab from './tab.vue';
 			.fs(14);
 			.w(80);
 			position: absolute;
-			.position(45,0);
-			
+			.position(45,0);			
 			border-bottom: 1px solid #ccc;
 			border-right: 1px solid #ccc;
 			color:gray;
@@ -133,6 +144,26 @@ import tab from './tab.vue';
 					color:green;
 					font-weight: 700;
 				}
+		}
+		.right{
+			position: absolute;
+			.position(50,85);
+			.fs(16);
+			.w(280);
+			display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content:left;
+			align-items:center;
+			li{ .w(80);
+			.mg(0,0,0,10);
+			text-align: center;
+				img{
+					.w(60);
+					.h(60);
+				}
+			}
 		}
     }
 </style>

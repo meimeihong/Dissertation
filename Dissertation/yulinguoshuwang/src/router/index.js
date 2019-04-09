@@ -7,6 +7,7 @@ import password from '../components/password.vue'
 import classify from '../components/classify.vue'
 import cart from '../components/cart.vue'
 import my from '../components/my.vue'
+import classifycontent from '../components/classifycontent.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +46,11 @@ export default new Router({
       path:"/my",
       name:"my",
       component:my
+    },
+    {
+      path:"/classifycontent",
+      name:"classifycontent",
+      component:classifycontent
     }
 
   ]
