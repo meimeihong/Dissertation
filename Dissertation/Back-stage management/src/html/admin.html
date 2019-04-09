@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/header.css"/>
+		<style type="text/css">	
+		 #box #admin{
+			margin: 20px auto;
+    		width: 900px;
+   		 	overflow: hidden;
+    		background: #448cc7;
+			padding:10px 0;
+			text-align: center;
+		 }
+		 #box #admin span{
+			 margin-left: 15px;
+		 }
+		 #box #adminlist {
+    margin: 20px auto;
+    width: 800px;
+    overflow: hidden;
+    
+  }
+		 #box #adminlist ul li {
+    float: left;
+    width: 215px;
+    height: 25px;
+    line-height: 30px;
+    border: #D5D5D3 1px solid;
+    border-left: none;
+    text-align: center;
+    align-items: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 14px;
+    overflow: hidden;
+  }
+  #box #adminlist ul:first-child li {
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+  }
+  
+  #box #adminlist ul li:nth-child(1) {
+    border-left: #D5D5D3 1px solid;
+  }
+		</style>	
+	</head>
+	<body>
+		<div id="box">
+			<div id="header">
+				<ul class="hleft">
+				<p class="firsts"><span class="name"></span>您好，欢迎来到
+					<a href="">果蔬网后台管理系统</a>
+				</p>
+				</ul>
+				<ul class="hright">
+					<ul class="shouye"><p>商品信息</p></ul>
+					<ul>
+						<p>客户信息</p>
+						<li onclick="yonghu()">客户信息表</li>
+						<li onclick="gouwuche()">购物车信息表</li>
+						<li onclick="gouwu()">购物信息表</li>
+					</ul>
+					<ul><p class="zgl" onclick="guanli()">管理员信息</p></ul>
+					<span class="back">退出</span>
+				</ul>
+					
+		<hr>
+		</div>
+				<div id="admin">
+				  <span>管理员名称:</span><input id="user" type="text" value=""/>
+				  <span>密码:</span><input id="pass" type="text" value="">
+				  <button class="joinadmin" onclick="joinadmin()">添加管理员信息</button>
+				</div>
+				<div id="adminlist">
+					<ul>
+						<li>管理员名称</li>
+						<li>密码</li>
+						<li>是否删除</li>
+					</ul>
+				</div>
+	</body>
+</html>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/header.js"></script>
+<script type="text/javascript">
+
+   function joinadmin(){
+        var name=$('#box #admin #user').val(); 
+		var pass=$('#box #admin #pass').val();
+		console.log(name,pass);
+		var nlen=name.length;
+		var plen=pass.length;
+		if(nlen==0 || plen==0){
+			alert("请填写完整的注册信息")
+		}else{
+            $.ajax({
+		      type: "post",
+			  url: server + "/api/admin/reg",
+			  async: true,
+			  data: {
+				'UserName':name,
+				'Password':pass		
+			  },
+			  success: function(res){
+				alert(res.msg)
+				admin();
+			  }
+	        })
+		}	
+   }
+		
+	 function admin(){
+		$('#adminlist').find('.list').remove();
+		$.ajax({
+		    type: "post",
+			  url: server + "/api/admin/alladmin",
+			  async: true,
+			  data: {	
+			  },
+			  success: function(res){
+						console.log(res);
+						if(res.err==0){
+							var data=res.data;
+							console.log(data)
+							var html = ``;
+							for(var i=0;i<data.length;i++){
+								html += `
+                          <ul class="list">
+						                <li class="name">${data[i].UserName}</li>
+						                <li class="pass">${data[i].Password}</li>
+						                <li><span class="del" style="color:blue;cursor:pointer;">删除<span/></li>
+					                </ul>							
+						        `;
+							}
+							$('#box #adminlist').append(html);
+						}else{
+							alert(res.msg);
+						}
+			  }
+	  })
+	 }
+	 admin();
+
+	 $('#adminlist').on('click', '.del', function() {
+		var name = $(this).parent().parent().find('.name').text();
+		var that = $(this);
+		if(confirm('您确定要删除吗？')) {
+			$.post(server + '/api/admin/deladmin', {
+				'UserName': name
+			}, function(res) {
+				   alert(res.msg)
+				admin();
+			});
+		}
+
+	});
+</script>

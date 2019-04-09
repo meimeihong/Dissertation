@@ -1,0 +1,90 @@
+
+  #box #head{
+    margin: 20px auto;
+    width: 1200px;
+  }
+  #box #head .hp {
+    width: 1200px;
+    height: 50px;
+    line-height: 50px;
+    background: #448cc7;
+    margin: 8px 0px;
+    font-size: 20px;
+  }
+  
+  #box #head .hp .span1 {
+    background: rgb(64, 177, 230);
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 500px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  #box #head .hp .span2 {
+    background: rgb(64, 177, 230);
+    padding: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  #box #head .hp #hptext{
+    width:200px;
+      height:30px;
+  }
+  #box #head .hp:nth-child(2) input {
+    width: 50px;
+    height: 30px;
+  }
+  #box #goods {
+    margin: 20px auto;
+    width: 1200px;
+    overflow: hidden;
+  }
+  
+  #box #goods ul li {
+    float: left;
+    width: 75px;
+    height: 30px;
+    line-height: 30px;
+    border: #D5D5D3 1px solid;
+    border-left: none;
+    text-align: center;
+    align-items: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 14px;
+      overflow: hidden;
+  }
+  
+  #box #goods ul:first-child li {
+    height: 35px;
+    line-height: 35px;
+  }
+  
+  #box #goods ul li:nth-child(1) {
+    border-left: #D5D5D3 1px solid;
+    width: 35px;
+  }
+  
+  #box #goods ul .cz span {
+    display: inline-block;
+    line-height: 20px;
+    cursor: pointer;
+    color: blue;
+    margin-top: 8px;
+  }
+  
+  #box #pagejump {
+    width: 1200px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    padding-top: 10px;
+  }
+  
+  #box #pagejump button {
+    padding: 5px;
+    border-radius: 3px;
+  }
+  

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/user.css"/>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="header">
+				<ul class="hleft">
+				<p class="firsts"><span class="name"></span>您好，欢迎来到
+					<a href="">果蔬网后台管理系统</a>
+				</p>
+				</ul>
+				<ul class="hright">
+					<ul class="shouye"><p>商品信息</p></ul>
+					<ul>
+						<p>客户信息</p>
+						<li onclick="yonghu()">客户信息表</li>
+						<li onclick="gouwuche()">购物车信息表</li>
+						<li onclick="gouwu()">购物信息表</li>
+					</ul>
+					<ul><p class="zgl" onclick="guanli()">管理员信息</p></ul>
+					<span class="back">退出</span>
+				</ul>
+					
+		<hr>
+		</div>
+                <div id="head">
+                    <span>用户信息表</span>
+                    显示&nbsp;&nbsp;<input type="number" name="" id="show" value="5" />&nbsp;条数据
+                    <input class="int" type="text">
+                    <input class="search" type="button" value="查询">
+                </div>
+				<div id="userlist">
+					<ul>
+						<!-- <li><input type="checkbox" name="" id="checkall" value="" /></li> -->
+						<li>用户名</li>
+						<li>密码</li>
+						<li style="width:250px;">邮箱</li>
+						<li>电话号码</li>
+					</ul>
+				</div>
+				<div id="pagejump">
+					<button id="first">首页</button>
+					<button id="prev">上一页</button>
+					<span id="score">0/0</span>
+					<input type="number" value="1" name="" id='jumppage'>
+					<button id="jump">跳转</button>
+					<button id="next">下一页</button>
+					<button id="last">尾页</button>
+				</div>	
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/header.js"></script>
+<script type="text/javascript" src="./js/user.js"></script>
