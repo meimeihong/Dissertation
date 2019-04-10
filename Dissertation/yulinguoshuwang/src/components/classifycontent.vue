@@ -1,23 +1,20 @@
 <template>
   <div id="classifycontent">
     <div class="header" @click="datas">
-             <span><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+             <span @click="classify"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
              <span class="xlb">{{xiaoleibie}}</span>
-             <span><i class="fa fa-search"></i></span>
     </div>
     <ul class="list">
-        <li>
-			<img src="../img/my.jpg" alt="">
-			<div class="good">
-				<p>1大幅大水法三分大师赛顺风顺水事实上撒士大夫打算发生</p>
-				<p style="color:gray;">2</p>
-				<p>
-					<span style="color:red;">￥17831</span>
-					<span  style="color:#ccc;">sadsa</span>
-                    <span class="cart3"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-				</p>					
-			</div>
-			</li>
+        <li v-for="(item,index) in data" :key="index">
+					 <img :src="item.img.split(',')[0]" alt="">
+					 <p>{{item.name}}</p>
+                     <p style="color:gray;">{{item.miaoshu}}</p>
+					 <p style="color:red;">
+                         <span>￥</span><span>{{item.danjia}}</span>
+                         <span class="guige">/{{item.guige}}</span> 
+                        <span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                    </p>
+		</li>
     </ul>
   </div>
 </template>
@@ -26,7 +23,8 @@ export default {
   name: 'classifycontent',
   data() {
 		return {
-               xiaoleibie:""
+               xiaoleibie:"",
+               data:[]
 			}
     },
     methods:{
@@ -35,7 +33,21 @@ export default {
             var xleibie= localStorage.getItem("xleibie");
             this.xiaoleibie=xleibie;
             console.log(dleibie,xleibie);
-            console.log('q');
+            this.$axios.post('http://127.0.0.1:3000/api/goods/classifycontent',
+						 {
+                             'xiaoleibie':xleibie
+						 }
+					)
+					.then((res) => {
+                        this.data=res.data.data;
+						console.log(res);
+					})
+					.catch((err) => {
+						console.log(err);
+					})
+        },
+        classify(){
+            this.$router.push({name:'classify'});
         }
     },
     created(){
@@ -43,12 +55,14 @@ export default {
     }
 }
 </script>
-
 <style lang="less" scoped>
 @import '../styles/main.less';
 #classifycontent {
   .w(375);
-  .header{
+  .header{  position: fixed;
+            .position(0,0);
+            z-index:100;
+            background: white;
             .w(375);
             .h(40);
             .lh(40);
@@ -75,51 +89,53 @@ export default {
                 text-align: center;
             }
         }
-        .list{
-           display: -webkit-flex; /* Safari */
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content:flex-start;
-            align-items:center;
-            border-bottom: 2px solid rgb(66, 216, 103); 
-            li{
-                .w(375);
-               .h(90);
-               .mg(10,0,0,0);
-                 display: -webkit-flex; /* Safari */
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content:left;
-                align-items:center;
-                img{
-                    .w(110);
-                    .h(80);
-                    .mg(0,0,0,15);
-                }
-                .good{
-                    .fs(14);
-                    display: inline-block;
-                    .w(230);
-                    .mg(0,0,0,10);
-                    p{  .h(25);
-                        .lh(25);
-                        display: inline-block;
-                        overflow: hidden;
+    .list{
+        .mg(42,0,0,0);
+        .w(375);
+        .pd(0,8,0,8);
+        box-sizing: border-box;
+		 display: -webkit-flex; /* Safari */
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content:space-between;
+          align-items:center;
+            li{ background: white;
+			      .mg(10,0,0,0);
+				   .w(160);
+				   .fs(12);
+				   img{
+					   .w(160);
+					   .h(150);
+                     }
+                     p{text-align: left;
+                       .h(22);
+                       .lh(22);
+                       .fs(14);
+                       overflow: hidden;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						-webkit-line-clamp: 1;
                         -webkit-box-orient: vertical;
                         text-align: left;
-                        .cart3{
-                            color:orange;
-                            .fs(18);
-                            .mg(0,0,0,90);
-                        }
-                    }
-                }
-            }
+                     }
+                     .guige{
+                         display: inline-block;
+                         .h(22);
+                         .lh(28.5);
+                         .fs(12);
+                         .w(38);
+                         color:#ccc;
+                         overflow: hidden;
+                     }
+					 .carts{
+                         display: inline-block;
+						 text-align: right;
+						 color:orange;
+                         .fs(18);
+                         .mg(0,0,0,60);
+					 }
+			   }
         }	
 }
 </style>

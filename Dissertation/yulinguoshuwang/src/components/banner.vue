@@ -62,6 +62,7 @@
 	@import '../styles/main.less';
 	@import '../../node_modules/swiper/dist/css/swiper.css';
 	#banner {
+		.mg(42,0,0,0);
 		.pd(0,7.5,0,7.5);
 		.swiper-slide{
 			.w(360);

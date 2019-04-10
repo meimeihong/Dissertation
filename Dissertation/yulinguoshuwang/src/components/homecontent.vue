@@ -120,10 +120,20 @@
 			
 		},
 		methods: {
-			
+			    tuijiandata(){
+                    this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',
+						 {}
+					)
+					.then((res) => {					
+						console.log(res);
+					})
+					.catch((err) => {
+						console.log(err);
+					})
+                }
 		},
 		created() {
-			
+			this.tuijiandata();
 		}
 	}
 </script>

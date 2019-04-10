@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');//第三方插件
-mongoose.connect('mongodb://localhost:27017/guoshu', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/GardenStuff', { useNewUrlParser: true });
 //链接数据库
 let db = mongoose.connection;
 //创建数据库对象

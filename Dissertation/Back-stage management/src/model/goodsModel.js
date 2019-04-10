@@ -12,6 +12,7 @@ let goods=new Schema({
 	danjia:{type:Number,required:true},
 	jiangjia:{type:String,required:true},
 	zhuangt:{type:Number,required:true},
+	xiaoliang:{type:Number,required:false},
 	NewTime:{type:Number,required:true}
 });
 let goodsmodel=mongoose.model('Goods', goods);

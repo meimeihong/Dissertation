@@ -8,6 +8,7 @@ import classify from '../components/classify.vue'
 import cart from '../components/cart.vue'
 import my from '../components/my.vue'
 import classifycontent from '../components/classifycontent.vue'
+import classifym from '../components/classifym.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -51,6 +52,11 @@ export default new Router({
       path:"/classifycontent",
       name:"classifycontent",
       component:classifycontent
+    },
+    {
+      path:"/classifym",
+      name:"classifym",
+      component:classifym
     }
 
   ]

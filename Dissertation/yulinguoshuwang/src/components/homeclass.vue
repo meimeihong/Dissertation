@@ -1,7 +1,7 @@
 <template>
   <div id="homeclass">
      <ul>
-          <li v-for="(item, index) in lists" :key="index">
+          <li v-for="(item, index) in lists" :key="index" @click="classifym(item.name)">
               <img :src="item.img" alt="" style="background:item.img">
               <p>{{item.name}}</p>
           </li>
@@ -17,13 +17,17 @@ export default {
               {name:'新鲜蔬菜',img:require('../img/cai.jpg')},
               {name:'精选肉类',img:require('../img/rou.jpg')},
               {name:'海鲜水产',img:require('../img/haixian.jpg')},
-              {name:'食品饮料',img:require('../img/yinliao.jpg')},
-              {name:'方便速食',img:require('../img/sushi.jpg')},
+              {name:'酒水饮料',img:require('../img/yinliao.jpg')},
+              {name:'休闲零食',img:require('../img/sushi.jpg')},
               {name:'禽类蛋品',img:require('../img/dan.jpg')},
               {name:'折扣专区',img:require('../img/zhekou.jpg')}]
 			}
     },
     methods:{
+      classifym(name){
+        localStorage.setItem('classifym', name);
+        this.$router.push({name:'classifym'});
+      }
     }
 }
 </script>

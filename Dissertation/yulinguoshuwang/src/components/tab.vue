@@ -34,15 +34,19 @@ export default {
     },
     methods:{
       first(){
-        this.$router.push({name:'home'})
+        localStorage.setItem('dleibie', '');
+        this.$router.push({name:'home'})   
       },
       second(){
+        localStorage.setItem('dleibie', '');
         this.$router.push({name:'classify'})
       },
       three(){
+        localStorage.setItem('dleibie', '');
         this.$router.push({name:'cart'})
       },
       four(){
+        localStorage.setItem('dleibie', '');
         this.$router.push({name:'my'})
       }
     }

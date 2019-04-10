@@ -1,7 +1,7 @@
 <template>
 	<div id="classify">
 		<div class="header">
-             <input type="text" placeholder="请输入商品名称">
+             <input type="text" placeholder="搜索">
              <span><i class="fa fa-search"></i></span>
         </div>
 		<tab :listname="listname"></tab>
@@ -36,12 +36,17 @@ import tab from './tab.vue';
 		},
 		methods: {
 			daleibies(){
+				var dleibie= localStorage.getItem("dleibie");
+				   this.checkdaleibie=dleibie;
 				this.$axios.post('http://127.0.0.1:3000/api/goods/daleibie',
 						 {}
 					)
 					.then((res) => {					
 						this.daleibie=res.data.data;
-						this.checkdaleibie=res.data.data[0];
+						if(this.checkdaleibie==''){
+							this.checkdaleibie=res.data.data[0];
+						}
+						
 					})
 					.then((res) => {					
 						this.checkda(this.checkdaleibie)

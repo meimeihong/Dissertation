@@ -161,21 +161,25 @@ Router.post('/checkdel',function(req,res){
 	res.send(msg.sendData(0,'商品信息删除成功',null));
 })
 //商品类别
+
 Router.post('/daleibie',function(req,res){
-	const daleibie=[];
-	goodsModel.find()
+	var daleibie=[];
+goodsModel.find()
 	.then(function(data){		
 		for(var i=0;i<data.length;i++){			
 			var lnum=daleibie.indexOf(data[i].leibie);			
 			if(lnum==-1){
 				daleibie.push(data[i].leibie);
 			}			
-		}
+		}		
+	})
+	.then(function(data){
 		res.send(msg.sendData(0,'商品类别',daleibie));
 	})
 	.catch(function(err){
 		console.log(err)
-		})	
+		})
+	
 })
 Router.post('/xiaoleibie',function(req,res){
 	var {leibie}=req.body;
@@ -195,10 +199,100 @@ Router.post('/xiaoleibie',function(req,res){
 				xiaolb.push(xiao);
 			}			
 		}
-		res.send(msg.sendData(0,'商品类别',xiaolb));
+		res.send(msg.sendData(0,'商品小类别',xiaolb));
 	})
 	.catch(function(err){
 		console.log(err)
 		})	
+})
+Router.post('/classifycontent',function(req,res){
+	var {xiaoleibie}=req.body;
+	console.log(req.body)
+	goodsModel.find({xiaoleibie})
+	.then(function(data){
+		console.log(data)
+		res.send(msg.sendData(0,{xiaoleibie},data));
+	})
+	.catch(function(err){
+		console.log(err)
+	})
+
+})
+Router.post('/classifym',function(req,res){
+	var {leibie}=req.body;
+	var select=req.body.select;
+	var paixu=req.body.paixu;
+	if(select=='价格'){
+          if(paixu){
+			goodsModel.find({leibie}).sort({danjia:1})
+			.then(function(data){
+				console.log(data)
+				res.send(msg.sendData(0,select,data));
+			})
+			.catch(function(err){
+				console.log(err)
+			})		   
+			}else{
+			goodsModel.find({leibie}).sort({danjia:-1})
+			.then(function(data){
+				console.log(data)
+				res.send(msg.sendData(0,select,data));
+			})
+			.catch(function(err){
+				console.log(err)
+			})
+		       }
+	}else if(select=='销量'){
+		goodsModel.find({leibie}).sort({shuliang:-1})
+		.then(function(data){
+			console.log(data)
+			res.send(msg.sendData(0,select,data));
+		})
+		.catch(function(err){
+			console.log(err)
+		})
+	}else if(select=='新品'){
+		goodsModel.find({leibie}).sort({NewTime:-1})
+		.then(function(data){
+			console.log(data)
+			res.send(msg.sendData(0,select,data));
+		})
+		.catch(function(err){
+			console.log(err)
+		})
+	}else{
+		goodsModel.find({leibie})
+		.then(function(data){
+			console.log(data)
+			res.send(msg.sendData(0,select,data));
+		})
+		.catch(function(err){
+			console.log(err)
+		}) 
+	}
+})
+//主页推荐
+Router.post('/tuijian',function(req,res){
+	var tuijian=[]
+			goodsModel.find({'leibie':'新鲜水果'}).sort({NewTime:-1}).limit(4)
+			.then(function(data){
+				tuijian=tuijian.concat(data)				
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'新鲜蔬菜'}).sort({NewTime:-1}).limit(3)
+				.then(function(data){
+					tuijian=tuijian.concat(data);
+				})
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'精选肉类'}).sort({NewTime:1}).limit(4)
+				.then(function(data){
+					tuijian=tuijian.concat(data);
+					res.send(msg.sendData(0,'推荐',tuijian));
+				})
+			})
+			.catch(function(err){
+				console.log(err)
+			})	
 })
 module.exports=Router;

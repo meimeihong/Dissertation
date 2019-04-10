@@ -70,7 +70,11 @@
         #header{
             .w(375);
             .h(40);
-            .lh(40);
+			.lh(40);
+			position:fixed;
+			.position(0,0);
+			z-index: 100;
+			background: white;
             display: -webkit-flex; /* Safari */
             display: flex;
             flex-direction: row;
