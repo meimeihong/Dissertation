@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/add.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/header.css"/>
+		<style type="text/css">		
+		</style>	
+	</head>
+	<body>
+		<div id="box">
+			<div id="header">
+				<ul class="hleft">
+				<p class="firsts"><span class="name"></span>您好，欢迎来到
+					<a href="">果蔬网后台管理系统</a>
+				</p>
+				</ul>
+				<ul class="hright">
+					<ul class="shouye"><p>商品信息</p></ul>
+					<ul>
+						<p>客户信息</p>
+						<li onclick="yonghu()">客户信息表</li>
+						<li onclick="gouwuche()">购物车信息表</li>
+						<li onclick="gouwu()">购物信息表</li>
+					</ul>
+					<ul><p class="zgl" onclick="guanli()">管理员信息</p></ul>
+					<span class="back">退出</span>
+				</ul>
+					
+		<hr>
+		</div>
+		<div id="add">
+			<P><span>修改商品信息</span></P>
+		    商品编号：<input type="text" name="" id="bianhao" value="" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			商品名称：<input type="text" name="" id="name" value="" /><br>
+			商品类别：<input type="text" name="" id="leibie" value="" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			商品描述: <input type="text" name="" id="miaoshu" value="" /><br>
+			商品小类别：<input type="text" name="" id="xiaoleibie" value="" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			商品规格: <input type="text" name="" id="guige" value="" /><br>
+			商品数量: <input type="text" name="" id="shuliang" value="" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			商品单价: <input type="text" name="" id="danjia" value="" /><br>
+			商品降价: <input type="text" name="" id="jiangjia" value="" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			商品状态: <input style="width:110px;"type="text" name="" id="zhuangt" value="" /><span>（1代表上架，0代表下架）</span><br>
+			<form enctype="multipart/form-data" method="post">
+         		图片上传：<input type="file" name='image' id="imagelist">
+     		</form>
+     		<img style="width:280px;height:130px;">
+     		<button style="padding: 5px;margin-left:20px" onclick="upload()"> 上传图片</button>
+     		<span class="imgl"></span><br>
+     		<input type="button" style="margin-top:20px" name="" id="" value="修改商品信息" onclick="goodsupdate()"/>
+		</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/alter.js"></script>
+<script type="text/javascript" src="./js/header.js"></script>
