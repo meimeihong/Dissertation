@@ -1,22 +1,19 @@
 <template>
 	<div id="banner">
-		<div class="swiper-container">
-			<div class="swiper-wrapper">
-				<div class="swiper-slide" 
-					v-for="(item,index) in datas" 
-					:key="index" >
-					<img :src="item.pic_url" @click='setid(item.id,item)'/>
-				</div>
-			</div>
-			<div class="swiper-pagination"></div>
-            <!-- <div class="swiper-scrollbar"></div> -->
-		</div>
+		<mt-swipe :auto="2000">
+			<mt-swipe-item v-for="(item,index) in datas" :key="index" >
+				<img :src="item.img.split(',')[1]"/>
+		</mt-swipe-item>
+			
+		</mt-swipe>
 	</div>
 </template>
 <script src="../../node_modules/swiper/dist/js/swiper.min.js"></script>
 <script>
 	import Vue from 'vue';
-	import Swiper from 'swiper';
+	import { Swipe, SwipeItem } from 'mint-ui';
+   Vue.component(Swipe.name, Swipe);
+   Vue.component(SwipeItem.name, SwipeItem);
 	export default {
 		name: 'Banner',
 		data() {
@@ -26,17 +23,9 @@
 		},
 		methods: {
 			getlist() {
-				this.$axios.get('/api/api/v3/home?',
-				{params:{page:1}})
+				this.$axios.post('http://127.0.0.1:3000/api/goods/banner',{})
 				.then((res)=>{
-					this.datas=res.data.datas.items[0].items;
-					Vue.nextTick(() => {
-					var mySwiper = new Swiper('.swiper-container',{
-                       autoplay:true,
-                        loop: true,
-                        pagination: '.swiper-pagination',
-                        })
-				});
+					this.datas=res.data.data;
 				})
 				.catch((err)=>{
 					console.log(err);
@@ -54,7 +43,6 @@
 			this.getlist();
 		},
 		destroyed(){
-            delete this.mySwiper
 		}
 	}
 </script>
@@ -63,13 +51,11 @@
 	@import '../../node_modules/swiper/dist/css/swiper.css';
 	#banner {
 		.mg(42,0,0,0);
-		.pd(0,7.5,0,7.5);
-		.swiper-slide{
-			.w(360);
+		.pd(0,2,0,2);
+			.w(370);
 			.h(240);	
-		}
 		img {
-			.w(360);
+			.w(370);
 			.h(240);
 		}
 	}

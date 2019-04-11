@@ -9,8 +9,16 @@
 		<homeclass></homeclass>
 		<homecontent></homecontent>
 		<tab :listname="listname"></tab>
-		{{listname}}
-		
+		<div class="backtop" v-show='topshow' @click="topback">
+			<transition enter-active-class='fadeIn animated' leave-active-class='fadeOut animated'>
+				<div class='contain-box'>
+					<i class="fa fa-arrow-up"></i>
+				</div>
+			</transition>
+		</div>
+		<div class="dibu">
+         已经到底啦~~~
+		</div>
 	</div>
 </template>
 
@@ -27,7 +35,6 @@
 			return {
                 name:"玉林果蔬网",
 				topshow: false,
-				sel:false,
 				listname:'home'
 			}
 		},
@@ -53,9 +60,6 @@
 			topback(){
 				document.documentElement.scrollTop=0	
 			},
-			show:function(){
-				this.sel=!this.sel;
-			}
 		},
 		created() {
 			this.top();
@@ -103,9 +107,35 @@
                 box-sizing: border-box;
             }
         }
-        .w(375);
-		overflow: auto;
-		box-sizing: border-box;
-		
+			.w(375);
+			overflow: auto;
+			box-sizing: border-box;
+		.backtop {
+			position: fixed;
+			.position-bottom(60);
+			.position-right(15);
+			z-index: 100;
+			.contain-box {
+			.w(30);
+			.h(30);
+			.fs(20);
+			border-radius: 50%;
+			background: #fe960e;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		}
+		.dibu{
+			.w(375);
+			.h(100);
+			.fs(14);
+			.pd(20,0,0,0);
+			// border-top: 1px solid #ccc;
+			text-align: center;
+			color:#ccc;
+			background: white;
+		}
 	}
 </style>

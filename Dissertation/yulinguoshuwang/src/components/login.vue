@@ -1,6 +1,6 @@
 <template>
 <div id="login">
-    <div class="head">
+    <div class="head" @click="returnmy">
         <span><i class="fa fa-chevron-left"></i></span>
         <span>会员登陆</span>
     </div>
@@ -45,6 +45,7 @@
 					)
 					.then((res) => {
 						if(res.data.err==0){
+                            localStorage.setItem('loginuser', this.user);
 							this.$router.push({name:'home'})
 						}else{
 							this.tishi=res.data.msg;
@@ -60,6 +61,9 @@
             },
             topassword(){
                 this.$router.push({name:'password'})
+            },
+            returnmy(){
+                this.$router.push({name:'my'})
             }
 		}
 	}

@@ -109,6 +109,7 @@ export default {
 					   .h(150);
                      }
                      p{text-align: left;
+                       position: relative;
                        .h(22);
                        .lh(22);
                        .fs(14);
@@ -121,19 +122,23 @@ export default {
                      }
                      .guige{
                          display: inline-block;
+                        //  position: absolute;
+                        //  .position(0,50);
                          .h(22);
-                         .lh(28.5);
+                         .lh(28);
                          .fs(12);
-                         .w(38);
+                         .w(34);
                          color:#ccc;
                          overflow: hidden;
                      }
 					 .carts{
+                         position: absolute;
+                         .position(0,130);
                          display: inline-block;
 						 text-align: right;
 						 color:orange;
                          .fs(18);
-                         .mg(0,0,0,60);
+                        //  .mg(0,0,0,60);
 					 }
 			   }
         }	

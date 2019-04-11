@@ -36,35 +36,29 @@
 							<span class="jian" >-</span>
 							<input type="text" value="1">
 							<span class="jia">+</span>
-							</p>
+						</p>
 						
 					</div>
 				</li>
 			</ul>
 		</div>
 		<div class="like">
-             <p class="ltop">~~您可能会喜欢~~</p>
+				<p class="ltop">~~您可能会喜欢~~</p>
 			 <ul>
-				 <li>
-					 <img src="../img/my.jpg" alt="">
-					 <p>name</p>
-					 <p style="color:red"><span>￥</span><span>255</span><span style="color:#ccc;">规格</span></p>
-					 <p class="carts"><span class="fa fa-shopping-cart" aria-hidden="true"></span></p>
-				 </li>
-				 <li>
-					 <img src="../img/my.jpg" alt="">
-					 <p>name</p>
-					 <p class="grey">江湖私服换句话说京东方挥洒解放军哈斯</p>
-					 <p style="color:red;"><span>￥</span><span>255</span><span style="color:#ccc">规格</span><span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span></p>
-					 
-				 </li>
-				 <li>
-					 <img src="../img/my.jpg" alt="">
-					 <p>name</p>
-					 <p><span>￥</span><span>255</span><span>规格</span></p>
-					<p><span class="fa fa-shopping-cart" aria-hidden="true"></span></p>
-				 </li>
+				<li v-for="(item, index) in like" :key="index">
+					 <img :src="item.img.split(',')[0]" alt="">
+					 <p>{{item.name}}</p>
+					 <p style="color:gray;">{{item.miaoshu}}</p>
+					 <p style="color:red;">
+							<span>￥</span><span>{{item.danjia}}</span>
+							<span class="guige" style="color:#ccc;">/{{item.guige}}</span> 
+							<span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+					 </p>
+				</li>
 			 </ul>
+		</div>
+		<div class="dibu">
+         已经到底啦~~~
 		</div>
 		<tab :listname="listname"></tab>
 	</div>
@@ -79,13 +73,24 @@ import tab from './tab.vue';
 				name:"购物车",
 				listname:'cart',
 				nocart:false,
-				showcart:true
+				showcart:true,
+				like:[]
 			}
 		},
 		components: {
 			tab
 		},
 		methods: {
+			likedata(){
+            this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',{})
+					.then((res) => {					
+            console.log(res);
+            this.like=res.data.data;                       
+					})
+					.catch((err) => {
+						console.log(err);
+					})
+                },
 			open() {
         this.$alert('这是一段内容', '标题名称', {
           confirmButtonText: '确定',
@@ -104,7 +109,7 @@ import tab from './tab.vue';
 			}
 		},
 		created() {
-			
+			this.likedata();
 		}
 	}
 </script>
@@ -140,8 +145,7 @@ import tab from './tab.vue';
 				   text-align: center;
 				   color:white;
 				   background: @green;
-				   .br(30);							
-				
+				   .br(30);											
 			    }
 			    .fa{
             .fs(45);
@@ -168,28 +172,40 @@ import tab from './tab.vue';
 					
 			   li{ background: white;
 			      .mg(10,0,0,0);
-				   .w(160);
-				   .fs(14);
+				   .w(150);
+				   .fs(12);
 				   img{
-					   .w(160);
-					   .h(145);
-					 }
-					 p{
-						 overflow: hidden;
+					   .w(150);
+					   .h(150);
+            }
+            p{text-align: left;
+            position: relative;
+            .h(22);
+            .lh(22);
+            .fs(14);
+            overflow: hidden;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						-webkit-line-clamp: 1;
-             -webkit-box-orient: vertical;
-            text-align: left;
-					 }
-					 .grey{
-						 color:gray;
-					 }
+						-webkit-box-orient: vertical;
+						text-align: left;
+					  }
+						.guige{
+								display: inline-block;
+								.h(22);
+								.lh(28);
+								.fs(12);
+								.w(34);
+								color:#ccc;
+								overflow: hidden;
+						}
 					 .carts{
+						position: absolute;
+						.position(0,130);
+						display: inline-block;
 						 text-align: right;
 						 color:orange;
-						 .fs(18);
-						 .mg(0,0,0,65);
+						.fs(18);
 					 }
 			   }
 		   }
@@ -270,6 +286,16 @@ import tab from './tab.vue';
 					}
 				}
 			}
+		}
+		.dibu{
+			.w(375);
+			.h(100);
+			.fs(14);
+			.pd(20,0,0,0);
+			// border-top: 1px solid #ccc;
+			text-align: center;
+			color:#ccc;
+			background: white;
 		}
     }
 </style>

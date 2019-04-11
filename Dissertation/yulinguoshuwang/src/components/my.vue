@@ -2,13 +2,15 @@
 	<div id="my">
 		<div class="myhead">
 			<img src="../img/my.jpg" alt="">
-			<span class="user" @click="login"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
-			<div class="regl">
-				<span @click="login">{{login}}</span>
+			<span class="user" @click="logins"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+			<div class="regl" v-show="usernamehidden">
+				<span @click="logins">{{login}}</span>
 				<span>/</span>
-				<span @click="reg">{{reg}}</span>
+				<span @click="regs">{{reg}}</span>
 			</div>
-			
+			<div class="regl" v-show="usernameshow">
+				  <span>{{username}}</span>
+			</div>
 		</div>
 		<tab :listname="listname"></tab>
 	</div>
@@ -23,22 +25,40 @@ import tab from './tab.vue';
 				name:"我的",
 				listname:'my',
 				login:'登陆',
-				reg:'注册'
+				reg:'注册',
+				usernameshow:false,
+				usernamehidden:true,
+				username:''
 			}
 		},
 		components: {
 			tab
 		},
 		methods: {
-			login(){
+			logins(){
 				this.$router.push({name:'login'})
 			},
-			reg(){
+			regs(){
 				this.$router.push({name:'reg'})
+			},
+			getusername(){
+				// localStorage.setItem('loginuser', '');
+				var loginuser = localStorage.getItem("loginuser");
+				console.log(loginuser)
+		       if(loginuser===undefined || loginuser==='' || loginuser===null){
+						 this.usernameshow=false;
+						 this.usernamehidden=true;
+					 }else{
+						 this.username=loginuser;
+						 this.usernameshow=true;
+						 this.usernamehidden=false;
+						 
+					 }
+				
 			}
 		},
 		created() {
-			
+			   this.getusername();
 		}
 	}
 </script>

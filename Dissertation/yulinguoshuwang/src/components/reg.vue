@@ -1,7 +1,7 @@
 <template>
 <div id="reg">
     <div class="head">
-        <span><i class="fa fa-chevron-left"></i></span>
+        <span @click="returnmy()"><i class="fa fa-chevron-left"></i></span>
         <span>会员注册</span>
     </div>
 	<ul>
@@ -51,15 +51,12 @@
 						}
 					)
 					.then((res) => {
-                        var err=res.data.err
-                        // console.log(res)
+                        var err=res.data.err;
                         if(err==-1){
                             this.usert=res.data.msg;
                         }else{
                             this.usert='';
-                        }
-						
-						
+                        }												
 					})
 					.catch((err) => {
 						console.log(err);
@@ -87,7 +84,10 @@
 						console.log(err);
 					})
 				}
-			}
+            },
+            returnmy(){
+                this.$router.push({name:'my'})
+            }
 		}
 	}
 </script>

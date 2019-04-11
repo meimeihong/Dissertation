@@ -271,10 +271,46 @@ Router.post('/classifym',function(req,res){
 		}) 
 	}
 })
+//轮播图
+Router.post('/banner',function(req,res){
+	var banner=[];
+	goodsModel.find({'leibie':'新鲜水果'}).sort({shuliang:-1}).limit(1)
+			.then(function(data){
+				banner=banner.concat(data)				
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'精选肉类'}).sort({shuliang:1}).limit(1)
+				.then(function(data){
+					banner=banner.concat(data);					
+				})
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'新鲜蔬菜'}).sort({shuliang:-1}).limit(1)
+				.then(function(data){
+					banner=banner.concat(data);
+				})
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'海鲜水产'}).sort({shuliang:-1}).limit(1)
+				.then(function(data){
+					banner=banner.concat(data);
+				})
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'酒水饮料'}).sort({shuliang:-1}).limit(1)
+				.then(function(data){
+					banner=banner.concat(data);
+					res.send(msg.sendData(0,'推荐',banner));
+				})
+			})
+			.catch(function(err){
+				console.log(err)
+			})
+})
 //主页推荐
 Router.post('/tuijian',function(req,res){
 	var tuijian=[]
-			goodsModel.find({'leibie':'新鲜水果'}).sort({NewTime:-1}).limit(4)
+			goodsModel.find({'leibie':'新鲜水果'}).sort({NewTime:-1}).limit(2)
 			.then(function(data){
 				tuijian=tuijian.concat(data)				
 			})
@@ -285,7 +321,19 @@ Router.post('/tuijian',function(req,res){
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'精选肉类'}).sort({NewTime:1}).limit(4)
+				goodsModel.find({'leibie':'海鲜水产'}).sort({NewTime:-1}).limit(2)
+				.then(function(data){
+					tuijian=tuijian.concat(data);
+				})
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'酒水饮料'}).sort({NewTime:-1}).limit(2)
+				.then(function(data){
+					tuijian=tuijian.concat(data);
+				})
+			})
+			.then(function(data){
+				goodsModel.find({'leibie':'精选肉类'}).sort({NewTime:1}).limit(3)
 				.then(function(data){
 					tuijian=tuijian.concat(data);
 					res.send(msg.sendData(0,'推荐',tuijian));
@@ -294,5 +342,36 @@ Router.post('/tuijian',function(req,res){
 			.catch(function(err){
 				console.log(err)
 			})	
+})
+//安心蔬菜
+Router.post('/all',function(req,res){
+	var all={};
+	goodsModel.find({'leibie':'新鲜蔬菜'}).sort({shuliang:-1})
+	.then(function(data){
+		all.shucai=data;
+		// res.send(msg.sendData(0,'安心蔬菜',data));
+	})
+	.then(function(data){
+		goodsModel.find({'leibie':'精选肉类'}).sort({shuliang:-1})
+		.then(function(data){
+			all.roulei=data;	
+		})
+	})
+	.then(function(data){
+		goodsModel.find({'leibie':'休闲零食'}).sort({shuliang:-1})
+		.then(function(data){
+			all.lingshi=data;	
+		})
+	})
+	.then(function(data){
+		goodsModel.find({'leibie':'新鲜水果'}).sort({shuliang:-1})
+		.then(function(data){
+			all.shuiguo=data;
+			res.send(msg.sendData(0,'首页内容数据',all));	
+		})
+	})
+	.catch(function(err){
+		console.log(err)
+	})
 })
 module.exports=Router;
