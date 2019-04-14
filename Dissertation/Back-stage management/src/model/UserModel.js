@@ -4,7 +4,8 @@ const  mongoose=require('mongoose')
     UserName:{type:String,required:true},
     Password:{type:String,required:true},
     Email:{type:String,required:true},
-    TelephoneNumber:{type:String,required:false}
+    TelephoneNumber:{type:String,required:false},
+    dizhi:{type:String,required:false},
   });
   // type 字段类型  required 是否必须
  let usermodel=mongoose.model('Customer', userSchema);

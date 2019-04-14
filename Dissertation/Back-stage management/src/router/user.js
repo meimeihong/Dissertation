@@ -104,7 +104,7 @@ Router.post('/password',function(req,res){
 	if(emails.send!==prov){
 		return res.send(msg.sendData(-1,'验证码错误,请重新获取验证码',null))
 	}else{
-		userModel.updateOne({UserName},{Password}, 
+		userModel.updateOne({UserName},{$set:{Password}}, 
 	    function(err, resp) {
 			if(err){res.send(msg.sendData(-1,'密码修改失败',null))}
 			res.send(msg.sendData(0,'密码修改成功',null))

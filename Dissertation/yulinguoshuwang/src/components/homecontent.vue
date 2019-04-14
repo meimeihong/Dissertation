@@ -11,7 +11,7 @@
                      <p style="color:gray;">{{item.miaoshu}}</p>
 					 <p>
                         <span>￥</span><span>{{item.danjia}}</span><span>/{{item.guige}}</span> 
-                        <span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <span class="carts"  @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 
                     </p>
                 </div>
@@ -30,7 +30,7 @@
                     <p style="color:gray;">{{item.miaoshu}}</p>
                     <p style="color:red;"><span>￥</span><span>{{item.danjia}}</span><span style="color:#ccc;">/{{item.guige}}</span>                  
                     </p>
-                    <p class="cart"><span class="fa fa-shopping-cart" aria-hidden="true"></span></p>
+                    <p class="cart"><span class="fa fa-shopping-cart" aria-hidden="true"  @click="addtocart(item.bianhao,item)"></span></p>
                 </div>               
             </li>
         </ul>
@@ -43,7 +43,7 @@
 					 <p style="color:red;">
                          <span>￥</span><span>{{item.danjia}}</span>
                          <span class="guige" style="color:#ccc;">/{{item.guige}}</span> 
-                        <span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <span class="carts"  @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
                     </p>
 				 </li>
         </ul>
@@ -57,7 +57,7 @@
 				<p>
 					<span style="color:red;">￥{{item.danjia}}</span>
 					<span  style="color:#ccc;">/{{item.guige}}</span>
-                    <span class="cart3"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                    <span class="cart3"  @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 				</p>
 						
 			</div>
@@ -66,9 +66,11 @@
 	</div>
 </template>
 <script src="../../node_modules/swiper/dist/js/swiper.min.js"></script>
+
 <script>
     import Vue from 'vue';
-	import Swiper from 'swiper';
+    import Swiper from 'swiper';
+    import { Toast } from 'mint-ui';
 	export default {
 		name: 'homecontent',
 		data() {
@@ -85,9 +87,7 @@
 		},
 		methods: {
 			    tuijiandata(){
-                    this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',
-						 {}
-					)
+                    this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',{})
 					.then((res) => {					
                         console.log(res);
                         this.tuijian=res.data.data;
@@ -112,7 +112,7 @@
                 all(){
                     this.$axios.post('http://127.0.0.1:3000/api/goods/all',{})
 					.then((res) => {					
-                        console.log(res);
+                        // console.log(res);
                         var total=res.data.data;
                          if(total.shucai.length<=8){
                              this.shucai=total.shucai;
@@ -134,7 +134,7 @@
                          }else{
                              this.shuiguo=total.shuiguo.splice(0,8);
                          }
-                         console.log(this.roulei,this.shuiguo,this.lingshi);
+                        //  console.log(this.roulei,this.shuiguo,this.lingshi);
 
 					})
 					.catch((err) => {
@@ -142,8 +142,33 @@
 					})
                 },
                 addtocart(bianhao,data){
+                    var loginuser = localStorage.getItem("loginuser");
+                    if(loginuser===undefined || loginuser==='' || loginuser===null){
+						 Toast({
+                                message: '请先登陆',
+                                position: 'middle',
+                                duration: 2000
+                                });
+					 }else{
+						 var addtocartdata=JSON.stringify(data);
+                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
+                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser})
+                        .then((res)=>{
+                            console.log(res);
+                            Toast({
+                                message: res.data.msg,
+                                position: 'bottom',
+                                duration: 2000,
+                                className:'tankuang',
+                                });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+					 }
+                    
+                },
 
-                }
 
 		},
 		created() {
@@ -328,6 +353,9 @@
                          .fs(18);
                          .mg(0,0,0,20);
                      }
+        }
+        .tankuang{
+            background: orange;
         }
         }
 </style>

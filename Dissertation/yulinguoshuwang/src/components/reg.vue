@@ -11,9 +11,9 @@
         <i>{{passtext}}</i>
         <li><span>*</span><input type="text" placeholder="邮箱" v-model="email" @keyup="femail"></li>
         <i>{{emailtext}}</i>
-        <li><span></span><input type="text" placeholder="电话号码" v-model="phone"></li>
+        <li><span>*</span><input type="text" placeholder="电话号码" v-model="phone" @keyup="fphone"></li>
 	</ul>
-    <span class="tishi"></span>
+    <span class="tishi">{{success}}</span>
     <div class="zhuce">
         <input type="button" value="注册"  @click="reg">
     </div>
@@ -43,7 +43,10 @@
 			},
 			fpass(){
 				this.passtext= /^.{6,}$/.test(this.pass) ? '' : '密码必须六位以上';
-			},
+            },
+            fphone(){
+                 this.success=/^[1][3,4,5,7,8][0-9]{9}$/.test(this.phone)?'':'请输入手机号码';
+            },
 			usertext(){
 					this.$axios.post('http://127.0.0.1:3000/api/user/usertext',
 						 {
@@ -64,7 +67,7 @@
 				
 			},
 			reg(){
-				if(this.usert=='' && this.passtext=='' && this.emailtext==''){
+				if(this.usert=='' && this.passtext=='' && this.emailtext==''&&this.success==''){
 					this.$axios.post('http://127.0.0.1:3000/api/user/reg',
 						 {
                              'UserName':this.user,

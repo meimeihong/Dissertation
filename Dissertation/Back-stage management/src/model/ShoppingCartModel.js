@@ -3,9 +3,9 @@ const  mongoose=require('mongoose')
  let shoppingcartSchema=new Schema({
     UserName:{type:String,required:true},
     bianhao:{type:String,required:true},
-    danjia:{type:Number,required:true},
+    // danjia:{type:Number,required:true},
     data:{type:String,required:true},
-    name:{type:String,required:true},
+    // name:{type:String,required:true},
     addnumber:{type:Number,required:true},
     delete:{type:String,required:true}
   });

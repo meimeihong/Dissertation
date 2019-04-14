@@ -67,4 +67,39 @@ Router.post('/shoppingcart',function(req,res){
     })
 }
 })
+Router.post('/addtocart',function(req,res){
+    var bianhao=req.body.bianhao;
+    var UserName=req.body.UserName;
+    var datas=req.body.data;
+    var jian=req.body.jian;
+    shoppingcartModel.find({'bianhao':bianhao,'UserName':UserName})
+    .then(function(data){
+        console.log(data[0]);
+        // var gooddata=data[0].data;
+        // var gooddata=JSON.parse(data[0].data);
+        if(data.length<=0){
+            shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':1,'delete':1})
+            .then(function(data){
+				console.log('yes')
+			 res.send(msg.sendData(0,'加入购物车成功',data))
+			})
+			.catch(function(err){
+				res.send(msg.sendData(-1,'加入购物车失败',null))
+			})
+        }else{
+            var addnum=Number(data[0].addnumber)+1;
+            console.log(addnum)
+            shoppingcartModel.updateOne({'bianhao':bianhao,'UserName':UserName},{$set:{'addnumber':addnum}}, 
+                function(err, resp) {
+                    if(err){
+                        console.log(err)
+                        res.send(msg.sendData(-1,'加入购物车失败',null))
+                    }else{
+                        res.send(msg.sendData(0,'加入购物车成功',null))
+                    }
+                    
+             });  
+        }
+    })
+})
 module.exports=Router;
