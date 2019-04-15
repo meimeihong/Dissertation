@@ -79,7 +79,8 @@
                 shucai:[],
                 roulei:[],
                 lingshi:[],
-                shuiguo:[]
+                shuiguo:[],
+                jian:0
 			}
 		},
 		components: {
@@ -152,7 +153,7 @@
 					 }else{
 						 var addtocartdata=JSON.stringify(data);
                         this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
-                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser})
+                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jian':this.jian})
                         .then((res)=>{
                             console.log(res);
                             Toast({

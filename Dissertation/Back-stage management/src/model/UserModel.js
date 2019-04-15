@@ -7,7 +7,6 @@ const  mongoose=require('mongoose')
     TelephoneNumber:{type:String,required:false},
     dizhi:{type:String,required:false},
   });
-  // type 字段类型  required 是否必须
  let usermodel=mongoose.model('Customer', userSchema);
-  //参数1  集合名字  参数2是 schema对象 将schema对象变成model
   module.exports=usermodel;
+  //参数1  集合名字  参数2是 schema对象 将schema对象变成model

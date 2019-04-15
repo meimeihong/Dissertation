@@ -10,7 +10,7 @@ let goods=new Schema({
 	miaoshu:{type:String,required:true},
 	shuliang:{type:Number,required:true},
 	danjia:{type:Number,required:true},
-	jiangjia:{type:String,required:true},
+	jiangjia:{type:Number,required:true},
 	zhuangt:{type:Number,required:true},
 	xiaoliang:{type:Number,required:false},
 	NewTime:{type:Number,required:true}

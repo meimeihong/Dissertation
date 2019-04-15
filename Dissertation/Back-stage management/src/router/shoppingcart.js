@@ -87,7 +87,11 @@ Router.post('/addtocart',function(req,res){
 				res.send(msg.sendData(-1,'加入购物车失败',null))
 			})
         }else{
-            var addnum=Number(data[0].addnumber)+1;
+            if(req.body.jian>0){
+                var addnum=req.body.jian
+            }else{
+                var addnum=Number(data[0].addnumber)+1;
+            }         
             console.log(addnum)
             shoppingcartModel.updateOne({'bianhao':bianhao,'UserName':UserName},{$set:{'addnumber':addnum}}, 
                 function(err, resp) {
@@ -100,6 +104,16 @@ Router.post('/addtocart',function(req,res){
                     
              });  
         }
+    })
+})
+Router.post('/cartlist',function(req,res){
+    const {UserName}=req.body;
+    shoppingcartModel.find({UserName})
+    .then(function(data){
+        res.send(msg.sendData(0,'购物车',data))
+    })
+    .catch(function(err){
+        res.send(msg.sendData(-1,'购物车商品获取失败',null))
     })
 })
 module.exports=Router;

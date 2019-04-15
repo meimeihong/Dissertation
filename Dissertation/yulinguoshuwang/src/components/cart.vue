@@ -8,37 +8,23 @@
 		</div>
 		<div class="showcart" v-show="showcart">
 			<ul>
-				<li>
-					<span class="dele" @click="open">x</span>
-					<input class="check" type="checkbox" name="" id="">
-					<img src="../img/my.jpg" alt="">
-					<div class="good">
-						<p>1大幅大水法三分大师赛顺风顺水事实上撒士大夫打算发生</p>
-						<p style="color:gray;">2</p>
-						<p>
-							<span style="color:red;">￥17831</span>
-							<span  style="color:#ccc;">sadsa</span>
-							<span class="jian" >-</span>
-							<input type="text" value="1">
-							<span class="jia">+</span>
+				<li v-for="(item,index) in cartdata" :key="index">
+						<span class="dele">x</span>
+						<input class="check" type="checkbox" name="" id="">
+						<img :src="JSON.parse(item.data).img.split(',')[0]" alt="">
+						<div class="good">
+							<p>{{JSON.parse(item.data).name}}</p>
+							<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
+							<p>
+								<span style="color:red;">￥</span>
+								<span style="color:red;">{{JSON.parse(item.data).danjia}}</span>
+								<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
+								<span class="jian" @click="reduce(index)">-</span>
+								<input type="text" :value="item.addnumber">
+								<span class="jia" @click="add(index)">+</span>
 							</p>
 						
-					</div>
-				</li>
-				<li>
-					<input class="check" type="checkbox" name="" id="">
-					<img src="../img/my.jpg" alt="">
-					<div class="good">
-						<p>1大幅大水法三分大师赛顺风顺水事实上撒士大夫打算发生</p>
-						<p style="color:#ccc;">2</p>
-						<p>
-							<span style="color:red;">￥17831</span>
-							<span class="jian" >-</span>
-							<input type="text" value="1">
-							<span class="jia">+</span>
-						</p>
-						
-					</div>
+					  </div>
 				</li>
 			</ul>
 		</div>
@@ -65,13 +51,13 @@
 </template>
 <script>
 import tab from './tab.vue';
-
 	export default {
 		name: 'cart',
 		data() {
 			return {
 				name:"购物车",
 				listname:'cart',
+				cartdata:[],
 				nocart:false,
 				showcart:true,
 				like:[]
@@ -90,17 +76,29 @@ import tab from './tab.vue';
 					.catch((err) => {
 						console.log(err);
 					})
-                },
-			open() {
-        this.$alert('这是一段内容', '标题名称', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
-            })
-          }
-        })},
+					},
+					cartlist(){
+						var loginuser = localStorage.getItem("loginuser");
+							this.$axios.post('http://127.0.0.1:3000/api/cart/cartlist',{'UserName':loginuser})
+							.then((res)=>{
+									 console.log(res);
+									 this.cartdata=res.data.data;
+							})
+							.catch((err)=>{
+								  console.log(err);
+							})
+					},
+					add(index){
+               this.cartdata[index].addnumber+=1
+					},
+					reduce(index){
+						if(this.cartdata[index].addnumber<=1){
+							this.cartdata[index].addnumber=1;
+						}else{
+							this.cartdata[index].addnumber-=1;
+						}
+               
+					},
 			onecheck(){
            
 			},
@@ -110,6 +108,7 @@ import tab from './tab.vue';
 		},
 		created() {
 			this.likedata();
+			this.cartlist();
 		}
 	}
 </script>
@@ -210,10 +209,11 @@ import tab from './tab.vue';
 			   }
 		   }
 		}
-		.showcart{
-			position: relative;			
+		.showcart{					
 			ul{
-				li{background: white;
+				li{
+					position: relative;
+					background: white;
 					.w(375);
 					.h(100);
 					.mg(5,0,0,0);
@@ -270,7 +270,7 @@ import tab from './tab.vue';
 							}
 							span{
 								display:inline-block;
-								.w(45);
+								// .w(45);
 								text-align: center;
 							}
 							.jian{
