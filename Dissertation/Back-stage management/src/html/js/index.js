@@ -1,5 +1,4 @@
-    //获取管理员账号
-	//页面渲染和分页
+
 	var server = 'http://127.0.0.1:3000';
 	var page = 1;
 	var pagesize = $('#show').val();
@@ -7,18 +6,6 @@
 	var sortdown='';
 	var sortup='';
 	var search = '所有';
-	// console.log(search);
-	// //信息显示条数的限制
-	// $('#show').on('click', function() {
-	// 	var val = $(this).val();
-	// 	if(val < 1) {
-	// 		$(this).val(1);
-	// 	}
-	// 	if(val > 15) {
-	// 		$(this).val(15);
-	// 	}
-	// });
-
 	function com() {
 		pagesize = $('#show').val();
 		$('#goods').find('.goodsl').remove();
@@ -26,55 +13,6 @@
 		goodslist();
 	}
 	com();
-	//页面跳转
-	// $('#show').on('blur', function() {
-	// 	var val = $(this).val();
-	// 	if(val < 1) {
-	// 		$(this).val(1);
-	// 	}
-	// 	if(val > 15) {
-	// 		$(this).val(15);
-	// 	}
-	// 	com();
-	// })
-	// $('#first').on('click', function() {
-	// 	page = 1;
-	// 	com();
-	// });
-	// $('#prev').on('click', function() {
-	// 	page -= 1;
-	// 	if(page < 1) {
-	// 		page = 1;
-	// 	}
-	// 	com();
-	// });
-	// $('#next').on('click', function() {
-	// 	page += 1;
-	// 	var num = Math.ceil(amount / pagesize);
-	// 	if(page > num) {
-	// 		page = num;
-	// 	}
-	// 	com();
-
-	// });
-	// $('#last').on('click', function() {
-	// 	page = Math.ceil(amount / pagesize);
-	// 	com();
-	// });
-	// $('#jump').on('click', function() {
-	// 	page = $('#jumppage').val();
-	// 	if(page > Math.ceil(amount / pagesize)) {
-	// 		page = Math.ceil(amount / pagesize);
-	// 		$('#jumppage').val(Math.ceil(amount / pagesize))
-	// 	}
-	// 	com();
-	// });
-
-	//检索下拉框
-	//初始页面数据渲染
-	// var search = $('select option:selected').text();
-	// console.log(search);
-	
 	function goodslist() {
 		$.ajax({
 			type: "post",
@@ -85,7 +23,7 @@
 				'page': page,
 				'sortdown':sortdown,
 				'sortup':sortup,
-				'leibie':search				
+				'leibie':search,
 			},
 			success: function(res) {
 				if(res.err == 0) {
@@ -231,14 +169,3 @@
 		}
 
 	})
-	// 按时间排序
-	// $('#sortdown').on('click',function(){
-	// 	sortup='';
-	// 	sortdown='sortdown'
-	// 	com()
-	// })
-	// $('#sortup').on('click',function(){
-	// 	sortdown='';
-	// 	sortup='sortup'
-	// 	com()
-	// })

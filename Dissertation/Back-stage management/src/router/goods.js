@@ -83,18 +83,18 @@ Router.post('/goodslist',function(req,res){
 		res.send(msg.sendData(-1,'商品信息获取出错',null))
 	   })
 	}else{
-	     goodsModel.find({$or:[{'leibie':leibie},{'name':leibie},{'bianhao':leibie}]})
+	     goodsModel.find({$or:[{'leibie':leibie},{'name':leibie},{'xiaoleibie':leibie}]})
 	    .then(function(resdb){
 		console.log(resdb)
 		if(req.body.sortdown=='sortdown'){
 			total=resdb.length;
-			return goodsModel.find({$or:[{'leibie':leibie},{'bianhao':leibie},{'name':leibie}]}).sort({NewTime:-1}).limit(pagesize).skip((page-1)*pagesize)
+			return goodsModel.find({$or:[{'leibie':leibie},{'xiaoleibie':leibie},{'name':leibie}]}).sort({NewTime:-1}).limit(pagesize).skip((page-1)*pagesize)
 		}else if(req.body.sortup=='sortup'){
 			total=resdb.length;
-			return goodsModel.find({$or:[{'leibie':leibie},{'bianhao':leibie},{'name':leibie}]}).sort({NewTime:1}).limit(pagesize).skip((page-1)*pagesize)
+			return goodsModel.find({$or:[{'leibie':leibie},{'xiaoleibie':leibie},{'name':leibie}]}).sort({NewTime:1}).limit(pagesize).skip((page-1)*pagesize)
 		}else{
 			total=resdb.length;
-			return goodsModel.find({$or:[{'leibie':leibie},{'bianhao':leibie},{'name':leibie}]}).limit(pagesize).skip((page-1)*pagesize)
+			return goodsModel.find({$or:[{'leibie':leibie},{'xiaoleibie':leibie},{'name':leibie}]}).limit(pagesize).skip((page-1)*pagesize)
 		}
 		
 	   })

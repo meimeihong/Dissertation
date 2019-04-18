@@ -9,6 +9,8 @@ import cart from '../components/cart.vue'
 import my from '../components/my.vue'
 import classifycontent from '../components/classifycontent.vue'
 import classifym from '../components/classifym.vue'
+import search from '../components/search.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +59,11 @@ export default new Router({
       path:"/classifym",
       name:"classifym",
       component:classifym
+    },
+    {
+      path:"/search",
+      name:"search",
+      component:search
     }
 
   ]

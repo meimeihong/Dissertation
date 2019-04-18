@@ -1,5 +1,13 @@
 <template>
 	<div id="cart">
+		<div class="buy">
+       <input class="check" type="checkbox" name="" id="" v-model="checkall" @click="allcheck()">
+			 <span>全选</span>
+			 <span>合计(不含运费)：</span>
+			 <span style="color:red;">￥</span>
+			 <span style="color:red;">{{this.price}}</span>
+			 <span class="jiesuan">去结算</span>
+		</div>
 		<p class="head">购物车</p>
 		<div class="nocart" v-show="nocart">
 			<p><span><i class="fa fa-shopping-cart" aria-hidden="true"></i></span></p>
@@ -8,9 +16,9 @@
 		</div>
 		<div class="showcart" v-show="showcart">
 			<ul>
-				<li v-for="(item,index) in cartdata" :key="index">
+				<li v-for="(item,index) in cartdata" :key="index" >
 						<span class="dele">x</span>
-						<input class="check" type="checkbox" name="" id="">
+						<input class="check" type="checkbox" name="" id="" v-model="checknum[index]" @click="onecheck(index)">
 						<img :src="JSON.parse(item.data).img.split(',')[0]" alt="">
 						<div class="good">
 							<p>{{JSON.parse(item.data).name}}</p>
@@ -60,18 +68,25 @@ import tab from './tab.vue';
 				cartdata:[],
 				nocart:false,
 				showcart:true,
-				like:[]
+				like:[],
+				checkall:false,
+				checknum:[],
+				price:0
 			}
 		},
 		components: {
 			tab
 		},
+		computed:{
+
+		},
+
 		methods: {
 			likedata(){
             this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',{})
 					.then((res) => {					
             console.log(res);
-            this.like=res.data.data;                       
+						this.like=res.data.data;                     
 					})
 					.catch((err) => {
 						console.log(err);
@@ -83,6 +98,8 @@ import tab from './tab.vue';
 							.then((res)=>{
 									 console.log(res);
 									 this.cartdata=res.data.data;
+									 this.checknum=new Array(res.data.data.length)
+									 console.log(this.checknum)				 
 							})
 							.catch((err)=>{
 								  console.log(err);
@@ -99,16 +116,51 @@ import tab from './tab.vue';
 						}
                
 					},
-			onecheck(){
-           
+			onecheck(index){
+				this.price=0
+				this.checknum[index]=!this.checknum[index]
+				console.log(this.checknum)
+				var allchecknum=[]
+				for(var i=0;i<=this.checknum.length;i++){
+					if(this.checknum[i]){
+						allchecknum.push(i)
+						var onedanjia=JSON.parse(this.cartdata[i].data).danjia;
+						this.price+=Number(this.cartdata[i].addnumber)*1*onedanjia;
+					}
+				}
+				console.log(allchecknum.length,this.checknum.length)
+				if(allchecknum.length==this.checknum.length){
+					this.checkall=true;
+				}else{
+					this.checkall=false;
+				}
 			},
 			allcheck(){
-
+				this.checkall=!this.checkall;
+				this.price=0;
+        if(this.checkall){
+					for(var i=0;i<this.cartdata.length;i++){
+						this.checknum[i]=true
+					}
+				}else{
+					for(var i=0;i<this.cartdata.length;i++){
+						this.checknum[i]=false
+					}
+				}
+				for(var i=0;i<=this.checknum.length;i++){
+					if(this.checknum[i]){
+						var onedanjia=JSON.parse(this.cartdata[i].data).danjia;
+						this.price+=Number(this.cartdata[i].addnumber)*1*onedanjia;
+					}
+				}
+				console.log(this.checknum)
 			}
 		},
 		created() {
 			this.likedata();
 			this.cartlist();
+			// this.allcheck();
+			// this.onecheck();
 		}
 	}
 </script>
@@ -122,6 +174,9 @@ import tab from './tab.vue';
 		.head{
 				.h(35);
 				.lh(35);
+				// position: fixed;
+				// .position(10,0);
+				z-index: 100;
 				background: white;
 				text-align: center;
 				.fs(16);
@@ -296,6 +351,33 @@ import tab from './tab.vue';
 			text-align: center;
 			color:#ccc;
 			background: white;
+		}
+		.buy{
+			.w(375);
+			.pd(0,0,0,10);
+			box-sizing: border-box;
+			z-index: 100;
+			position: fixed;
+			.position-bottom(49);
+			.position-right(0);
+			.fs(12);
+			.h(35);
+			.lh(35);
+			border-top:1px solid #ccc;
+			background:white;
+			.jiesuan{
+				position: absolute;
+				.position-bottom(0);
+			.position-right(0);
+				display:inline-block;
+				.w(60);
+				.h(35);
+				.lh(35);
+				text-align: center;
+				background:red;
+				.mg(0,0,0,30);
+				color:white;
+			}
 		}
     }
 </style>

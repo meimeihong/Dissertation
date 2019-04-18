@@ -3,7 +3,7 @@
         <div id="header">
              <span>{{name}}</span>
              <input type="text" placeholder="搜索">
-             <span><i class="fa fa-search"></i></span>
+             <span @click="tosearch()"><i class="fa fa-search"></i></span>
         </div>
 		<banner></banner>
 		<homeclass></homeclass>
@@ -60,6 +60,9 @@
 			topback(){
 				document.documentElement.scrollTop=0	
 			},
+			tosearch(){
+				this.$router.push({name:'search'})
+			}
 		},
 		created() {
 			this.top();
