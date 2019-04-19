@@ -94,53 +94,53 @@ export default {
         .w(375);
         .pd(0,8,0,8);
         box-sizing: border-box;
-		 display: -webkit-flex; /* Safari */
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content:space-between;
-          align-items:center;
-            li{ background: white;
-			      .mg(10,0,0,0);
-				   .w(160);
-				   .fs(12);
-				   img{
-					   .w(160);
-					   .h(150);
-                     }
-                     p{text-align: left;
-                       position: relative;
-                       .h(22);
-                       .lh(22);
-                       .fs(14);
-                       overflow: hidden;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
-                        text-align: left;
-                     }
-                     .guige{
-                         display: inline-block;
-                        //  position: absolute;
-                        //  .position(0,50);
-                         .h(22);
-                         .lh(28);
-                         .fs(12);
-                         .w(34);
-                         color:#ccc;
-                         overflow: hidden;
-                     }
-					 .carts{
-                         position: absolute;
-                         .position(0,130);
-                         display: inline-block;
-						 text-align: right;
-						 color:orange;
-                         .fs(18);
-                        //  .mg(0,0,0,60);
-					 }
-			   }
+        display: -webkit-flex; /* Safari */
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content:space-between;
+        align-items:center;
+        li{ background: white;
+            .mg(10,0,0,0);
+            .w(160);
+            .fs(12);
+            img{
+                .w(160);
+                .h(150);
+                }
+            p{text-align: left;
+            position: relative;
+            .h(22);
+            .lh(22);
+            .fs(14);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            text-align: left;
+            }
+            .guige{
+                display: inline-block;
+            //  position: absolute;
+            //  .position(0,50);
+                .h(22);
+                .lh(28);
+                .fs(12);
+                .w(34);
+                color:#ccc;
+                overflow: hidden;
+            }
+            .carts{
+                position: absolute;
+                .position(0,130);
+                display: inline-block;
+                text-align: right;
+                color:orange;
+                .fs(18);
+            //  .mg(0,0,0,60);
+            }
+		}
         }	
 }
 </style>

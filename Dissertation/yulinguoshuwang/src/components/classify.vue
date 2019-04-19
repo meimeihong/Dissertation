@@ -1,8 +1,8 @@
 <template>
 	<div id="classify">
 		<div class="header">
-             <input type="text" placeholder="搜索">
-             <span><i class="fa fa-search"></i></span>
+             <input type="text" placeholder="搜索" v-model="searchname">
+             <span @click="tosearch()"><i class="fa fa-search"></i></span>
         </div>
 		<tab :listname="listname"></tab>
 		<ul class="left">
@@ -28,7 +28,8 @@ import tab from './tab.vue';
 				listname:'classify',
 				daleibie:[],
 				checkdaleibie:'',
-				xiaoleibie:[]
+				xiaoleibie:[],
+				searchname:''
 			}
 		},
 		components: {
@@ -76,6 +77,15 @@ import tab from './tab.vue';
 				localStorage.setItem('dleibie', this.checkdaleibie);
 				localStorage.setItem('xleibie', xiaol);
 				this.$router.push({name:'classifycontent'});
+			},
+			tosearch(){
+				this.searchname=this.searchname.trim();
+				if(this.searchname!==''){
+				localStorage.setItem('searchname', this.searchname);
+				localStorage.setItem('searchreturn', 'classify');
+				this.$router.push({name:'search'})
+				}
+				
 			}
 					
 		},
@@ -110,13 +120,13 @@ import tab from './tab.vue';
                 color:rgb(66, 216, 103);
             }
             input{
-                .w(300);
+                .w(290);
                 .h(25);
                 .fs(16);
                 color:gray;
                 border:none;
                 border-radius: 15px;
-                .mg(0,0,0,15);
+                .mg(0,0,0,28);
                 .pd(0,0,0,10);
                 outline: none;
                 background: rgb(218, 218, 218);

@@ -7,10 +7,10 @@ if(admin=='SeniorAdministrator'){
 	$('#box #header .hright .zgl').css("display","none");
 }
 //导航栏选择颜色切换
-$('#box #header .hright ul').on('click',function(){
-    $('#box #header .hright ul').css("background","#448cc7");
-       $(this).css("background","#ef3c78");
-});
+// $('#box #header .hright ul').on('click',function(){
+//     $('#box #header .hright ul').css("background","#448cc7");
+//        $(this).css("background","#ef3c78");
+// });
 $('#box #header .hright .shouye').on('click',function(){
     window.location.href=('http://localhost:3000/index.html');
 });

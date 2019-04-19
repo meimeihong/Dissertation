@@ -3,8 +3,6 @@ var server='http://127.0.0.1:3000';
 	var imgs=[];
 	var imgstr=null;
 	function upload(){
-//	console.log(111)
-//  console.log($("#imagelist")[0].files)
     var formData = new FormData()//创建
 //  console.log(formData)
     formData.append("test",$("#imagelist")[0].files[0])  

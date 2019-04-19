@@ -2,7 +2,7 @@
 	<div id="home">
         <div id="header">
              <span>{{name}}</span>
-             <input type="text" placeholder="搜索">
+             <input type="text" placeholder="搜索" v-model="searchname">
              <span @click="tosearch()"><i class="fa fa-search"></i></span>
         </div>
 		<banner></banner>
@@ -35,7 +35,8 @@
 			return {
                 name:"玉林果蔬网",
 				topshow: false,
-				listname:'home'
+				listname:'home',
+				searchname:''
 			}
 		},
 		components: {
@@ -61,7 +62,13 @@
 				document.documentElement.scrollTop=0	
 			},
 			tosearch(){
+				this.searchname=this.searchname.trim();
+				if(this.searchname!==''){
+				localStorage.setItem('searchname', this.searchname);
+				localStorage.setItem('searchreturn', 'home');
 				this.$router.push({name:'search'})
+				}
+				
 			}
 		},
 		created() {

@@ -59,11 +59,11 @@
 					<ul class="shouye"><p>商品信息</p></ul>
 					<ul>
 						<p>客户信息</p>
-						<li onclick="yonghu()">客户信息表</li>
-						<li onclick="gouwuche()">购物车信息表</li>
-						<li onclick="gouwu()">购物信息表</li>
+						<li onclick="yonghu()">客户基本信息</li>
+						<li onclick="gouwuche()">购物车信息</li>
+						<li onclick="gouwu()">订单信息</li>
 					</ul>
-					<ul><p class="zgl" onclick="guanli()">管理员信息</p></ul>
+					<ul><p class="zgl" onclick="guanli()"  style="background: #ef3c78;">管理员信息</p></ul>
 					<span class="back">退出</span>
 				</ul>
 					
@@ -72,7 +72,7 @@
 				<div id="admin">
 				  <span>管理员名称:</span><input id="user" type="text" value=""/>
 				  <span>密码:</span><input id="pass" type="text" value="">
-				  <button class="joinadmin" onclick="joinadmin()">添加管理员信息</button>
+				  <button class="joinadmin" onclick="joinadmin()">添加管理员</button>
 				</div>
 				<div id="adminlist">
 					<ul>
@@ -147,7 +147,8 @@
 	 $('#adminlist').on('click', '.del', function() {
 		var name = $(this).parent().parent().find('.name').text();
 		var that = $(this);
-		if(confirm('您确定要删除吗？')) {
+		if(name!=='SeniorAdministrator'){
+			if(confirm('您确定要删除吗？')) {
 			$.post(server + '/api/admin/deladmin', {
 				'UserName': name
 			}, function(res) {
@@ -155,6 +156,8 @@
 				admin();
 			});
 		}
+		}
+		
 
 	});
 </script>

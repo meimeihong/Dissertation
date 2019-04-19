@@ -374,4 +374,16 @@ Router.post('/all',function(req,res){
 		console.log(err)
 	})
 })
+//移动端商品查找
+Router.post('/searchgoods',function(req,res){
+	var searchgoods=req.body.searchname;
+	goodsModel.find({$or:[{'leibie':searchgoods},{'name':searchgoods},{'xiaoleibie':searchgoods}]})
+	.then(function(data){
+		res.send(msg.sendData(0,'查找商品',data));
+	})
+	.catch(function(err){
+		console.log(err)
+		res.send(msg.sendData(-1,'查找商品',err));
+	})
+})
 module.exports=Router;

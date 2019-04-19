@@ -5,7 +5,7 @@
 			 <span>全选</span>
 			 <span>合计(不含运费)：</span>
 			 <span style="color:red;">￥</span>
-			 <span style="color:red;">{{this.price}}</span>
+			 <span style="color:red;">{{this.price.toFixed(2)}}</span>
 			 <span class="jiesuan">去结算</span>
 		</div>
 		<p class="head">购物车</p>
@@ -25,11 +25,14 @@
 							<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
 							<p>
 								<span style="color:red;">￥</span>
-								<span style="color:red;">{{JSON.parse(item.data).danjia}}</span>
+								<span style="color:red;">{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
 								<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
-								<span class="jian" @click="reduce(index)">-</span>
-								<input type="text" :value="item.addnumber">
-								<span class="jia" @click="add(index)">+</span>
+								<span class="numb">
+									 <span class="jian" @click="reduce(index)">-</span>
+								   <input type="text" :value="item.addnumber">
+								   <span class="jia" @click="add(index)">+</span>
+								</span>
+								
 							</p>
 						
 					  </div>
@@ -315,6 +318,7 @@ import tab from './tab.vue';
 							display: -webkit-box;
 							-webkit-line-clamp: 1;
 							-webkit-box-orient: vertical;
+							position: relative;
 							.fs(12);
 							.h(33);
 							.lh(33);
@@ -323,13 +327,18 @@ import tab from './tab.vue';
 								text-align: center;
 								border:red 1px solid;
 							}
-							span{
+							.numb{
+								position: absolute;
+								.position-right(10);
+								.position-bottom(0);
+								display: inline-block;
+								span{
 								display:inline-block;
 								// .w(45);
 								text-align: center;
-							}
-							.jian{
-								.mg(0,0,0,40);
+								}
+								.jian{
+								// .mg(0,0,0,40);
 								.fs(18);
 								.w(25);
 							}
@@ -337,6 +346,9 @@ import tab from './tab.vue';
 								.w(25);
 								.fs(18);
 							}
+							}
+							
+							
 						}
 					}
 				}

@@ -1,6 +1,6 @@
 #box #head{
     margin: 20px auto;
-    width: 900px;
+    width: 1000px;
     overflow: hidden;
     background: #448cc7;
     padding:10px 0;
@@ -31,13 +31,13 @@
 
 #box #userlist {
     margin: 20px auto;
-    width: 900px;
+    width: 1000px;
     overflow: hidden;
     
   }
   #box #userlist ul li {
     float: left;
-    width: 215px;
+    width: 200px;
     height: 25px;
     line-height: 30px;
     border: #D5D5D3 1px solid;
@@ -58,10 +58,6 @@
   #box #userlist ul li:nth-child(1) {
     border-left: #D5D5D3 1px solid;
   }
-
-
-
-
   #box #pagejump {
     width: 1200px;
     height: 50px;

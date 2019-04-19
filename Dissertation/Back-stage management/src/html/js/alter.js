@@ -19,7 +19,7 @@ var server = 'http://127.0.0.1:3000';
 		$('#guige').val(data.guige);
 		$('#miaoshu').val(data.miaoshu);
 		$('#shuliang').val(data.shuliang);
-		$('#danjia').val(data.jiangjia);
+		$('#danjia').val(data.danjia);
 		$('#jiangjia').val(data.jiangjia);
 		$('#zhuangt').val(data.zhuangt);
 		$('img').attr('src', img[0]);
