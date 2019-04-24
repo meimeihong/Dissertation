@@ -6,7 +6,7 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide"  v-for="(item, index) in tuijian" :key="index" >
-                    <img :src="item.img.split(',')[0]" alt="">
+                    <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 					 <p>{{item.name}}</p>
                      <p style="color:gray;">{{item.miaoshu}}</p>
 					 <p>
@@ -24,7 +24,7 @@
         <p class="title">安心蔬菜</p>
         <ul class="first">           
             <li v-for="(item, index) in shucai" :key="index" >
-                <img :src="item.img.split(',')[0]" alt="">
+                <img :src="item.img.split(',')[0]" alt=""  @click="toxiangqing(item)">
                 <div>
                     <p>{{item.name}}</p>
                     <p style="color:gray;">{{item.miaoshu}}</p>
@@ -37,7 +37,7 @@
         <p  class="title">精选肉类</p>
         <ul class="two">
                  <li v-for="(item, index) in roulei" :key="index">
-					 <img :src="item.img.split(',')[0]" alt="">
+					 <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 					 <p>{{item.name}}</p>
                      <p style="color:gray;">{{item.miaoshu}}</p>
 					 <p style="color:red;">
@@ -50,7 +50,7 @@
        <p  class="title">精选水果</p>
        <ul class="three">
             <li  v-for="(item, index) in shuiguo" :key="index">
-			<img :src="item.img.split(',')[0]" alt="">
+			<img :src="item.img.split(',')[0]" alt=""  @click="toxiangqing(item)">
 			<div class="good">
 				<p>{{item.name}}</p>
 				<p style="color:gray;">{{item.miaoshu}}</p>
@@ -169,7 +169,11 @@
 					 }
                     
                 },
-
+                toxiangqing(data){
+                    var xiangqingdata=JSON.stringify(data);
+                     localStorage.setItem('xiangqing', xiangqingdata);
+                     this.$router.push({name:'xiangqing'});
+                }
 
 		},
 		created() {

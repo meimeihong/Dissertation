@@ -122,8 +122,6 @@ export default {
             }
             .guige{
                 display: inline-block;
-            //  position: absolute;
-            //  .position(0,50);
                 .h(22);
                 .lh(28);
                 .fs(12);

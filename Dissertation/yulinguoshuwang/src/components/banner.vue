@@ -1,8 +1,8 @@
 <template>
 	<div id="banner">
 		<mt-swipe :auto="2000">
-			<mt-swipe-item v-for="(item,index) in datas" :key="index" >
-				<img :src="item.img.split(',')[1]"/>
+			<mt-swipe-item v-for="(item,index) in datas" :key="index">
+				<img :src="item.img.split(',')[1]" @click="toxiangqing(item)"/>
 		</mt-swipe-item>
 			
 		</mt-swipe>
@@ -32,12 +32,11 @@
 				})
 				
 			},
-			setid(id,data) {
-				sessionStorage.setItem("id", id);
-				var dt = JSON.stringify(data);
-				sessionStorage.setItem("data", dt);
-				this.$router.push({path:'/Banners'})
-			}
+			toxiangqing(data){
+                    var xiangqingdata=JSON.stringify(data);
+                     localStorage.setItem('xiangqing', xiangqingdata);
+                     this.$router.push({name:'xiangqing'});
+                }
 		},
 		created() {
 			this.getlist();
