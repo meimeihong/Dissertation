@@ -8,7 +8,6 @@ import qs from 'qs';
 import 'mint-ui/lib/style.css';
 Vue.prototype.$axios=Axios;
 Vue.config.productionTip = false;
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

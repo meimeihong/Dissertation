@@ -12,13 +12,16 @@
 					 <p style="color:red;">
                          <span>￥</span><span>{{item.danjia}}</span>
                          <span class="guige">/{{item.guige}}</span> 
-                        <span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <span class="carts" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
                     </p>
 		</li>
     </ul>
   </div>
 </template>
 <script> 
+    import Vue from 'vue';
+    import Swiper from 'swiper';
+    import { Toast } from 'mint-ui';
 export default {
   name: 'classifycontent',
   data() {
@@ -46,6 +49,33 @@ export default {
 						console.log(err);
 					})
         },
+        addtocart(bianhao,data){
+                    var loginuser = localStorage.getItem("loginuser");
+                    if(loginuser===undefined || loginuser==='' || loginuser===null){
+						 Toast({
+                                message: '请先登陆',
+                                position: 'middle',
+                                duration: 2000
+                                });
+					 }else{
+						 var addtocartdata=JSON.stringify(data);
+                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
+                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':-1})
+                        .then((res)=>{
+                            console.log(res);
+                            Toast({
+                                message: res.data.msg,
+                                position: 'bottom',
+                                duration: 2000,
+                                className:'tankuang',
+                                });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+					 }
+                    
+                },
         classify(){
             this.$router.push({name:'classify'});
         }

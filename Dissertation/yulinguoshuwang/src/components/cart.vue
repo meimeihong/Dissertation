@@ -17,8 +17,8 @@
 		<div class="showcart" v-show="showcart">
 			<ul>
 				<li v-for="(item,index) in cartdata" :key="index" >
-						<span class="dele">x</span>
-						<input class="check" type="checkbox" name="" id="" v-model="checknum[index]" @click="onecheck(index)">
+						<span class="dele" @click="deletecartdata(JSON.parse(item.data).bianhao)">x</span>
+						<input class="check" type="checkbox" name="" id="" v-model="checknum[index]" @click.stop="onecheck(index)">
 						<img :src="JSON.parse(item.data).img.split(',')[0]" alt="">
 						<div class="good">
 							<p>{{JSON.parse(item.data).name}}</p>
@@ -28,9 +28,9 @@
 								<span style="color:red;">{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
 								<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 								<span class="numb">
-									 <span class="jian" @click="reduce(index)">-</span>
+									 <span class="jian" @click.stop="reduce(index,JSON.parse(item.data).bianhao,item.data)" >-</span>
 								   <input type="text" :value="item.addnumber">
-								   <span class="jia" @click="add(index)">+</span>
+								   <span class="jia" @click.stop="add(index,JSON.parse(item.data).bianhao,item.data)">+</span>
 								</span>
 								
 							</p>
@@ -49,7 +49,7 @@
 					 <p style="color:red;">
 							<span>￥</span><span>{{item.danjia}}</span>
 							<span class="guige" style="color:#ccc;">/{{item.guige}}</span> 
-							<span class="carts"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+							<span class="carts" @click="addtocart(item.bianhao,JSON.stringify(item),-1)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 					 </p>
 				</li>
 			 </ul>
@@ -61,7 +61,10 @@
 	</div>
 </template>
 <script>
-import tab from './tab.vue';
+    import Vue from 'vue';
+    import Swiper from 'swiper';
+    import { Toast } from 'mint-ui';
+		import tab from './tab.vue';
 	export default {
 		name: 'cart',
 		data() {
@@ -85,6 +88,24 @@ import tab from './tab.vue';
 		},
 
 		methods: {
+			deletecartdata(bianhao){
+					var username = localStorage.getItem("loginuser");
+					this.$axios.post('http://127.0.0.1:3000/api/cart/deletecartdata',
+					{'UserName':username,'bianhao':bianhao})
+							.then((res)=>{
+								console.log(res)
+										Toast({
+										message: res.data.msg,
+										position: 'center',
+										duration: 2000,
+										className:'tankuang',
+										});
+										this.cartlist();
+							})
+							.catch((err)=>{
+								  console.log(err);
+							})
+				},
 			likedata(){
             this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',{})
 					.then((res) => {					
@@ -100,24 +121,35 @@ import tab from './tab.vue';
 							this.$axios.post('http://127.0.0.1:3000/api/cart/cartlist',{'UserName':loginuser})
 							.then((res)=>{
 									 console.log(res);
+									 if(res.data.data.length==0){
+											 this.nocart=true;
+											 this.showcart=false;
+									 }else{
+									this.nocart=false;
+									this.showcart=true;
 									 this.cartdata=res.data.data;
 									 this.checknum=new Array(res.data.data.length)
-									 console.log(this.checknum)				 
+									 }
+									 
+									//  console.log(this.checknum)				 
 							})
 							.catch((err)=>{
 								  console.log(err);
 							})
 					},
-					add(index){
-               this.cartdata[index].addnumber+=1
+					add(index,bianhao,data){
+							 this.cartdata[index].addnumber+=1;
+							 var addnum=this.cartdata[index].addnumber
+							 this.addtocart(bianhao,data,addnum);
 					},
-					reduce(index){
+					reduce(index,bianhao,data){
 						if(this.cartdata[index].addnumber<=1){
 							this.cartdata[index].addnumber=1;
 						}else{
 							this.cartdata[index].addnumber-=1;
 						}
-               
+            var addnum=this.cartdata[index].addnumber
+						this.addtocart(bianhao,data,addnum);  
 					},
 			onecheck(index){
 				this.price=0
@@ -157,13 +189,48 @@ import tab from './tab.vue';
 					}
 				}
 				console.log(this.checknum)
-			}
+			},
+			addtocart(bianhao,data,addnum){
+							var loginuser = localStorage.getItem("loginuser");
+							if(loginuser===undefined || loginuser==='' || loginuser===null){
+						 Toast({
+											message: '请先登陆',
+											position: 'middle',
+											duration: 2000
+											});
+					 }else{
+						//  var addtocartdata=JSON.stringify(data);
+						this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
+						{'bianhao':bianhao,'data':data,'UserName':loginuser,'jiajian':addnum})
+						.then((res)=>{
+								console.log(res);	
+							if(addnum===-1){
+								this.cartlist();
+								Toast({
+										message: "购物车商品添加成功",
+										position: 'bottom',
+										duration: 2000,
+										className:'tankuang',
+										});
+						} else{
+							Toast({
+										message: "商品数量修改成功",
+										position: 'bottom',
+										duration: 2000,
+										className:'tankuang',
+										});
+						}		
+						})
+						.catch((err) => {
+								console.log(err);
+						})
+					 }
+                   
+				},
 		},
 		created() {
 			this.likedata();
 			this.cartlist();
-			// this.allcheck();
-			// this.onecheck();
 		}
 	}
 </script>
@@ -282,19 +349,20 @@ import tab from './tab.vue';
             justify-content:flex-start;
 						align-items:center;
 						.dele{
-								display:inline-block;
+								// display:inline-block;
+								z-index: 100;
 								position: absolute;
-								.position-right(3);
+								.position-right(5);
 								.position-top(3);
-								.w(15);
-								.h(15);
+								.w(18);
+								.h(18);
 								text-align: center;
-								.lh(15);
+								.lh(18);
 								color:red;
 								border:1px solid red;
 								.br(10);
-                .fs(12);
-							}
+								.fs(14);
+						}
 					.check{
 						.w(16);
 						.h(16);

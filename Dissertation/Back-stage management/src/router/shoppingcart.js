@@ -2,13 +2,6 @@ const express=require('express');
 const Router=express.Router();
 const msg=require('./msg.js');
 const shoppingcartModel=require('../model/ShoppingCartModel.js');
-// shoppingcartModel.delete();
-// var shop={bianhao:"dsdasa",name:"dsdss",leibie:"ddss",img:"sss",danjia:122};
-// var bian=JSON.stringify(shop);
-// shoppinglist.insertMany([{UserName:'user2',bianhao:'dd1',danjia:12,data:bian,
-// name:'dsdsss',addnumber:1,delete:1},{UserName:'user3',bianhao:'dd2',danjia:122,data:bian,
-// name:'dsdsss',addnumber:1,delete:1},{UserName:'user4',bianhao:'dd3',danjia:122,data:bian,
-// name:'dsdsss',addnumber:1,delete:1}])
 Router.post('/shoppingcart',function(req,res){
     var pagesize=Number(req.body.pagesize);
     var page=Number(req.body.page);
@@ -71,12 +64,10 @@ Router.post('/addtocart',function(req,res){
     var bianhao=req.body.bianhao;
     var UserName=req.body.UserName;
     var datas=req.body.data;
-    var jian=req.body.jian;
+    var jian=req.body.jiajian;
     shoppingcartModel.find({'bianhao':bianhao,'UserName':UserName})
     .then(function(data){
         console.log(data[0]);
-        // var gooddata=data[0].data;
-        // var gooddata=JSON.parse(data[0].data);
         if(data.length<=0){
             shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':1,'delete':1})
             .then(function(data){
@@ -87,12 +78,12 @@ Router.post('/addtocart',function(req,res){
 				res.send(msg.sendData(-1,'加入购物车失败',null))
 			})
         }else{
-            if(req.body.jian>0){
-                var addnum=req.body.jian
+            if(req.body.jiajian>0){
+                var addnum=req.body.jiajian
             }else{
                 var addnum=Number(data[0].addnumber)+1;
             }         
-            console.log(addnum)
+            // console.log(addnum)
             shoppingcartModel.updateOne({'bianhao':bianhao,'UserName':UserName},{$set:{'addnumber':addnum}}, 
                 function(err, resp) {
                     if(err){
@@ -115,5 +106,17 @@ Router.post('/cartlist',function(req,res){
     .catch(function(err){
         res.send(msg.sendData(-1,'购物车商品获取失败',null))
     })
+})
+Router.post('/deletecartdata',function(req,res){
+    var {bianhao,UserName}=req.body;
+    console.log(1)
+    shoppingcartModel.deleteOne({bianhao,UserName})
+		.then(function(data){
+            res.send(msg.sendData(0,'购物车商品删除成功',data))
+		})
+		.catch(function(err){
+        console.log(err)
+        res.send(msg.sendData(-1,'购物车商品删除失败',null))
+		})
 })
 module.exports=Router;

@@ -24,7 +24,7 @@
 				<p>
 					<span style="color:red;">￥{{item.danjia}}</span>
 					<span  style="color:#ccc;">/{{item.guige}}</span>
-                    <span class="cart3"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                    <span class="cart3" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 				</p>					
 			</div>
 			</li>
@@ -32,6 +32,9 @@
   </div>
 </template>
 <script> 
+    import Vue from 'vue';
+    import Swiper from 'swiper';
+    import { Toast } from 'mint-ui';
 export default {
   name: 'classifym',
   data() {
@@ -44,10 +47,33 @@ export default {
 		}
     },
     methods:{
-    //   check(name){
-    //         this.onecheck=name;
-    //         this.data(name);
-    //   },
+    addtocart(bianhao,data){
+                    var loginuser = localStorage.getItem("loginuser");
+                    if(loginuser===undefined || loginuser==='' || loginuser===null){
+						 Toast({
+                                message: '请先登陆',
+                                position: 'middle',
+                                duration: 2000
+                                });
+					 }else{
+						 var addtocartdata=JSON.stringify(data);
+                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
+                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':-1})
+                        .then((res)=>{
+                            console.log(res);
+                            Toast({
+                                message: res.data.msg,
+                                position: 'bottom',
+                                duration: 2000,
+                                className:'tankuang',
+                                });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+					 }
+                    
+                },
       returnhome(){
           this.$router.push({name:'home'});
       },
