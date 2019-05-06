@@ -17,7 +17,7 @@
     </ul>
     <ul class="list">
         <li  v-for="(item,index) in datas" :key="index">
-			<img :src="item.img.split(',')[0]" alt="">
+			<img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 			<div class="good">
 				<p>{{item.name}}</p>
 				<p style="color:gray;">{{item.miaoshu}}</p>
@@ -50,14 +50,14 @@ export default {
     addtocart(bianhao,data){
                     var loginuser = localStorage.getItem("loginuser");
                     if(loginuser===undefined || loginuser==='' || loginuser===null){
-						 Toast({
-                                message: '请先登陆',
-                                position: 'middle',
-                                duration: 2000
-                                });
+                        Toast({
+                            message: '请先登陆',
+                            position: 'middle',
+                            duration: 2000
+                        });
 					 }else{
-						 var addtocartdata=JSON.stringify(data);
-                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
+						var addtocartdata=JSON.stringify(data);
+                        this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
                         {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':-1})
                         .then((res)=>{
                             console.log(res);
@@ -80,7 +80,7 @@ export default {
       data(select){
           this.onecheck=select;
           var dleibie= localStorage.getItem("classifym");
-          this.$axios.post('http://127.0.0.1:3000/api/goods/classifym',
+          this.$axios.post('http://127.0.0.1:3009/api/goods/classifym',
 						 {
                              'select':select,
                              'paixu':this.sort,
@@ -102,7 +102,12 @@ export default {
       downl(name){
           this.sort=false;
           this.data(name);
-      }
+      },
+      toxiangqing(data){
+            var xiangqingdata=JSON.stringify(data);
+            localStorage.setItem('xiangqing', xiangqingdata);
+            this.$router.push({name:'xiangqing'});
+        }
     },
     created() {
 			this.data(this.onecheck);

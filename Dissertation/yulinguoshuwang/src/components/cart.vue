@@ -11,15 +11,15 @@
 		<p class="head">购物车</p>
 		<div class="nocart" v-show="nocart">
 			<p><span><i class="fa fa-shopping-cart" aria-hidden="true"></i></span></p>
-			<p><span>您的购物车空空如也</span></p>
-			<p><span class="guang">去逛逛</span></p>
+			<p><span>{{tishi}}</span></p>
+			<p><span class="guang" @click="tohome">去逛逛</span></p>
 		</div>
 		<div class="showcart" v-show="showcart">
 			<ul>
 				<li v-for="(item,index) in cartdata" :key="index" >
 						<span class="dele" @click="deletecartdata(JSON.parse(item.data).bianhao)">x</span>
 						<input class="check" type="checkbox" name="" id="" v-model="checknum[index]" @click.stop="onecheck(index)">
-						<img :src="JSON.parse(item.data).img.split(',')[0]" alt="">
+						<img :src="JSON.parse(item.data).img.split(',')[0]" alt="" @click="toxiangqing(item.data)">
 						<div class="good">
 							<p>{{JSON.parse(item.data).name}}</p>
 							<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
@@ -43,7 +43,7 @@
 				<p class="ltop">~~您可能会喜欢~~</p>
 			 <ul>
 				<li v-for="(item, index) in like" :key="index">
-					 <img :src="item.img.split(',')[0]" alt="">
+					 <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(JSON.stringify(item))">
 					 <p>{{item.name}}</p>
 					 <p style="color:gray;">{{item.miaoshu}}</p>
 					 <p style="color:red;">
@@ -71,6 +71,7 @@
 			return {
 				name:"购物车",
 				listname:'cart',
+				tishi:'请您先登陆个人帐号再查看个人购物车',
 				cartdata:[],
 				nocart:false,
 				showcart:true,
@@ -88,9 +89,12 @@
 		},
 
 		methods: {
+			tohome(){
+				this.$router.push({name:'home'});
+			},
 			deletecartdata(bianhao){
 					var username = localStorage.getItem("loginuser");
-					this.$axios.post('http://127.0.0.1:3000/api/cart/deletecartdata',
+					this.$axios.post('http://127.0.0.1:3009/api/cart/deletecartdata',
 					{'UserName':username,'bianhao':bianhao})
 							.then((res)=>{
 								console.log(res)
@@ -107,7 +111,7 @@
 							})
 				},
 			likedata(){
-            this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',{})
+            this.$axios.post('http://127.0.0.1:3009/api/goods/tuijian',{})
 					.then((res) => {					
             console.log(res);
 						this.like=res.data.data;                     
@@ -118,24 +122,30 @@
 					},
 					cartlist(){
 						var loginuser = localStorage.getItem("loginuser");
-							this.$axios.post('http://127.0.0.1:3000/api/cart/cartlist',{'UserName':loginuser})
+						if(loginuser===undefined || loginuser==='' || loginuser===null){
+							this.tishi='请您先登陆个人帐号再查看个人购物车';
+							this.nocart=true;
+							this.showcart=false;
+						}else{
+							this.$axios.post('http://127.0.0.1:3009/api/cart/cartlist',{'UserName':loginuser})
 							.then((res)=>{
 									 console.log(res);
 									 if(res.data.data.length==0){
 											 this.nocart=true;
 											 this.showcart=false;
+											 this.tishi='您的购物车空空如也';
 									 }else{
 									this.nocart=false;
 									this.showcart=true;
 									 this.cartdata=res.data.data;
 									 this.checknum=new Array(res.data.data.length)
 									 }
-									 
-									//  console.log(this.checknum)				 
+									 console.log(this.checknum)				 
 							})
 							.catch((err)=>{
 								  console.log(err);
 							})
+						}
 					},
 					add(index,bianhao,data){
 							 this.cartdata[index].addnumber+=1;
@@ -200,7 +210,7 @@
 											});
 					 }else{
 						//  var addtocartdata=JSON.stringify(data);
-						this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
+						this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
 						{'bianhao':bianhao,'data':data,'UserName':loginuser,'jiajian':addnum})
 						.then((res)=>{
 								console.log(res);	
@@ -227,6 +237,10 @@
 					 }
                    
 				},
+				toxiangqing(data){
+					localStorage.setItem('xiangqing',data );
+					this.$router.push({name:'xiangqing'});
+				}
 		},
 		created() {
 			this.likedata();
@@ -242,10 +256,13 @@
 		.w(375);
 		background: rgb(240, 237, 237);
 		.head{
+			 .w(375);
 				.h(35);
 				.lh(35);
-				// position: fixed;
-				// .position(10,0);
+				z-index: 100;
+				position: fixed;
+				top:0px;
+				left:0px;
 				z-index: 100;
 				background: white;
 				text-align: center;
@@ -254,6 +271,7 @@
 				.mg(0,0,10,0);
 			}
 		.nocart{
+			.mg(35,0,0,0);
 			background: white;	
 			p{  
 				text-align: center;
@@ -334,7 +352,8 @@
 			   }
 		   }
 		}
-		.showcart{					
+		.showcart{	
+			.mg(35,0,0,0);				
 			ul{
 				li{
 					position: relative;
@@ -349,8 +368,8 @@
             justify-content:flex-start;
 						align-items:center;
 						.dele{
-								// display:inline-block;
-								z-index: 100;
+								display:inline-block;
+								z-index: 80;
 								position: absolute;
 								.position-right(5);
 								.position-top(3);

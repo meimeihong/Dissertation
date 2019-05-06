@@ -29,6 +29,6 @@ app.use('/api/Customer', Customer);
 app.use('/api/admin', admin);
 app.use('/api/cart', shoppingcart);
 app.use('/api', shoppinglist);
-app.listen(3000, function() {
+app.listen(3009, function() {
 	console.log('链接成功');
 })

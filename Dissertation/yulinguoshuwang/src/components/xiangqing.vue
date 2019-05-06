@@ -3,7 +3,7 @@
       <div class="imgs">
             <mt-swipe :auto="3000">
                 <mt-swipe-item v-for="(item, index) in img" :key="index">
-                    <img :src="item" alt="" @click="imgsclick(item)">
+                <img :src="item" alt="" @click="imgsclick(item)">
             </mt-swipe-item>
             </mt-swipe>
       </div>
@@ -19,6 +19,11 @@
           <span class="jian" @click="reduce">-</span>
           <input type="text" v-model="buynum">
           <span class="jia" @click="add">+</span>
+          
+      </p>
+      <p class="shuliang">
+          <span>商品总量:</span>
+          <span>{{data.shuliang}}</span>
       </p>
       <p class="tui"><span></span>因商品的特殊性，请在收货时确认商品质量，一旦收货，概不退换</p>
       <div class="pingjia">
@@ -37,8 +42,7 @@
                <i class="fa fa-heart" aria-hidden="true"></i>
             </span>
             <span>2分</span>
-            </p>
-          
+            </p>         
           </div>
       </div>
       <div class="zhanshi">
@@ -50,13 +54,29 @@
     <div class="dibu">
          已经到底啦~~~
 	</div>
+    <div class="buyorcart">
+      <ul>
+          <li>
+              <span><i class="fa fa-heart" aria-hidden="true"></i></span>
+              <span>收藏</span>
+          </li>
+          <li @click="addtocart(data.bianhao,data,buynum)">
+              加入购物车
+          </li>
+          <li @click="tobuy()">
+              购买
+          </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script> 
-import { Swipe, SwipeItem } from 'mint-ui';
-import Vue from 'vue';
-Vue.component(Swipe.name, Swipe);
-Vue.component(SwipeItem.name, SwipeItem);
+    import Vue from 'vue';
+    import Swiper from 'swiper';
+    import { Toast } from 'mint-ui';
+    import { Swipe, SwipeItem } from 'mint-ui';
+    Vue.component(Swipe.name, Swipe);
+    Vue.component(SwipeItem.name, SwipeItem);
 export default {
   name: 'xiangqing',
   data() {
@@ -92,16 +112,46 @@ export default {
             }else{
                 this.buynum-=1;
             }
-		},
+        },
+        addtocart(bianhao,data,addnum){
+            var loginuser = localStorage.getItem("loginuser");
+            if(loginuser===undefined || loginuser==='' || loginuser===null){
+                Toast({
+                message: '请先登陆',
+                position: 'middle',
+                duration: 2000
+                });
+            }else{
+             var addtocartdata=JSON.stringify(data);
+            this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
+            {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':addnum})
+            .then((res)=>{
+                console.log(res);	
+                Toast({
+                    message: "购物车商品添加成功",
+                    position: 'bottom',
+                    duration: 2000,
+                    className:'tankuang',
+                    });
+            })
+            .catch((err) => {
+                    console.log(err);
+            })
+            }
+        
+        },
+        tobuy(){
+            this.$router.push({name:'buy'});
+        }
     },
     created() {
             this.xiangqingdata();
         },
 }
 </script>
-
 <style lang="less" scoped>
 @import '../styles/main.less';
+
  #xiangqing{
      .w(375);
      .imgs{
@@ -117,23 +167,26 @@ export default {
          .fs(16);
          font-weight: 700;
          .pd(5,0,5,10);
+         box-sizing: border-box;
      }
      .miaoshu{
          .w(375);
          .fs(12);
          color:rgb(54, 49, 49);
          .pd(5,0,5,10);
+         box-sizing: border-box;
      }
      .price{
         .pd(5,0,5,10);
+        box-sizing: border-box;
         .fs(18);
          color:red;
          border-bottom: 1px solid #ccc;
      }
      .buydata{
-         .fs(16);
+         .fs(14);
          .pd(5,0,5,10);
-        
+        box-sizing: border-box;
          border-bottom:#ccc 1px solid;
          span{
              display:inline-block;
@@ -158,6 +211,12 @@ export default {
              border:none;
          }
      }
+     .shuliang{
+         .fs(14);
+         .pd(5,0,5,10);
+         box-sizing: border-box;
+         border-bottom: #ccc solid 1px;
+     }
      .tui{
          .fs(10);
           .pd(5,0,5,10);
@@ -177,6 +236,7 @@ export default {
          border-bottom: #ccc 1px solid;
          border-top: #ccc 1px solid;
          .pd(5,0,5,0);
+         box-sizing: border-box;
          p{
             span{
             font-weight: 700;  
@@ -190,6 +250,7 @@ export default {
              p{
                  .fs(14);
                  .pd(0,0,0,12);
+                 box-sizing: border-box;
                  span{
                      .mg(0,0,0,5);
                  }
@@ -208,7 +269,8 @@ export default {
          }
          
      }
-     .zhanshi{       
+     .zhanshi{ 
+         .pd(10,0,0,0);      
          img{
             .w(345);
             .h(260);
@@ -234,11 +296,43 @@ export default {
 			.w(375);
 			.h(100);
 			.fs(14);
-			.pd(20,0,0,0);
-			// border-top: 1px solid #ccc;
+            .pd(20,0,0,0);
 			text-align: center;
 			color:#ccc;
 			background: white;
-	}
+    }
+    .buyorcart{
+        .w(375);
+        .h(35);
+        .fs(20);
+        .lh(35);
+        border-top: #ccc 1px solid;
+        text-align: center;
+        position:fixed;
+        left:0px;
+        bottom:0px;
+        background: white;
+        z-index: 80;
+        ul{.w(375);
+        z-index: 100;
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content:center;
+            align-items:center;
+            li{
+                .fs(14);
+                .w(124);
+                border-left: #ccc 1px solid;
+                font-weight: 600;
+                color:red;
+            }
+            li:first-child{
+                border:none;
+                color:black;
+            }
+        }
+    }
  }
 </style>

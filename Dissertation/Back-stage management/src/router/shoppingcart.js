@@ -69,14 +69,26 @@ Router.post('/addtocart',function(req,res){
     .then(function(data){
         console.log(data[0]);
         if(data.length<=0){
-            shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':1,'delete':1})
-            .then(function(data){
-				console.log('yes')
-			 res.send(msg.sendData(0,'加入购物车成功',data))
-			})
-			.catch(function(err){
-				res.send(msg.sendData(-1,'加入购物车失败',null))
-			})
+            if(req.body.jiajian>0){
+                shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':jian,'delete':1})
+                .then(function(data){
+                    console.log('yes')
+                    res.send(msg.sendData(0,'加入购物车成功',data))
+                })
+                .catch(function(err){
+                    res.send(msg.sendData(-1,'加入购物车失败',null))
+                })
+            }else{
+                shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':1,'delete':1})
+                .then(function(data){
+                    console.log('yes')
+                    res.send(msg.sendData(0,'加入购物车成功',data))
+                })
+                .catch(function(err){
+                    res.send(msg.sendData(-1,'加入购物车失败',null))
+                })
+            }  
+            
         }else{
             if(req.body.jiajian>0){
                 var addnum=req.body.jiajian

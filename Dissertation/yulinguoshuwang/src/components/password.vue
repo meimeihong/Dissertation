@@ -71,7 +71,7 @@
             },
             proving(){
                  if(this.emailtext==''){
-                     this.$axios.post('http://127.0.0.1:3000/api/user/proving',
+                     this.$axios.post('http://127.0.0.1:3009/api/user/proving',
 						 {
                              'Email':this.email,
                              'UserName':this.user
@@ -91,7 +91,7 @@
             },
 			findpassword(){
 				if(this.passy=='' && this.passtext=='' && this.emailtext=='' && this.user!=='' && this.tishi==''){
-					this.$axios.post('http://127.0.0.1:3000/api/user/password',
+					this.$axios.post('http://127.0.0.1:3009/api/user/password',
 						 {
                              'UserName':this.user,
                              'Password':this.newpass,

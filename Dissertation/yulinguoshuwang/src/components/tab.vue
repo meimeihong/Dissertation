@@ -79,7 +79,6 @@ export default {
             flex-wrap: wrap;
             justify-content:center;
             align-items:center;
-            
             .w(93);
             .fs(16);
             span{

@@ -48,7 +48,7 @@
                  this.success=/^[1][3,4,5,7,8][0-9]{9}$/.test(this.phone)?'':'请输入手机号码';
             },
 			usertext(){
-					this.$axios.post('http://127.0.0.1:3000/api/user/usertext',
+					this.$axios.post('http://127.0.0.1:3009/api/user/usertext',
 						 {
 							'UserName':this.user
 						}
@@ -68,7 +68,7 @@
 			},
 			reg(){
 				if(this.usert=='' && this.passtext=='' && this.emailtext==''&&this.success==''){
-					this.$axios.post('http://127.0.0.1:3000/api/user/reg',
+					this.$axios.post('http://127.0.0.1:3009/api/user/reg',
 						 {
                              'UserName':this.user,
                              'Password':this.pass,
