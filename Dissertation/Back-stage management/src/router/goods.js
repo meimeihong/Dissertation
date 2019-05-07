@@ -279,7 +279,7 @@ Router.post('/banner',function(req,res){
 				banner=banner.concat(data)				
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'精选肉类'}).sort({shuliang:1}).limit(1)
+				goodsModel.find({'leibie':'精选肉类'}).sort({shuliang:-1}).limit(1)
 				.then(function(data){
 					banner=banner.concat(data);					
 				})

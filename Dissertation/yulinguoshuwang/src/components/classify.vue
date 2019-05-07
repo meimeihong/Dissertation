@@ -70,8 +70,7 @@ import tab from './tab.vue';
 					})
 					.catch((err) => {
 						console.log(err);
-					})
-					
+					})					
 			},
 			classifycont(xiaol){
 				localStorage.setItem('dleibie', this.checkdaleibie);

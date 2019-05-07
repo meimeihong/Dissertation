@@ -7,6 +7,9 @@
         </div>
     <ul class="list">
        <li  v-for="(item, index) in searchlist" :key="index">
+           <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                商品已无效
+            </p>
 			<img :src="item.img.split(',')[0]" alt="">
 			<div class="good">
 				<p>{{item.name}}</p>
@@ -123,6 +126,21 @@ export default {
             flex-wrap: wrap;
             justify-content:left;
             align-items:center;
+            position: relative;
+            .zhe{
+                .fs(16);
+                .w(375);
+                .h(95);
+                .lh(95);
+                z-index: 60;
+                text-align: center;
+                color:white;
+                background: black;
+                opacity: 0.5;
+                position: absolute;
+                top:0px;
+                left:0px;
+           }
             img{
                 .w(110);
                 .h(80);

@@ -17,6 +17,9 @@
     </ul>
     <ul class="list">
         <li  v-for="(item,index) in datas" :key="index">
+            <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                商品已无效
+            </p>
 			<img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 			<div class="good">
 				<p>{{item.name}}</p>
@@ -74,10 +77,10 @@ export default {
 					 }
                     
                 },
-      returnhome(){
+    returnhome(){
           this.$router.push({name:'home'});
       },
-      data(select){
+    data(select){
           this.onecheck=select;
           var dleibie= localStorage.getItem("classifym");
           this.$axios.post('http://127.0.0.1:3009/api/goods/classifym',
@@ -95,15 +98,15 @@ export default {
 						console.log(err);
 					})
       },
-      up(name){
+    up(name){
           this.sort=true;
           this.data(name);
       },
-      downl(name){
+    downl(name){
           this.sort=false;
           this.data(name);
       },
-      toxiangqing(data){
+    toxiangqing(data){
             var xiangqingdata=JSON.stringify(data);
             localStorage.setItem('xiangqing', xiangqingdata);
             this.$router.push({name:'xiangqing'});
@@ -202,12 +205,27 @@ export default {
         .w(375);
         .h(90);
         .mg(10,0,0,0);
-            display: -webkit-flex; /* Safari */
+        display: -webkit-flex; /* Safari */
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content:left;
         align-items:center;
+        position: relative;
+        .zhe{
+            .fs(16);
+            .w(375);
+            .h(91);
+            .lh(91);
+            z-index: 60;
+            text-align: center;
+            color:white;
+            background: black;
+            opacity: 0.5;
+            position: absolute;
+            top:0px;
+            left:0px;
+        }
         img{
             .w(110);
             .h(80);

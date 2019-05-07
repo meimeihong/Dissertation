@@ -6,6 +6,9 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide"  v-for="(item, index) in tuijian" :key="index" >
+                    <p class="tjzhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                        商品已失效
+                    </p>
                     <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 					 <p>{{item.name}}</p>
                      <p style="color:gray;">{{item.miaoshu}}</p>
@@ -24,6 +27,9 @@
         <p class="title">安心蔬菜</p>
         <ul class="first">           
             <li v-for="(item, index) in shucai" :key="index" >
+                <p class="firstzhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                    商品已失效
+                </p>
                 <img :src="item.img.split(',')[0]" alt=""  @click="toxiangqing(item)">
                 <div>
                     <p>{{item.name}}</p>
@@ -37,6 +43,9 @@
         <p  class="title">精选肉类</p>
         <ul class="two">
                  <li v-for="(item, index) in roulei" :key="index">
+                     <p class="rlzhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                         商品已失效
+                     </p>
 					 <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 					 <p>{{item.name}}</p>
                      <p style="color:gray;">{{item.miaoshu}}</p>
@@ -50,6 +59,9 @@
        <p  class="title">精选水果</p>
        <ul class="three">
             <li  v-for="(item, index) in shuiguo" :key="index">
+            <p class="sgzhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                         商品已失效
+            </p>
 			<img :src="item.img.split(',')[0]" alt=""  @click="toxiangqing(item)">
 			<div class="good">
 				<p>{{item.name}}</p>
@@ -205,9 +217,25 @@
             flex-wrap: wrap;
             justify-content:left;
             align-items:center;           
-            li{ .w(180);
+            li{ 
+            .w(180);
             .h(80);
             .mg(8,0,0,6);
+            position: relative;
+            .firstzhe{
+                .fs(16);
+                .w(180);
+                .h(80);
+                .lh(80);
+                z-index: 60;
+                text-align: center;
+                color:white;
+                background: black;
+                opacity: 0.5;
+                position: absolute;
+                top:0px;
+                left:0px;
+            }
                 img{
                     .w(70);
                     .h(70);
@@ -240,53 +268,68 @@
           flex-wrap: wrap;
           justify-content:space-around;
           align-items:center;
-			   li{ background: white;
-			      .mg(10,0,0,0);
-				   .w(150);
-				   .fs(12);
-				   img{
-					   .w(150);
-					   .h(150);
-                     }
-                      p{text-align: left;
-                       position: relative;
-                       .h(22);
-                       .lh(22);
-                       .fs(14);
-                       overflow: hidden;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
-                        text-align: left;
-                     }
-                     .guige{
-                         display: inline-block;
-                        //  position: absolute;
-                        //  .position(0,50);
-                         .h(22);
-                         .lh(28);
-                         .fs(12);
-                         .w(34);
-                         color:#ccc;
-                         overflow: hidden;
-                     }
-					 .carts{
-                         position: absolute;
-                         .position(0,130);
-                         display: inline-block;
-						 text-align: right;
-						 color:orange;
-                         .fs(18);
-                        //  .mg(0,0,0,60);
-					 }
-			   }
+         li{ background: white;
+            position: relative;
+            .mg(10,0,0,0);
+            .w(150);
+            .fs(12);
+           .rlzhe{
+                .fs(16);
+                .w(150);
+                .h(220);
+                .lh(220);
+                z-index: 60;
+                text-align: center;
+                color:white;
+                background: black;
+                opacity: 0.5;
+                position: absolute;
+                top:0px;
+                left:0px;
+            }
+            img{
+                .w(150);
+                .h(150);
+                }
+            p{text-align: left;
+            position: relative;
+            .h(22);
+            .lh(22);
+            .fs(14);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            text-align: left;
+            }            
+            .guige{
+                display: inline-block;
+            //  position: absolute;
+            //  .position(0,50);
+                .h(22);
+                .lh(28);
+                .fs(12);
+                .w(34);
+                color:#ccc;
+                overflow: hidden;
+            }
+            .carts{
+                position: absolute;
+                .position(0,130);
+                display: inline-block;
+                text-align: right;
+                color:orange;
+                .fs(18);
+            //  .mg(0,0,0,60);
+            }
+        }
 		   }
         
     }
         .three{
             .w(375);
-         display: -webkit-flex; /* Safari */
+          display: -webkit-flex; /* Safari */
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
@@ -301,6 +344,21 @@
                 flex-wrap: wrap;
                 justify-content:left;
                 align-items:center;
+                position: relative;
+                .sgzhe{
+                    .fs(16);
+                    .w(375);
+                    .h(95);
+                    .lh(95);
+                    z-index: 60;
+                    text-align: center;
+                    color:white;
+                    background: black;
+                    opacity: 0.5;
+                    position: absolute;
+                    top:0px;
+                    left:0px;
+                }
                 img{
                     .w(110);
                     .h(80);
@@ -334,6 +392,20 @@
         }
         .tj{
         .swiper-slide{
+            position:relative;
+            .tjzhe{
+             .w(120);
+             .h(165);
+             .lh(165);
+             .fs(16);
+             text-align: center;
+            position:absolute;
+            top:0px;
+            left:0px;
+            color:white;
+            background: black;
+            opacity: 0.5;
+            }
             .w(120);
             img{
                 .w(120);

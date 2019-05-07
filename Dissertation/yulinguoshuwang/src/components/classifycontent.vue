@@ -6,14 +6,17 @@
     </div>
     <ul class="list">
         <li v-for="(item,index) in data" :key="index">
-					 <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
-					 <p>{{item.name}}</p>
-                     <p style="color:gray;">{{item.miaoshu}}</p>
-					 <p style="color:red;">
-                         <span>￥</span><span>{{item.danjia}}</span>
-                         <span class="guige">/{{item.guige}}</span> 
-                        <span class="carts" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-                    </p>
+            <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+                商品已无效
+            </p>
+            <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
+            <p>{{item.name}}</p>
+            <p style="color:gray;">{{item.miaoshu}}</p>
+            <p style="color:red;">
+                <span>￥</span><span>{{item.danjia}}</span>
+                <span class="guige">/{{item.guige}}</span> 
+            <span class="carts" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+        </p>
 		</li>
     </ul>
   </div>
@@ -94,7 +97,7 @@ export default {
 @import '../styles/main.less';
 #classifycontent {
   .w(375);
-  .header{  position: fixed;
+    .header{  position: fixed;
             .position(0,0);
             z-index:100;
             background: white;
@@ -125,7 +128,7 @@ export default {
             }
         }
     .list{
-        .mg(42,0,0,0);
+        .mg(42,0,20,0);
         .w(375);
         .pd(0,8,0,8);
         box-sizing: border-box;
@@ -139,6 +142,21 @@ export default {
             .mg(10,0,0,0);
             .w(160);
             .fs(12);
+            position: relative;
+            .zhe{
+                .fs(16);
+                .w(160);
+                .h(220);
+                .lh(220);
+                z-index: 60;
+                text-align: center;
+                color:white;
+                background: black;
+                opacity: 0.5;
+                position: absolute;
+                top:0px;
+                left:0px;
+           }
             img{
                 .w(160);
                 .h(150);

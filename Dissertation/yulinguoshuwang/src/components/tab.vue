@@ -68,7 +68,7 @@ export default {
             bottom:0px;
             border-top:1px solid rgb(197, 193, 193);
             border-bottom: 1px solid rgb(197, 193, 193);
-            z-index: 50;
+            z-index: 80;
             background: white;
             .w(375);
             .pd(5,0,5,0);

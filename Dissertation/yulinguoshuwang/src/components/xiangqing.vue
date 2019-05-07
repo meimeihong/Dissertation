@@ -18,7 +18,7 @@
           <span>数量</span>
           <span class="jian" @click="reduce">-</span>
           <input type="text" v-model="buynum">
-          <span class="jia" @click="add">+</span>
+          <span class="jia" @click="add(data.shuliang)">+</span>
           
       </p>
       <p class="shuliang">
@@ -106,8 +106,13 @@ export default {
        zheclick(){
             this.zheshow=false;
        },
-       add(){
-            this.buynum+=1;
+       add(shuliang){
+           if(this.buynum<shuliang){
+               this.buynum+=1;
+           }else{
+               this.buynum=shuliang;
+           }
+            
 		},
         reduce(){
             if(this.buynum<=1){

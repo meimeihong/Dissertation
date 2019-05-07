@@ -17,6 +17,10 @@
 		<div class="showcart" v-show="showcart">
 			<ul>
 				<li v-for="(item,index) in cartdata" :key="index" >
+		       <p class="cartzhe" 
+					 v-show="JSON.parse(item.data).shuliang<1?true:false||JSON.parse(item.data).zhuangt==0?true:false">
+               商品已失效
+					 </p>
 						<span class="dele" @click="deletecartdata(JSON.parse(item.data).bianhao)">x</span>
 						<input class="check" type="checkbox" name="" id="" v-model="checknum[index]" @click.stop="onecheck(index)">
 						<img :src="JSON.parse(item.data).img.split(',')[0]" alt="" @click="toxiangqing(item.data)">
@@ -29,10 +33,9 @@
 								<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 								<span class="numb">
 									 <span class="jian" @click.stop="reduce(index,JSON.parse(item.data).bianhao,item.data)" >-</span>
-								   <input type="text" :value="item.addnumber">
-								   <span class="jia" @click.stop="add(index,JSON.parse(item.data).bianhao,item.data)">+</span>
-								</span>
-								
+								   <input type="number" :value="item.addnumber>JSON.parse(item.data).shuliang?JSON.parse(item.data).shuliang:item.addnumber" >
+								   <span class="jia" @click.stop="add(index,JSON.parse(item.data).bianhao,item.data,JSON.parse(item.data).shuliang)">+</span>
+								</span>							
 							</p>
 						
 					  </div>
@@ -42,14 +45,20 @@
 		<div class="like">
 				<p class="ltop">~~您可能会喜欢~~</p>
 			 <ul>
+				 
 				<li v-for="(item, index) in like" :key="index">
+					<p class="likezhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+					 商品已失效
+				 </p>
 					 <img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(JSON.stringify(item))">
 					 <p>{{item.name}}</p>
 					 <p style="color:gray;">{{item.miaoshu}}</p>
 					 <p style="color:red;">
 							<span>￥</span><span>{{item.danjia}}</span>
 							<span class="guige" style="color:#ccc;">/{{item.guige}}</span> 
-							<span class="carts" @click="addtocart(item.bianhao,JSON.stringify(item),-1)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+							<span class="carts" @click="addtocart(item.bianhao,JSON.stringify(item),-1)">
+								<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							</span>
 					 </p>
 				</li>
 			 </ul>
@@ -146,8 +155,12 @@
 					})
 				}
 			},
-			add(index,bianhao,data){
-						this.cartdata[index].addnumber+=1;
+			add(index,bianhao,data,shuliang){
+				if(this.cartdata[index].addnumber<shuliang){
+					this.cartdata[index].addnumber+=1;
+				}else{
+					this.cartdata[index].addnumber=shuliang;
+				}						
 						var addnum=this.cartdata[index].addnumber
 						this.addtocart(bianhao,data,addnum);
 			},
@@ -208,27 +221,29 @@
 											duration: 2000
 											});
 					 }else{
-						//  var addtocartdata=JSON.stringify(data);
 						this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
 						{'bianhao':bianhao,'data':data,'UserName':loginuser,'jiajian':addnum})
 						.then((res)=>{
 								console.log(res);	
-							if(addnum===-1){
-								this.cartlist();
-								Toast({
-										message: "购物车商品添加成功",
-										position: 'bottom',
-										duration: 2000,
-										className:'tankuang',
-										});
-						} else{
-							Toast({
-										message: "商品数量修改成功",
-										position: 'bottom',
-										duration: 2000,
-										className:'tankuang',
-										});
-						}		
+								if(res.data.err==0){
+										if(addnum===-1){
+										this.cartlist();
+										Toast({
+												message: "购物车商品添加成功",
+												position: 'bottom',
+												duration: 2000,
+												className:'tankuang',
+												});
+										} else{
+											Toast({
+												message: "商品数量修改成功",
+												position: 'bottom',
+												duration: 2000,
+												className:'tankuang',
+												});
+										}		
+								}
+						
 						})
 						.catch((err) => {
 								console.log(err);
@@ -319,7 +334,8 @@
 			   .fs(12);
 			   color:red;
 		   }
-		   ul{ .w(375);
+		   ul{ 
+				 .w(375);
 			   	display: -webkit-flex; /* Safari */
           display: flex;
           flex-direction: row;
@@ -327,10 +343,25 @@
           justify-content:space-around;
 					align-items:center;
 					
-			   li{ background: white;
+			   li{ position: relative;
+					 background: white;
 			      .mg(10,0,0,0);
 				   .w(150);
-				   .fs(12);
+					 .fs(12);
+					 .likezhe{
+						 position: absolute;
+						 top:0px;
+						 left:0px;
+						 z-index: 60;
+							.fs(16);
+							.w(150);
+							.h(225);
+							.lh(225);
+							text-align: center;
+							color: white;
+							background: black;
+							opacity: 0.5;
+						 }
 				   img{
 					   .w(150);
 					   .h(150);
@@ -382,6 +413,20 @@
             flex-wrap: wrap;
             justify-content:flex-start;
 						align-items:center;
+						.cartzhe{
+							.fs(16);
+							text-align: center;
+							position: absolute;
+							top:0px;
+							left:0px;
+							.w(375);
+							.h(100);
+							.lh(100);
+							z-index: 120;
+							background: black;
+							color:white;
+							opacity: 0.5;
+						}
 						.dele{
 								display:inline-block;
 								z-index: 80;
