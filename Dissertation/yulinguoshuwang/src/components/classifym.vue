@@ -27,7 +27,7 @@
                     <span class="cart3" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 				</p>					
 			</div>
-			</li>
+		</li>
     </ul>
   </div>
 </template>
@@ -190,55 +190,55 @@ export default {
       }
   }
   .list{
-            .mg(84,0,0,0);
-           display: -webkit-flex; /* Safari */
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content:flex-start;
-            align-items:center;
-            
-            li{border-bottom: 1px solid #ccc; 
-                .w(375);
-               .h(90);
-               .mg(10,0,0,0);
-                 display: -webkit-flex; /* Safari */
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content:left;
-                align-items:center;
-                img{
-                    .w(110);
-                    .h(80);
-                    .mg(0,0,0,15);
-                }
-                .good{
-                    .fs(14);
+    .mg(84,0,0,0);
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:flex-start;
+    align-items:center;
+    
+    li{border-bottom: 1px solid #ccc; 
+        .w(375);
+        .h(90);
+        .mg(10,0,0,0);
+            display: -webkit-flex; /* Safari */
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content:left;
+        align-items:center;
+        img{
+            .w(110);
+            .h(80);
+            .mg(0,0,0,15);
+        }
+        .good{
+            .fs(14);
+            display: inline-block;
+            .w(230);
+            .mg(0,0,0,10);
+            p{  .h(25);
+                .lh(25);
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                text-align: left;
+                position: relative;
+                .cart3{
                     display: inline-block;
-                    .w(230);
-                    .mg(0,0,0,10);
-                    p{  .h(25);
-                        .lh(25);
-                        display: inline-block;
-                        overflow: hidden;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
-                        text-align: left;
-                        position: relative;
-                        .cart3{
-                            display: inline-block;
-                            color:orange;
-                            .fs(18);
-                            position: absolute;
-                            .position(0,190);
-                            // .mg(0,5,0,0);
-                        }
-                    }
+                    color:orange;
+                    .fs(18);
+                    position: absolute;
+                    .position(0,190);
+                    // .mg(0,5,0,0);
                 }
             }
+        }
+    }
         }
 }
 </style>

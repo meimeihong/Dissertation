@@ -22,6 +22,7 @@ const shoppingcart=require('./src/router/shoppingcart.js');
 const Customer = require('./src/router/Customer.js');
 const admin = require('./src/router/Admin.js');
 const shoppinglist = require('./src/router/shoppinglist.js');
+const collection = require('./src/router/collection.js');
 app.use('/api/user', user);
 app.use('/api/goods', goods);
 app.use('/api/upload', upload);
@@ -29,6 +30,7 @@ app.use('/api/Customer', Customer);
 app.use('/api/admin', admin);
 app.use('/api/cart', shoppingcart);
 app.use('/api', shoppinglist);
+app.use('/api', collection);
 app.listen(3009, function() {
 	console.log('链接成功');
 })

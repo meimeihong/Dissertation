@@ -56,7 +56,7 @@
 	</div>
     <div class="buyorcart">
       <ul>
-          <li>
+          <li  v-bind:class="collectioncolor?'color':'nocolor'" @click="collection(data.bianhao,data)">
               <span><i class="fa fa-heart" aria-hidden="true"></i></span>
               <span>收藏</span>
           </li>
@@ -86,11 +86,14 @@ export default {
               zhezhaoimg:"",
               zheshow:false,
               pingfen:[true,true,false,false,false],
-              buynum:1
+              buynum:1,
+              collectioncolor:false,
+              loginuser:''
 			}
     },
     methods:{
        xiangqingdata(){
+           this.loginuser = localStorage.getItem("loginuser");
            var xiangqing= JSON.parse(localStorage.getItem("xiangqing"));
            this.img=xiangqing.img.split(",");
            this.data=xiangqing;
@@ -113,9 +116,8 @@ export default {
                 this.buynum-=1;
             }
         },
-        addtocart(bianhao,data,addnum){
-            var loginuser = localStorage.getItem("loginuser");
-            if(loginuser===undefined || loginuser==='' || loginuser===null){
+        addtocart(bianhao,data,addnum){           
+            if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
                 Toast({
                 message: '请先登陆',
                 position: 'middle',
@@ -124,7 +126,7 @@ export default {
             }else{
              var addtocartdata=JSON.stringify(data);
             this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
-            {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':addnum})
+            {'bianhao':bianhao,'data':addtocartdata,'UserName':this.loginuser,'jiajian':addnum})
             .then((res)=>{
                 console.log(res);	
                 Toast({
@@ -140,12 +142,106 @@ export default {
             }
         
         },
+        getcollection(){
+            var bianhao=this.data.bianhao;          
+             if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
+                this.collectioncolor=false;
+             }else{
+                 this.$axios.post('http://127.0.0.1:3009/api/onecollection',
+                    {'bianhao':bianhao,'UserName':this.loginuser})
+                    .then((res)=>{
+                        console.log(res);	
+                       if(res.data.err===-1){
+                           this.collectioncolor=false;
+                       }else{
+                           this.collectioncolor=true;
+                       }
+                    })
+                    .catch((err) => {
+                            console.log(err);
+                    })
+             }
+        },
+        collection(bianhao,data){           
+            if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
+                Toast({
+                message: '请先登陆',
+                position: 'middle',
+                duration: 1000
+                });
+            }else{
+                var collectiondata=JSON.stringify(data);
+                if(this.collectioncolor){ 
+                     this.$axios.post('http://127.0.0.1:3009/api/delecollection',
+                    {'bianhao':bianhao,'UserName':this.loginuser})
+                    .then((res)=>{
+                        console.log(res);	
+                        Toast({
+                            message: res.data.msg,
+                            position: 'bottom',
+                            duration: 2000,
+                            className:'tankuang',
+                            });
+                        this.collectioncolor=false;
+                    })
+                    .catch((err) => {
+                            console.log(err);
+                    })                  
+                    
+                }else{
+                    this.$axios.post('http://127.0.0.1:3009/api/collection',
+                    {'bianhao':bianhao,'data':collectiondata,'UserName':this.loginuser})
+                    .then((res)=>{
+                        console.log(res);
+                        Toast({
+                            message: res.data.msg,
+                            position: 'bottom',
+                            duration: 2000,
+                            className:'tankuang',
+                            });
+                        if(res.data.err==0){       
+                        this.collectioncolor=true;
+                        }	
+                        
+                    })
+                    .catch((err) => {
+                            console.log(err);
+                    })
+                }
+            }
+            
+        },
         tobuy(){
-            this.$router.push({name:'buy'});
+            var buydata=JSON.stringify(this.data);
+            var buydatas=[{"UserName":this.loginuser,"bianhao":this.data.bianhao,"addnumber":this.buynum,"data":buydata}]
+                buydatas=JSON.stringify(buydatas);
+            localStorage.setItem('buydata', buydatas);
+            localStorage.setItem('buyreturn', 'xiangqing');     
+            var shouhuodizhi = localStorage.getItem("shouhuodizhi");
+            console.log(this.loginuser,shouhuodizhi)
+            if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
+                Toast({
+                    message: '请您先登陆个人帐号',
+                    position: 'middle',
+                    duration: 2000,
+                    className:'tankuang',
+                });
+            }else if(shouhuodizhi===undefined || shouhuodizhi==='' || shouhuodizhi===null){
+                Toast({
+                    message: '请您先填写收货地址',
+                    position: 'middle',
+                    duration: 2000,
+                    className:'tankuang',
+                });
+            }else{
+                this.$router.push({name:'buy'});
+            }
+            
         }
     },
     created() {
             this.xiangqingdata();
+            this.getcollection();
         },
 }
 </script>
@@ -330,6 +426,11 @@ export default {
             }
             li:first-child{
                 border:none;
+            }
+            .color{
+                color:red;
+            }
+            .nocolor{
                 color:black;
             }
         }

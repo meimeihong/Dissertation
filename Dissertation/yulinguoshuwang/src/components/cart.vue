@@ -1,12 +1,12 @@
 <template>
 	<div id="cart">
-		<div class="buy">
+		<div class="buy" v-show="showcart">
        <input class="check" type="checkbox" name="" id="" v-model="checkall" @click="allcheck()">
 			 <span>全选</span>
 			 <span>合计(不含运费)：</span>
 			 <span style="color:red;">￥</span>
 			 <span style="color:red;">{{this.price.toFixed(2)}}</span>
-			 <span class="jiesuan">去结算</span>
+			 <span class="jiesuan" @click="tobuy">去结算</span>
 		</div>
 		<p class="head">购物车</p>
 		<div class="nocart" v-show="nocart">
@@ -87,7 +87,6 @@
 		computed:{
 
 		},
-
 		methods: {
 			tohome(){
 				this.$router.push({name:'home'});
@@ -120,47 +119,47 @@
 						console.log(err);
 					})
 					},
-					cartlist(){
-						var loginuser = localStorage.getItem("loginuser");
-						if(loginuser===undefined || loginuser==='' || loginuser===null){
-							this.tishi='请您先登陆个人帐号再查看个人购物车';
-							this.nocart=true;
-							this.showcart=false;
-						}else{
-							this.$axios.post('http://127.0.0.1:3009/api/cart/cartlist',{'UserName':loginuser})
-							.then((res)=>{
-									 console.log(res);
-									 if(res.data.data.length==0){
-											 this.nocart=true;
-											 this.showcart=false;
-											 this.tishi='您的购物车空空如也';
-									 }else{
-									this.nocart=false;
-									this.showcart=true;
-									 this.cartdata=res.data.data;
-									 this.checknum=new Array(res.data.data.length)
-									 }
-									 console.log(this.checknum)				 
-							})
-							.catch((err)=>{
-								  console.log(err);
-							})
-						}
-					},
-					add(index,bianhao,data){
-							 this.cartdata[index].addnumber+=1;
-							 var addnum=this.cartdata[index].addnumber
-							 this.addtocart(bianhao,data,addnum);
-					},
-					reduce(index,bianhao,data){
-						if(this.cartdata[index].addnumber<=1){
-							this.cartdata[index].addnumber=1;
-						}else{
-							this.cartdata[index].addnumber-=1;
-						}
-            var addnum=this.cartdata[index].addnumber
-						this.addtocart(bianhao,data,addnum);  
-					},
+			cartlist(){
+				var loginuser = localStorage.getItem("loginuser");
+				if(loginuser===undefined || loginuser==='' || loginuser===null){
+					this.tishi='请您先登陆个人帐号再查看个人购物车';
+					this.nocart=true;
+					this.showcart=false;
+				}else{
+					this.$axios.post('http://127.0.0.1:3009/api/cart/cartlist',{'UserName':loginuser})
+					.then((res)=>{
+								console.log(res);
+								if(res.data.data.length==0){
+										this.nocart=true;
+										this.showcart=false;
+										this.tishi='您的购物车空空如也';
+								}else{
+							this.nocart=false;
+							this.showcart=true;
+								this.cartdata=res.data.data;
+								this.checknum=new Array(res.data.data.length)
+								}
+								console.log(this.checknum)				 
+					})
+					.catch((err)=>{
+							console.log(err);
+					})
+				}
+			},
+			add(index,bianhao,data){
+						this.cartdata[index].addnumber+=1;
+						var addnum=this.cartdata[index].addnumber
+						this.addtocart(bianhao,data,addnum);
+			},
+			reduce(index,bianhao,data){
+				if(this.cartdata[index].addnumber<=1){
+					this.cartdata[index].addnumber=1;
+				}else{
+					this.cartdata[index].addnumber-=1;
+				}
+				var addnum=this.cartdata[index].addnumber
+				this.addtocart(bianhao,data,addnum);  
+			},
 			onecheck(index){
 				this.price=0
 				this.checknum[index]=!this.checknum[index]
@@ -237,10 +236,26 @@
 					 }
                    
 				},
-				toxiangqing(data){
-					localStorage.setItem('xiangqing',data );
-					this.$router.push({name:'xiangqing'});
+			toxiangqing(data){
+				localStorage.setItem('xiangqing',data );
+				this.$router.push({name:'xiangqing'});
+			},
+			tobuy(){
+				var buydatas=JSON.stringify(this.cartdata);
+				localStorage.setItem('buydata', buydatas);
+				localStorage.setItem('buyreturn', 'cart');  
+				var shouhuodizhi = localStorage.getItem("shouhuodizhi");
+				if(shouhuodizhi===undefined || shouhuodizhi==='' || shouhuodizhi===null){
+					Toast({
+                    message: '请您先填写收货地址',
+                    position: 'middle',
+                    duration: 2000,
+                    className:'tankuang',
+                });
+				}else{
+					this.$router.push({name:'buy'});
 				}
+		}
 		},
 		created() {
 			this.likedata();
