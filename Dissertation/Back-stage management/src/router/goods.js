@@ -271,6 +271,24 @@ Router.post('/classifym',function(req,res){
 		}) 
 	}
 })
+Router.post('/zhekou',function(req,res){
+	goodsModel.find()
+		.then(function(data){
+			var zhekou=[]
+			for(var i in data){
+                 if(data[i].jiangjia>0){
+					 zhekou.push(data[i])
+				 }
+			}
+			return zhekou;
+		})
+		.then(function(data){
+			res.send(msg.sendData(0,'折扣',data));
+		})
+		.catch(function(err){
+			console.log(err)
+		})
+})
 //轮播图
 Router.post('/banner',function(req,res){
 	var banner=[];

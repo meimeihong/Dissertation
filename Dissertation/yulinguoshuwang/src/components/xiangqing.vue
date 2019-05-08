@@ -9,10 +9,20 @@
       </div>
       <p class="name">{{data.name}}</p>
       <p class="miaoshu">{{data.miaoshu}}</p>
-      <p class="price">
+      <p class="price" v-show="jiang">
+          <span>￥</span>
+          <span>{{(data.danjia*data.jiangjia).toFixed(2)}}</span>
+           <span class="jiang">
+            <s>￥{{data.danjia.toFixed(2)}}</s>          
+          </span>
+          <span style="color:#ccc;font-size:12px;">/{{data.guige}}</span>
+         
+      </p>
+      <p class="price"  v-show="nojiang">
           <span>￥</span>
           <span>{{data.danjia.toFixed(2)}}</span>
           <span style="color:#ccc;font-size:12px;">/{{data.guige}}</span>
+         
       </p>
       <p class="buydata">
           <span>数量</span>
@@ -88,7 +98,9 @@ export default {
               pingfen:[true,true,false,false,false],
               buynum:1,
               collectioncolor:false,
-              loginuser:''
+              loginuser:'',
+              jiang:true,
+              nojiang:true
 			}
     },
     methods:{
@@ -97,6 +109,13 @@ export default {
            var xiangqing= JSON.parse(localStorage.getItem("xiangqing"));
            this.img=xiangqing.img.split(",");
            this.data=xiangqing;
+           if(this.data.jiangjia>0){
+               this.jiang=true;
+               this.nojiang=false;
+           }else{
+               this.nojiang=true;
+               this.jiang=false;
+           }
            console.log(xiangqing)
        },
        imgsclick(itemimg){
@@ -130,7 +149,7 @@ export default {
                 });
             }else{
              var addtocartdata=JSON.stringify(data);
-            this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
+            this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
             {'bianhao':bianhao,'data':addtocartdata,'UserName':this.loginuser,'jiajian':addnum})
             .then((res)=>{
                 console.log(res);	
@@ -152,7 +171,7 @@ export default {
              if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
                 this.collectioncolor=false;
              }else{
-                 this.$axios.post('http://127.0.0.1:3009/api/onecollection',
+                 this.$axios.post('http://127.0.0.1:3000/api/onecollection',
                     {'bianhao':bianhao,'UserName':this.loginuser})
                     .then((res)=>{
                         console.log(res);	
@@ -177,7 +196,7 @@ export default {
             }else{
                 var collectiondata=JSON.stringify(data);
                 if(this.collectioncolor){ 
-                     this.$axios.post('http://127.0.0.1:3009/api/delecollection',
+                     this.$axios.post('http://127.0.0.1:3000/api/delecollection',
                     {'bianhao':bianhao,'UserName':this.loginuser})
                     .then((res)=>{
                         console.log(res);	
@@ -194,7 +213,7 @@ export default {
                     })                  
                     
                 }else{
-                    this.$axios.post('http://127.0.0.1:3009/api/collection',
+                    this.$axios.post('http://127.0.0.1:3000/api/collection',
                     {'bianhao':bianhao,'data':collectiondata,'UserName':this.loginuser})
                     .then((res)=>{
                         console.log(res);
@@ -240,8 +259,7 @@ export default {
                 });
             }else{
                 this.$router.push({name:'buy'});
-            }
-            
+            }           
         }
     },
     created() {
@@ -283,6 +301,10 @@ export default {
         .fs(18);
          color:red;
          border-bottom: 1px solid #ccc;
+         .jiang{
+             .fs(12);
+             color:gray;
+         }
      }
      .buydata{
          .fs(14);

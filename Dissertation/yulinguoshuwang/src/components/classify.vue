@@ -39,7 +39,7 @@ import tab from './tab.vue';
 			daleibies(){
 				var dleibie= localStorage.getItem("dleibie");
 				   this.checkdaleibie=dleibie;
-				this.$axios.post('http://127.0.0.1:3009/api/goods/daleibie',
+				this.$axios.post('http://127.0.0.1:3000/api/goods/daleibie',
 						 {}
 					)
 					.then((res) => {					
@@ -59,7 +59,7 @@ import tab from './tab.vue';
 			checkda(name){
 				this.checkdaleibie=name;
 				console.log(name)
-				this.$axios.post('http://127.0.0.1:3009/api/goods/xiaoleibie',
+				this.$axios.post('http://127.0.0.1:3000/api/goods/xiaoleibie',
 						 {
 							 'leibie':name
 						 }

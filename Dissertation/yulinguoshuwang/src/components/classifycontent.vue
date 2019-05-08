@@ -39,7 +39,7 @@ export default {
             var xleibie= localStorage.getItem("xleibie");
             this.xiaoleibie=xleibie;
             console.log(dleibie,xleibie);
-            this.$axios.post('http://127.0.0.1:3009/api/goods/classifycontent',
+            this.$axios.post('http://127.0.0.1:3000/api/goods/classifycontent',
 						 {
                              'xiaoleibie':xleibie
 						 }

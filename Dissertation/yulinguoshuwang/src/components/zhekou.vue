@@ -5,16 +5,6 @@
              <input type="text" placeholder="搜索">
              <span><i class="fa fa-search"></i></span>
         </div>
-    <ul class="select">
-        <li v-for="(item, index) in select" :key="index"  v-bind:class="onecheck===item?'active':''" @click="data(item)">
-             {{item}}
-        </li>
-        <li class="price"  v-for="(item) in prices" :key="item"  v-bind:class="onecheck===item?'active':''" @click="data(item)">
-             {{item}}
-             <span v-bind:class="sort?'':'jiage'"><i class="fa fa-step-backward" aria-hidden="true" @click.stop="downl(item)"></i></span>
-             <span v-bind:class="sort?'jiage':''"><i class="fa fa-step-forward" aria-hidden="true" @click.stop="up(item)"></i></span>
-        </li>
-    </ul>
     <ul class="list">
         <li  v-for="(item,index) in datas" :key="index">
             <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
@@ -25,7 +15,8 @@
 				<p>{{item.name}}</p>
 				<p style="color:gray;">{{item.miaoshu}}</p>
 				<p>
-					<span style="color:red;">￥{{item.danjia}}</span>
+					<span style="color:red;">￥{{(item.danjia*item.jiangjia).toFixed(2)}}</span>
+                    <s  style="color:gray;">{{item.danjia.toFixed(2)}}</s>
 					<span  style="color:#ccc;">/{{item.guige}}</span>
                     <span class="cart3" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 				</p>					
@@ -42,10 +33,6 @@ export default {
   name: 'classifym',
   data() {
 		return {
-            select:['所有','销量','新品'],
-            prices:['价格'],
-            onecheck:'所有',
-            sort:false,
             datas:[]          
 		}
     },
@@ -80,16 +67,8 @@ export default {
     returnhome(){
           this.$router.push({name:'home'});
       },
-    data(select){
-          this.onecheck=select;
-          var dleibie= localStorage.getItem("classifym");
-          this.$axios.post('http://127.0.0.1:3000/api/goods/classifym',
-						 {
-                             'select':select,
-                             'paixu':this.sort,
-                             'leibie':dleibie
-						 }
-					)
+    zhekoudata(){
+          this.$axios.post('http://127.0.0.1:3000/api/goods/zhekou', { })
 					.then((res) => {
                         this.datas=res.data.data;
 						console.log(res);
@@ -98,14 +77,6 @@ export default {
 						console.log(err);
 					})
       },
-    up(name){
-          this.sort=true;
-          this.data(name);
-      },
-    downl(name){
-          this.sort=false;
-          this.data(name);
-      },
     toxiangqing(data){
             var xiangqingdata=JSON.stringify(data);
             localStorage.setItem('xiangqing', xiangqingdata);
@@ -113,7 +84,7 @@ export default {
         }
     },
     created() {
-			this.data(this.onecheck);
+			this.zhekoudata();
 		}
 }
 </script>
@@ -157,41 +128,6 @@ export default {
                 box-sizing: border-box;
             }
         }	
-  .select{
-      position: fixed;
-     .position(42,0);
-     z-index: 100;
-     background: white;
-      display: -webkit-flex; /* Safari */
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content:space-around;
-      align-items:center;
-      li{
-          .w(90);
-          .h(40);
-          .lh(40);
-          text-align: center;
-          .fs(16);         
-      }
-      .price{
-          border-right: none;
-          span{
-              .fs(12);
-              color:gray;
-              .mg(0,0,0,2);
-          }
-          .jiage{
-              color:green;
-          }
-      }
-      .active{
-          color:green;
-          border-bottom: 2px solid green;
-          font-weight: 700;
-      }
-  }
   .list{
     .mg(84,0,0,0);
     display: -webkit-flex; /* Safari */

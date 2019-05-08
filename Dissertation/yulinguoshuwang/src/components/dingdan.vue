@@ -1,35 +1,50 @@
 <template>
   <div id="classifym">
-      <div class="header">
-          <span @click="returnhome"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-             <input type="text" placeholder="搜索">
-             <span><i class="fa fa-search"></i></span>
-        </div>
+    <div class="header">
+        <span @click="returnmy"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+        <span>我的订单</span>
+    </div>
     <ul class="select">
         <li v-for="(item, index) in select" :key="index"  v-bind:class="onecheck===item?'active':''" @click="data(item)">
              {{item}}
         </li>
-        <li class="price"  v-for="(item) in prices" :key="item"  v-bind:class="onecheck===item?'active':''" @click="data(item)">
-             {{item}}
-             <span v-bind:class="sort?'':'jiage'"><i class="fa fa-step-backward" aria-hidden="true" @click.stop="downl(item)"></i></span>
-             <span v-bind:class="sort?'jiage':''"><i class="fa fa-step-forward" aria-hidden="true" @click.stop="up(item)"></i></span>
-        </li>
     </ul>
     <ul class="list">
         <li  v-for="(item,index) in datas" :key="index">
-            <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
+            <!-- <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
                 商品已无效
-            </p>
-			<img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
+            </p> -->
+			<img :src="JSON.parse(item.data).img.split(',')[0]" alt="" @click="toxiangqing(item)">
 			<div class="good">
-				<p>{{item.name}}</p>
-				<p style="color:gray;">{{item.miaoshu}}</p>
-				<p>
-					<span style="color:red;">￥{{item.danjia}}</span>
-					<span  style="color:#ccc;">/{{item.guige}}</span>
-                    <span class="cart3" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-				</p>					
+				<p>{{JSON.parse(item.data).name}}</p>
+				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
+				<p v-show="JSON.parse(item.data).jiangjia>0?true:false">
+                    
+					<span style="color:red;">￥{{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}</span>
+                    <s>{{JSON.parse(item.data).danjia.toFixed(2)}}</s>
+					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
+				</p>
+                <p  v-show="JSON.parse(item.data).jiangjia==0?true:false">
+					<span style="color:red;">￥{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
+					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
+				</p>
+                <p class="jia" v-show="JSON.parse(item.data).jiangjia>0?true:false">
+                 <span>购买数量：</span>
+                 <span>{{item.addnumber}}</span>
+                 <span>金额小计：</span>
+                 <span>{{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia)*item.addnumber.toFixed(2)}}</span>
+                </p>
+                <p  class="jia" v-show="JSON.parse(item.data).jiangjia==0?true:false">
+                 <span>购买数量：</span>
+                 <span>{{item.addnumber}}</span>
+                 <span>金额小计：</span>
+                 <span>{{JSON.parse(item.data).danjia*item.addnumber.toFixed(2)}}</span>
+                </p>			
 			</div>
+            <p class="wuliu" v-show="item.fahuo==2 || item.fahuo==3||item.fahuo==4?true:false">
+                <span v-show="item.fahuo==2 || item.fahuo==3?true:false" @click="shouhuo(item.UserName,item.bianhao,item.BuyingTime)">确认收货</span>
+                <span v-show="item.fahuo==4?true:false" class="yishou">已收货</span>
+            </p>
 		</li>
     </ul>
   </div>
@@ -39,15 +54,14 @@
     import Swiper from 'swiper';
     import { Toast } from 'mint-ui';
 export default {
-  name: 'classifym',
+  name: 'dingdan',
   data() {
-		return {
-            select:['所有','销量','新品'],
-            prices:['价格'],
-            onecheck:'所有',
-            sort:false,
-            datas:[]          
-		}
+    return {
+        select:['全部订单','待配送','待自提','退换货'],
+        onecheck:'全部订单',
+        sort:false,
+        datas:[]          
+    }
     },
     methods:{
     addtocart(bianhao,data){
@@ -77,44 +91,54 @@ export default {
 					 }
                     
                 },
-    returnhome(){
-          this.$router.push({name:'home'});
+    returnmy(){
+          this.$router.push({name:'my'});
       },
+    dingdanl(){
+        this.onecheck=localStorage.getItem("dingdan");
+    },
     data(select){
           this.onecheck=select;
-          var dleibie= localStorage.getItem("classifym");
-          this.$axios.post('http://127.0.0.1:3000/api/goods/classifym',
-						 {
-                             'select':select,
-                             'paixu':this.sort,
-                             'leibie':dleibie
-						 }
-					)
-					.then((res) => {
-                        this.datas=res.data.data;
-						console.log(res);
-					})
-					.catch((err) => {
-						console.log(err);
-					})
-      },
-    up(name){
-          this.sort=true;
-          this.data(name);
-      },
-    downl(name){
-          this.sort=false;
-          this.data(name);
-      },
+        this.$axios.post('http://127.0.0.1:3000/api/dingdan',{ 'dingdan':select})
+        .then((res) => {
+            console.log(res);
+            if(res.data.err==0){
+                this.datas=res.data.data;
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    },
     toxiangqing(data){
             var xiangqingdata=JSON.stringify(data);
             localStorage.setItem('xiangqing', xiangqingdata);
             this.$router.push({name:'xiangqing'});
-        }
     },
+    shouhuo(name,bianhao,time){
+      this.$axios.post('http://127.0.0.1:3000/api/shouhuo',{ 'UserName':name,'bianhao':bianhao,'BuyingTime':time})
+        .then((res) => {
+            console.log(res);
+            if(res.data.err==0){
+                Toast({
+                    message: res.data.msg,
+                    position: 'middle',
+                    duration: 2000,
+                    className:'tankuang',
+                });
+                this.data(this.onecheck);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    },
+},
+    
     created() {
-			this.data(this.onecheck);
-		}
+        this.dingdanl();
+		this.data(this.onecheck);
+	}
 }
 </script>
 
@@ -143,18 +167,10 @@ export default {
                 font-weight: 800;
                 color:rgb(66, 216, 103);
             }
-            input{
-                .w(280);
-                .h(25);
-                .fs(16);
+            span:last-child{
                 color:gray;
-                border:none;
-                border-radius: 15px;
-                .mg(0,0,0,15);
-                .pd(0,0,0,10);
-                outline: none;
-                background: rgb(218, 218, 218);
-                box-sizing: border-box;
+                .w(300);
+                text-align: center;
             }
         }	
   .select{
@@ -203,7 +219,7 @@ export default {
     
     li{border-bottom: 1px solid #ccc; 
         .w(375);
-        .h(90);
+        // .h(145);
         .mg(10,0,0,0);
         display: -webkit-flex; /* Safari */
         display: flex;
@@ -228,7 +244,7 @@ export default {
         }
         img{
             .w(110);
-            .h(80);
+            .h(105);
             .mg(0,0,0,15);
         }
         .good{
@@ -254,6 +270,36 @@ export default {
                     .position(0,190);
                     // .mg(0,5,0,0);
                 }
+            }
+            .jia{
+                .fs(10);
+                color:gray;
+                span:first-child{
+                    display: inline-block;
+                    .mg(0,40,0,0);
+                }
+            }
+        }
+        .wuliu{
+            .w(375);
+            .h(35);
+            .lh(35);
+            .fs(16);
+            text-align: right;
+            span{
+                display: inline-block;
+                .w(100);
+                .h(25);
+                .lh(25);
+                text-align: center;
+                .mg(0,10,0,0);
+                border: @green solid 1px;
+               .br(20);
+               color:@green;
+            }
+            .yishou{
+                border:none;
+                color:gray;
             }
         }
     }

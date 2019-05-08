@@ -39,7 +39,7 @@ export default {
         searchdata(){
             var searchname= localStorage.getItem("searchname");
             this.search=searchname;
-            this.$axios.post('http://127.0.0.1:3009/api/goods/searchgoods',
+            this.$axios.post('http://127.0.0.1:3000/api/goods/searchgoods',
                 {'searchname':searchname})
                 .then((res)=>{
                     console.log(res);

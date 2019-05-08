@@ -87,7 +87,8 @@
 				like:[],
 				checkall:false,
 				checknum:[],
-				price:0
+				price:0,
+				buydatas:[]
 			}
 		},
 		components: {
@@ -102,7 +103,7 @@
 			},
 			deletecartdata(bianhao){
 					var username = localStorage.getItem("loginuser");
-					this.$axios.post('http://127.0.0.1:3009/api/cart/deletecartdata',
+					this.$axios.post('http://127.0.0.1:3000/api/cart/deletecartdata',
 					{'UserName':username,'bianhao':bianhao})
 							.then((res)=>{
 								console.log(res)
@@ -119,7 +120,7 @@
 							})
 				},
 			likedata(){
-            this.$axios.post('http://127.0.0.1:3009/api/goods/tuijian',{})
+            this.$axios.post('http://127.0.0.1:3000/api/goods/tuijian',{})
 					.then((res) => {					
             console.log(res);
 						this.like=res.data.data;                     
@@ -135,7 +136,7 @@
 					this.nocart=true;
 					this.showcart=false;
 				}else{
-					this.$axios.post('http://127.0.0.1:3009/api/cart/cartlist',{'UserName':loginuser})
+					this.$axios.post('http://127.0.0.1:3000/api/cart/cartlist',{'UserName':loginuser})
 					.then((res)=>{
 								console.log(res);
 								if(res.data.data.length==0){
@@ -191,6 +192,12 @@
 				}else{
 					this.checkall=false;
 				}
+				this.buydatas=[];
+				for(var i in this.checknum){
+					if(this.checknum[i]){
+             this.buydatas.push(this.cartdata[i]);
+					}
+				}
 			},
 			allcheck(){
 				this.checkall=!this.checkall;
@@ -210,6 +217,12 @@
 						this.price+=Number(this.cartdata[i].addnumber)*1*onedanjia;
 					}
 				}
+				this.buydatas=[];
+					for(var i in this.checknum){
+					if(this.checknum[i]){
+             this.buydatas.push(this.cartdata[i]);
+					}
+				}
 				console.log(this.checknum)
 			},
 			addtocart(bianhao,data,addnum){
@@ -221,7 +234,7 @@
 											duration: 2000
 											});
 					 }else{
-						this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
+						this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
 						{'bianhao':bianhao,'data':data,'UserName':loginuser,'jiajian':addnum})
 						.then((res)=>{
 								console.log(res);	
@@ -256,18 +269,25 @@
 				this.$router.push({name:'xiangqing'});
 			},
 			tobuy(){
-				var buydatas=JSON.stringify(this.cartdata);
-				localStorage.setItem('buydata', buydatas);
+				var buydata=JSON.stringify(this.buydatas);
+				localStorage.setItem('buydata', buydata);
 				localStorage.setItem('buyreturn', 'cart');  
 				var shouhuodizhi = localStorage.getItem("shouhuodizhi");
 				if(shouhuodizhi===undefined || shouhuodizhi==='' || shouhuodizhi===null){
 					Toast({
                     message: '请您先填写收货地址',
-                    position: 'middle',
+                    position: 'bottom',
                     duration: 2000,
                     className:'tankuang',
                 });
-				}else{
+				}else if(this.buydatas.length===0){
+					Toast({
+                    message: '请您选择购买的商品',
+                    position: 'bottom',
+                    duration: 2000,
+                    className:'tankuang',
+                });
+				}	else{
 					this.$router.push({name:'buy'});
 				}
 		}

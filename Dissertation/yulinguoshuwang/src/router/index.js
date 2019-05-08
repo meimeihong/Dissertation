@@ -12,6 +12,8 @@ import classifym from '../components/classifym.vue'
 import search from '../components/search.vue'
 import xiangqing from '../components/xiangqing.vue'
 import buy from '../components/buy.vue'
+import zhekou from '../components/zhekou.vue'
+import dingdan from '../components/dingdan.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -75,6 +77,16 @@ export default new Router({
       path:"/buy",
       name:"buy",
       component:buy
+    },
+    {
+      path:"/zhekou",
+      name:"zhekou",
+      component:zhekou
+    },
+    {
+      path:"/dingdan",
+      name:"dingdan",
+      component:dingdan
     }
 
   ]

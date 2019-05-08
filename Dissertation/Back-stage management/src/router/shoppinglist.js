@@ -2,7 +2,9 @@ const express=require('express');
 const Router=express.Router();
 const msg=require('./msg.js');
 const shoppinglist=require('../model/ShoppingList.js');
-//2未发货   3已发货  4已收货
+const goodsModel=require('../model/goodsModel.js');
+const shoppingcartModel=require('../model/ShoppingCartModel.js');
+//2未发货   3已发货  4已收货带评价  5退换货
 Router.post('/shoppinglist',function(req,res){
     var pagesize=Number(req.body.pagesize);
     var page=Number(req.body.page);
@@ -64,7 +66,6 @@ Router.post('/shoppinglist',function(req,res){
       })
 }
 })
-
 Router.post('/update',function(req,res){
     console.log(req.body);
     shoppinglist.updateOne({
@@ -87,13 +88,37 @@ Router.post('/addtogoodslist',function(req,res){
    .then(function(data){
     for(var i in goodslist){
         var {UserName,bianhao,data,addnumber,fahuo,BuyingTime,deletes}=goodslist[i]
+        var shu={addnumber};
+        var updatedata={data};
+            updatedata=JSON.parse( updatedata.data);
+            // console.log(updatedata.shuliang)
+            updatedata.shuliang=updatedata.shuliang-shu.addnumber;
+            // console.log(updatedata.shuliang)
+            // console.log(shu.addnumber)
+        updatedata=JSON.stringify(updatedata)
         shoppinglist.insertMany({UserName,bianhao,data,addnumber,fahuo,BuyingTime,deletes})
             .then(function(data){
             })
             .catch(function(err){
                 console.log(err)
-            })
-        }
+            });
+        goodsModel.find({bianhao})
+        .then(function(data){
+            var shul=Number(data[0].shuliang)-Number(shu.addnumber)
+            console.log(data[0].shuliang)
+            goodsModel.updateOne({bianhao},{'shuliang':shul}, 
+            function(err, resp) {
+            console.log(err)
+            });
+        })
+        .catch(function(err){
+            console.log(err)
+        });
+        shoppingcartModel.updateMany({bianhao},{$set:{'data':updatedata}}, 
+        function(err, resp) {
+        console.log(err)
+        });
+    }
 }).then(function(data){
         res.send(msg.sendData(0,'商品购买成功',null))
 }) .catch(function(err){
@@ -103,5 +128,59 @@ Router.post('/addtogoodslist',function(req,res){
     
    
     
+})
+Router.post('/dingdan',function(req,res){
+    var dingdan=req.body.dingdan;
+    if(dingdan=='全部订单'){
+        shoppinglist.find()
+        .then(function(data){
+            res.send(msg.sendData(0,'全部订单信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'订单信息获取出错',null))
+        })
+    }else if(dingdan=='待配送'){
+        shoppinglist.find({'fahuo':2})
+        .then(function(data){
+            res.send(msg.sendData(0,'待配送订单信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'待配送信息获取出错',null))
+        })
+    }else if(dingdan=='待自提'){
+        shoppinglist.find({'fahuo':3})
+        .then(function(data){
+            res.send(msg.sendData(0,'待自提订单信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'待自提信息获取出错',null))
+        })
+    }else{
+        shoppinglist.find({'fahuo':5})
+        .then(function(data){
+            res.send(msg.sendData(0,'退换货订单信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'退换货信息获取出错',null))
+        })
+    }
+})
+Router.post('/shouhuo',function(req,res){
+    var {UserName,bianhao,BuyingTime}=req.body;
+    shoppinglist.updateOne({UserName,bianhao,BuyingTime},{'fahuo':4}, 
+        function(err, resp) {
+        console.log(err)
+    })
+    .then(function(data){
+        res.send(msg.sendData(0,'收货成功',data))
+    })
+    .catch(function(err){
+        console.log(err)
+        res.send(msg.sendData(-1,'收货出错',null))
+    })
 })
 module.exports=Router;

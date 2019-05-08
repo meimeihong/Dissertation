@@ -23,7 +23,7 @@
 		},
 		methods: {
 			getlist() {
-				this.$axios.post('http://127.0.0.1:3009/api/goods/banner',{})
+				this.$axios.post('http://127.0.0.1:3000/api/goods/banner',{})
 				.then((res)=>{
 					this.datas=res.data.data;
 				})

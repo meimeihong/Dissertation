@@ -25,8 +25,12 @@ export default {
     },
     methods:{
       classifym(name){
-        localStorage.setItem('classifym', name);
-        this.$router.push({name:'classifym'});
+        if(name=='折扣专区'){
+          this.$router.push({name:'zhekou'});
+        }else{
+          localStorage.setItem('classifym', name);
+          this.$router.push({name:'classifym'});
+        }       
       }
     }
 }

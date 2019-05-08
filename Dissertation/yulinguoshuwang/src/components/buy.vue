@@ -24,11 +24,29 @@
 			<div class="good">
 				<p>{{JSON.parse(item.data).name}}</p>
 				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
-				<p>
+				<p  v-show="JSON.parse(item.data).jiangjia>0?true:false">
+					<span style="color:red;">￥{{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}</span>
+          <s  style="color:gray;">{{JSON.parse(item.data).danjia}}</s>
+					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
+				</p>
+        <p  v-show="JSON.parse(item.data).jiangjia==0?true:false">
 					<span style="color:red;">￥{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 				</p>	
-        <p class="jia">
+        <p class="jia" v-show="JSON.parse(item.data).jiangjia>0?true:false">
+          <span>
+            {{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}
+          </span>
+          <span>x</span>
+          <span>
+            {{item.addnumber}}
+          </span>
+
+          <span class="xiaojia">
+            金额小计：￥{{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia*item.addnumber).toFixed(2)}}
+          </span>
+        </p>	
+         <p class="jia"  v-show="JSON.parse(item.data).jiangjia==0?true:false">
           <span>
             {{JSON.parse(item.data).danjia.toFixed(2)}}
           </span>
@@ -92,12 +110,17 @@ export default {
            var addn=this.data[i].addnumber;
             this.jianshu+=addn
             var onedata=JSON.parse(this.data[i].data);
-            this.zongjiner+= onedata.danjia*addn;
+            if(onedata.jiangjia>0){
+               this.zongjiner+= onedata.danjia*onedata.jiangjia*addn;
+            }else{
+              this.zongjiner+= onedata.danjia*addn;
+            }
+            
          }
        },
        getmsg(){
          var loginuser = localStorage.getItem("loginuser");
-         this.$axios.post('http://127.0.0.1:3009/api/user/usermsg',
+         this.$axios.post('http://127.0.0.1:3000/api/user/usermsg',
           {'UserName':loginuser})
           .then((res)=>{
               console.log(res);
@@ -119,7 +142,7 @@ export default {
            this.data[i].deletes=1;
          }
          var goods=JSON.stringify(this.data);
-          this.$axios.post('http://127.0.0.1:3009/api/addtogoodslist',
+          this.$axios.post('http://127.0.0.1:3000/api/addtogoodslist',
           {'goodslist':goods})
           .then((res)=>{
             Toast({
