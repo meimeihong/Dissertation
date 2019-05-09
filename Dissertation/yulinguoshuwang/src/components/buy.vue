@@ -159,8 +159,7 @@ export default {
               if(res==0){
               that.$router.push({name:'home'});
             }
-            },4000)
-            
+            },4000)           
           })
           .catch((err) => {
                   console.log(err);

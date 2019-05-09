@@ -42,7 +42,7 @@
                 </p>			
 			</div>
             <p class="wuliu">
-                <span v-show="item.fahuo==4?true:false" @click="topingjia(JSON.parse(item.data).bianhao)">评价</span>
+                <span v-show="item.fahuo==4?true:false" @click="topingjia(JSON.parse(item.data).bianhao,item.BuyingTime)">评价</span>
                 <span v-show="item.fahuo==7?true:false">查看评价</span>
             </p>
 		</li>
@@ -88,8 +88,12 @@ export default {
             console.log(err);
         })
     },
-    topingjia(pingjiabianhao){
-         localStorage.setItem('pingjiabianhao', pingjiabianhao);
+    topingjia(pingjiabianhao,time){
+        console.log(time)
+        localStorage.setItem('pingjiabianhao', pingjiabianhao);
+        var pingjiatime=JSON.stringify(time)
+        localStorage.setItem('pingjiatime', pingjiatime);
+        localStorage.setItem('pingjiareturn', 'pinglun');
         this.$router.push({name:'pingjia'});
     },
     toxiangqing(data){

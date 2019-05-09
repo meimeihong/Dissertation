@@ -36,24 +36,33 @@
           <span>{{data.shuliang}}</span>
       </p>
       <p class="tui"><span></span>因商品的特殊性，请在收货时确认商品质量，一旦收货，概不退换</p>
-      <div class="pingjia">
-          <p>
+      <p class="pingjiatop">
               <span>商品评价</span>
               <span>(</span>
-              <span>456565</span>
+              <span>{{pingjia.length}}</span>
               <span>)</span>
-              <span class=hao>好评</span>
-              <span style="color:red;">5%</span>
+              <span class=hao>好评率</span>
+              <span style="color:red;">{{haopinglv}}</span>
+              <span>%</span>
           </p>
-          <div>
-            <p>名称 </p>
+      <div class="pingjia">
+          
+        <div class="pingjiacont"  v-for="(item, index) in pingjia " :key="index">
             <p>
-            <span  v-for="(item, index) in pingfen" :key="index" v-bind:class="item?'yanse':'y'">
+                <span style="color:green">{{item.UserName}}</span>
+                <span>{{item.content}}</span>
+            </p>
+            <p class="pf">
+            <span  v-for="(items, index) in 5" :key="index" v-bind:class="index <= item.haoping?'yanse':'y'">
                <i class="fa fa-heart" aria-hidden="true"></i>
             </span>
-            <span>2分</span>
-            </p>         
-          </div>
+            <span>{{item.haoping}}分</span>
+            </p>     
+            <p class="resp">
+              {{item.res}}sjsfdfjjsdfhj
+              <span class="guan">管理员</span>
+            </p>    
+        </div>
       </div>
       <div class="zhanshi">
           <img  v-for="(item, index) in img" :key="index" :src="item" alt="">
@@ -100,7 +109,9 @@ export default {
               collectioncolor:false,
               loginuser:'',
               jiang:true,
-              nojiang:true
+              nojiang:true,
+              pingjia:[],
+              haopinglv:null
 			}
     },
     methods:{
@@ -118,6 +129,23 @@ export default {
            }
            console.log(xiangqing)
        },
+       pingjiadata(){
+           var xiangqing= JSON.parse(localStorage.getItem("xiangqing"));
+           var bianhao=xiangqing.bianhao;
+           console.log(bianhao)
+           this.$axios.post('http://127.0.0.1:3000/api/onepingjia', {'bianhao':bianhao} )
+            .then((res) => {
+                console.log(res);
+                if(res.data.err==0){
+                    this.pingjia=res.data.data.pingjiadata;
+                    this.haopinglv=res.data.data.haopinglv;
+                }
+                console.log(bianhao)							
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+       },
        imgsclick(itemimg){
            this.zhezhaoimg=itemimg;
            this.zheshow=true;
@@ -133,14 +161,14 @@ export default {
            }
             
 		},
-        reduce(){
+      reduce(){
             if(this.buynum<=1){
                 this.buynum=1;
             }else{
                 this.buynum-=1;
             }
         },
-        addtocart(bianhao,data,addnum){           
+      addtocart(bianhao,data,addnum){           
             if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
                 Toast({
                 message: '请先登陆',
@@ -163,10 +191,9 @@ export default {
             .catch((err) => {
                     console.log(err);
             })
-            }
-        
+        }       
         },
-        getcollection(){
+    getcollection(){
             var bianhao=this.data.bianhao;          
              if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
                 this.collectioncolor=false;
@@ -186,7 +213,7 @@ export default {
                     })
              }
         },
-        collection(bianhao,data){           
+    collection(bianhao,data){           
             if(this.loginuser===undefined || this.loginuser==='' || this.loginuser===null){
                 Toast({
                 message: '请先登陆',
@@ -210,8 +237,7 @@ export default {
                     })
                     .catch((err) => {
                             console.log(err);
-                    })                  
-                    
+                    })                                      
                 }else{
                     this.$axios.post('http://127.0.0.1:3000/api/collection',
                     {'bianhao':bianhao,'data':collectiondata,'UserName':this.loginuser})
@@ -226,7 +252,6 @@ export default {
                         if(res.data.err==0){       
                         this.collectioncolor=true;
                         }	
-                        
                     })
                     .catch((err) => {
                             console.log(err);
@@ -235,7 +260,7 @@ export default {
             }
             
         },
-        tobuy(){
+    tobuy(){
             var buydata=JSON.stringify(this.data);
             var buydatas=[{"UserName":this.loginuser,"bianhao":this.data.bianhao,"addnumber":this.buynum,"data":buydata}]
                 buydatas=JSON.stringify(buydatas);
@@ -265,6 +290,7 @@ export default {
     created() {
             this.xiangqingdata();
             this.getcollection();
+            this.pingjiadata();
         },
 }
 </script>
@@ -354,21 +380,41 @@ export default {
             .mg(0,5,0,0);
          }
      }
-     .pingjia{
-         .fs(16);
-         border-bottom: #ccc 1px solid;
-         border-top: #ccc 1px solid;
-         .pd(5,0,5,0);
-         box-sizing: border-box;
-         p{
+     .pingjiatop{
+        .fs(16);
+        .pd(10,0,10,0);
             span{
             font-weight: 700;  
             }
             .hao{
                 .mg(0,0,0,100);
                 color:red;
-            }
+        }
+    }
+     .pingjia{
+         .fs(16);
+        //  border-bottom: #ccc 1px solid;
+         border-top: #ccc 1px solid;
+         .pd(5,0,5,0);
+         box-sizing: border-box;
+         .pingjiacont{
+            border-bottom: #ccc solid 1px;
+            .pd(10,0,10,0);
          }
+         .pf{
+            .pd(0,0,0,55);
+            box-sizing: border-box;
+        }
+        .resp{
+            text-align: right;
+            .pd(0,15,0,0);
+            box-sizing: border-box;
+            .guan{
+                color:orangered;
+                display:inline-block;
+                .mg(0,0,0,20);
+            }
+        }
          div{
              p{
                  .fs(14);
@@ -380,8 +426,7 @@ export default {
                  .yanse{
                      i{
                         color: red; 
-                     }
-                     
+                     }                   
                  }
                  .y{
                      i{

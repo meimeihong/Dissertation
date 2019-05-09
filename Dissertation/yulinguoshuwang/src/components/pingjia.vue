@@ -1,7 +1,7 @@
 <template>
   <div id="pingjia">
     <p class="top">
-        <span><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+        <span @click="pingjiareturn()"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
         <span>发表评价</span>
         <span class="fabu" @click="fabu">发布</span>
     </p>
@@ -36,6 +36,8 @@
   </div>
 </template>
 <script> 
+    import Vue from 'vue';
+    import { Toast } from 'mint-ui';
 export default {
   name: 'pingjia',
   data() {
@@ -75,9 +77,51 @@ export default {
             }
         },
         fabu(){
-            console.log(this.cont.trim());
-            var loginuser = localStorage.getItem("loginuser");
-            
+            if(this.wuliuf==null||this.fuwuf==null||this.zhiliangf==null){
+                Toast({
+                    message: '请您完成商品的评分',
+                    position: 'center',
+                    duration: 2000,
+                    className:'tankuang',
+                });
+            }else{
+                var content=this.cont.trim();
+                var loginuser = localStorage.getItem("loginuser");
+                var bianhao = localStorage.getItem("pingjiabianhao");
+                var goodslisttime = localStorage.getItem("pingjiatime");
+                var pingjiareturn=localStorage.getItem("pingjiareturn");
+                console.log(goodslisttime)
+                var time=new Date().getTime();
+                var haoping=Number(this.wuliuf)+Number(this.fuwuf)+Number(this.zhiliangf);
+                this.$axios.post('http://127.0.0.1:3000/api/addpingjia',
+                    {'UserName':loginuser,'bianhao':bianhao,'content':content,'wuliu':this.wuliuf,
+                    'fuwu':this.fuwuf,'zhiliang':this.zhiliangf,'haoping':haoping,'time':time,'goodslisttime':goodslisttime}
+                )
+                .then((res) => {
+                   console.log(res);
+                   if(res.data.err==0){
+                       Toast({
+                            message: res.data.msg,
+                            position: 'center',
+                            duration: 2000,
+                            className:'tankuang',
+                        });	
+                   }                  								
+                })
+                .then((res)=>{
+                    var that=this;
+                    setTimeout(function(){
+                    that.$router.push({name:pingjiareturn});
+                    },4000)           
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            }          
+        },
+        pingjiareturn(){
+            var pingjiareturn=localStorage.getItem("pingjiareturn");
+            this.$router.push({name:pingjiareturn});
         }
     }
 }

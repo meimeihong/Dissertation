@@ -3,7 +3,7 @@ const  mongoose=require('mongoose')
  let pingjiaSchema=new Schema({
     UserName:{type:String,required:true},
     bianhao:{type:String,required:true},
-    content:{type:String,required:true},
+    content:{type:String,required:false},
     wuliu:{type:Number,required:true},
     fuwu:{type:Number,required:true},
     zhiliang:{type:Number,required:true},
