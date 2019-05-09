@@ -1,7 +1,7 @@
 <template>
 <div id="password">
     <div class="head">
-        <span><i class="fa fa-chevron-left"></i></span>
+        <span @click="returnmy()"><i class="fa fa-chevron-left"></i></span>
         <span>找回密码</span>
     </div>
 	<ul>
@@ -110,7 +110,10 @@
 						console.log(err);
 					})
 				}
-			}
+            },
+            returnmy(){
+                this.$router.push({name:'my'})
+            }
 		}
 	}
 </script>

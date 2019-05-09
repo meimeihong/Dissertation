@@ -14,6 +14,8 @@ import xiangqing from '../components/xiangqing.vue'
 import buy from '../components/buy.vue'
 import zhekou from '../components/zhekou.vue'
 import dingdan from '../components/dingdan.vue'
+import pinglun from '../components/pinglun.vue'
+import pingjia from '../components/pingjia.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -87,6 +89,16 @@ export default new Router({
       path:"/dingdan",
       name:"dingdan",
       component:dingdan
+    },
+    {
+      path:"/pinglun",
+      name:"pinglun",
+      component:pinglun
+    },
+    {
+      path:"/pingjia",
+      name:"pingjia",
+      component:pingjia
     }
 
   ]

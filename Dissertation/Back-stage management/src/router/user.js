@@ -121,4 +121,46 @@ Router.post('/usermsg',function(req,res){
 	})
 	
 });
+//个人信息修改
+Router.post('/xiugai',function(req,res){
+	var {UserName}=req.body;
+	var xiugai=req.body.xiugai;
+	var content=req.body.content;
+	userModel.find({UserName})
+	.then(function(data){
+		var length=data.length;
+		if(length>0){
+    if(xiugai=='用户名'){
+			userModel.find({'UserName':content})
+			.then(function(data){
+				if(data.length>0){
+					res.send(msg.sendData(-1,'该用户名已存在，用户名修改失败',null));
+				}else{
+					userModel.updateOne({UserName},{$set:{'UserName':content}}, 
+						function(err, resp) {
+						if(err){res.send(msg.sendData(-1,'用户名修改失败',null))}
+						res.send(msg.sendData(0,'用户名修改成功',null))
+				  });
+				}
+			})
+		}else if(xiugai=='邮箱'){
+			userModel.updateOne({UserName},{$set:{'Email':content}}, 
+				function(err, resp) {
+				if(err){res.send(msg.sendData(-1,'邮箱修改失败',null))}
+				res.send(msg.sendData(0,'邮箱修改成功',null))
+		  });
+		}else if(xiugai=='电话'){
+			userModel.updateOne({UserName},{$set:{'TelephoneNumber':content}}, 
+			function(err, resp) {
+			if(err){res.send(msg.sendData(-1,'电话号码修改失败',null))}
+			res.send(msg.sendData(0,'电话号码修改成功',null))
+		});
+		}
+		}
+	})
+	.catch(function(err){
+		console.log(err);
+	})
+
+})
 module.exports=Router;

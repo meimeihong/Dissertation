@@ -23,6 +23,7 @@ const Customer = require('./src/router/Customer.js');
 const admin = require('./src/router/Admin.js');
 const shoppinglist = require('./src/router/shoppinglist.js');
 const collection = require('./src/router/collection.js');
+const pingjia = require('./src/router/pingjia.js');
 app.use('/api/user', user);
 app.use('/api/goods', goods);
 app.use('/api/upload', upload);
@@ -31,6 +32,7 @@ app.use('/api/admin', admin);
 app.use('/api/cart', shoppingcart);
 app.use('/api', shoppinglist);
 app.use('/api', collection);
+app.use('/api', pingjia);
 app.listen(3000, function() {
 	console.log('链接成功');
 })

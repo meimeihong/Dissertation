@@ -4,7 +4,7 @@ const msg=require('./msg.js');
 const shoppinglist=require('../model/ShoppingList.js');
 const goodsModel=require('../model/goodsModel.js');
 const shoppingcartModel=require('../model/ShoppingCartModel.js');
-//2未发货   3已发货  4已收货带评价  5退换货
+//2未发货   3已发货  4已收货未评价  5退货 6换货 7已评价
 Router.post('/shoppinglist',function(req,res){
     var pagesize=Number(req.body.pagesize);
     var page=Number(req.body.page);
@@ -132,7 +132,7 @@ Router.post('/addtogoodslist',function(req,res){
 Router.post('/dingdan',function(req,res){
     var dingdan=req.body.dingdan;
     if(dingdan=='全部订单'){
-        shoppinglist.find()
+        shoppinglist.find().sort({BuyingTime:-1})
         .then(function(data){
             res.send(msg.sendData(0,'全部订单信息',data))
         })
@@ -158,8 +158,26 @@ Router.post('/dingdan',function(req,res){
             console.log(err)
             res.send(msg.sendData(-1,'待自提信息获取出错',null))
         })
-    }else{
-        shoppinglist.find({'fahuo':5})
+    }else if(dingdan=='已收货'||dingdan=='未评价订单'){
+        shoppinglist.find({'fahuo':4})
+        .then(function(data){
+            res.send(msg.sendData(0,'收货商品信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'收货商品信息获取出错',null))
+        })
+    }else if(dingdan=='退换货'){
+        shoppinglist.find({$or:[{'fahuo':5},{'fahuo':6}]})
+        .then(function(data){
+            res.send(msg.sendData(0,'退换货订单信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'退换货信息获取出错',null))
+        })
+    }else if(dingdan=='已评价订单'){
+        shoppinglist.find({'fahuo':7})
         .then(function(data){
             res.send(msg.sendData(0,'退换货订单信息',data))
         })
@@ -168,6 +186,7 @@ Router.post('/dingdan',function(req,res){
             res.send(msg.sendData(-1,'退换货信息获取出错',null))
         })
     }
+
 })
 Router.post('/shouhuo',function(req,res){
     var {UserName,bianhao,BuyingTime}=req.body;

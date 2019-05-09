@@ -2,7 +2,7 @@
   <div id="classifym">
     <div class="header">
         <span @click="returnmy"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-        <span>我的订单</span>
+        <span>订单评价</span>
     </div>
     <ul class="select">
         <li v-for="(item, index) in select" :key="index"  v-bind:class="onecheck===item?'active':''" @click="data(item)">
@@ -42,14 +42,8 @@
                 </p>			
 			</div>
             <p class="wuliu">
-                <span v-show="item.fahuo==2 || item.fahuo==3?true:false" 
-                      @click="shouhuo(item.UserName,item.bianhao,item.BuyingTime)">
-                      确认收货
-                </span>
-                <span v-show="item.fahuo==4?true:false">评价</span>
-                <span v-show="item.fahuo==4?true:false" class="yishou">已收货</span>
-                <span v-show="item.fahuo==5?true:false" class="yishou">退货商品</span>
-                <span v-show="item.fahuo==6?true:false" class="yishou">换货商品</span>
+                <span v-show="item.fahuo==4?true:false" @click="topingjia(JSON.parse(item.data).bianhao)">评价</span>
+                <span v-show="item.fahuo==7?true:false">查看评价</span>
             </p>
 		</li>
     </ul>
@@ -62,52 +56,22 @@
     import Vue from 'vue';
     import { Toast } from 'mint-ui';
 export default {
-  name: 'dingdan',
+  name: 'pinglun',
   data() {
     return {
-        select:['全部订单','待配送','待自提','已收货','退换货'],
-        onecheck:'全部订单',
+        select:['未评价订单','已评价订单'],
+        onecheck:'未评价订单',
         sort:false,
         datas:[],
         dibushow:false    
     }
     },
     methods:{
-    addtocart(bianhao,data){
-                    var loginuser = localStorage.getItem("loginuser");
-                    if(loginuser===undefined || loginuser==='' || loginuser===null){
-                        Toast({
-                            message: '请先登陆',
-                            position: 'middle',
-                            duration: 2000
-                        });
-					 }else{
-						var addtocartdata=JSON.stringify(data);
-                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
-                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':-1})
-                        .then((res)=>{
-                            console.log(res);
-                            Toast({
-                                message: res.data.msg,
-                                position: 'bottom',
-                                duration: 2000,
-                                className:'tankuang',
-                                });
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        })
-					 }
-                    
-                },
     returnmy(){
           this.$router.push({name:'my'});
       },
-    dingdanl(){
-        this.onecheck=localStorage.getItem("dingdan");
-    },
     data(select){
-          this.onecheck=select;
+        this.onecheck=select;
         this.$axios.post('http://127.0.0.1:3000/api/dingdan',{ 'dingdan':select})
         .then((res) => {
             console.log(res);
@@ -124,35 +88,19 @@ export default {
             console.log(err);
         })
     },
+    topingjia(pingjiabianhao){
+         localStorage.setItem('pingjiabianhao', pingjiabianhao);
+        this.$router.push({name:'pingjia'});
+    },
     toxiangqing(data){
-            var xiangqingdata=JSON.stringify(data);
-            localStorage.setItem('xiangqing', xiangqingdata);
-            this.$router.push({name:'xiangqing'});
+        var xiangqingdata=JSON.stringify(data);
+        localStorage.setItem('xiangqing', xiangqingdata);
+        this.$router.push({name:'xiangqing'});
     },
-    shouhuo(name,bianhao,time){
-      this.$axios.post('http://127.0.0.1:3000/api/shouhuo',{ 'UserName':name,'bianhao':bianhao,'BuyingTime':time})
-        .then((res) => {
-            console.log(res);
-            if(res.data.err==0){
-                Toast({
-                    message: res.data.msg,
-                    position: 'middle',
-                    duration: 2000,
-                    className:'tankuang',
-                });
-                this.data(this.onecheck);
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    },
-},
-    
-    created() {
-        this.dingdanl();
-		this.data(this.onecheck);
-	}
+},   
+created() {
+    this.data(this.onecheck);
+}
 }
 </script>
 
@@ -190,8 +138,8 @@ export default {
   .select{
       position: fixed;
      .position(42,0);
-     z-index: 100;
-     background: white;
+      z-index: 100;
+      background: white;
       display: -webkit-flex; /* Safari */
       display: flex;
       flex-direction: row;
@@ -199,7 +147,7 @@ export default {
       justify-content:space-around;
       align-items:center;
       li{
-          .w(75);
+          .w(187);
           .h(40);
           .lh(40);
           text-align: center;
@@ -310,10 +258,6 @@ export default {
                 border: @green solid 1px;
                .br(20);
                color:@green;
-            }
-            .yishou{
-                border:none;
-                color:gray;
             }
         }
     }

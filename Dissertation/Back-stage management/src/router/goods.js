@@ -143,7 +143,6 @@ Router.post('/goodsdelete',function(req,res){
 		res.send(msg.sendData(-1,'商品信息删除失败',null))
 	})
 });
-
 //删除选中的商品
 Router.post('/checkdel',function(req,res){
 	var data=req.body;
