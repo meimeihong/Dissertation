@@ -1,5 +1,9 @@
 <template>
   <div id="xiangqing">
+     <p class="top">
+        <span @click="xiangqingreturn()"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+        <span>{{data.name}}</span>
+    </p>
       <div class="imgs">
             <mt-swipe :auto="3000">
                 <mt-swipe-item v-for="(item, index) in img" :key="index">
@@ -41,28 +45,29 @@
               <span>(</span>
               <span>{{pingjia.length}}</span>
               <span>)</span>
-              <span class=hao>好评率</span>
+              <span class="hao" v-show="pingjia.length>0?true:false">好评率:</span>
               <span style="color:red;">{{haopinglv}}</span>
-              <span>%</span>
+              <span v-show="pingjia.length>0?true:false">%</span>
+              
           </p>
-      <div class="pingjia">
-          
+      <div class="pingjia" v-show="pingjia.length>0?true:false">       
         <div class="pingjiacont"  v-for="(item, index) in pingjia " :key="index">
             <p>
                 <span style="color:green">{{item.UserName}}</span>
                 <span>{{item.content}}</span>
             </p>
             <p class="pf">
-            <span  v-for="(items, index) in 5" :key="index" v-bind:class="index <= item.haoping?'yanse':'y'">
+            <span  v-for="(items, index) in 5" :key="index" v-bind:class="index < item.haoping?'yanse':'y'">
                <i class="fa fa-heart" aria-hidden="true"></i>
             </span>
             <span>{{item.haoping}}分</span>
             </p>     
-            <p class="resp">
-              {{item.res}}sjsfdfjjsdfhj
-              <span class="guan">管理员</span>
-            </p>    
+            <p class="resp" v-show="item.res?true:false">
+              {{item.res}}
+              <span class="guan"><i class="fa fa-reply" aria-hidden="true"></i></span>
+            </p>
         </div>
+        <p class="di" v-show="pingjia.length<=2?true:false">目前该商品只有这些评价了哦</p>
       </div>
       <div class="zhanshi">
           <img  v-for="(item, index) in img" :key="index" :src="item" alt="">
@@ -285,19 +290,40 @@ export default {
             }else{
                 this.$router.push({name:'buy'});
             }           
-        }
     },
-    created() {
-            this.xiangqingdata();
-            this.getcollection();
-            this.pingjiadata();
-        },
+    xiangqingreturn(){
+        var xiangqingreturn=localStorage.getItem("xiangqingreturn");
+        this.$router.push({name:xiangqingreturn});
+    }
+},
+created() {
+    this.xiangqingdata();
+    this.getcollection();
+    this.pingjiadata();
+},
 }
 </script>
 <style lang="less" scoped>
 @import '../styles/main.less';
 
  #xiangqing{
+     .top{
+         .fs(16);
+         .h(40);
+         .lh(40);
+         .w(375);
+         border-bottom: #ccc 1px solid;
+         position: fixed;
+         top:0;
+         left:0;
+         z-index: 100;
+         background: white;
+         span{
+             display: inline-block;
+             .mg(0,10,0,10);
+             .pd(0,15,0,15);
+         }
+     }
      .w(375);
      .imgs{
          .w(375);
@@ -388,15 +414,22 @@ export default {
             }
             .hao{
                 .mg(0,0,0,100);
-                color:red;
         }
     }
      .pingjia{
          .fs(16);
-        //  border-bottom: #ccc 1px solid;
+         border-bottom: #ccc 1px solid;
+        .h(185);
+        overflow-y:scroll;
          border-top: #ccc 1px solid;
          .pd(5,0,5,0);
          box-sizing: border-box;
+         .di{
+             .h(50);
+             .lh(50);
+             text-align: center;
+             color:gray;
+         }
          .pingjiacont{
             border-bottom: #ccc solid 1px;
             .pd(10,0,10,0);

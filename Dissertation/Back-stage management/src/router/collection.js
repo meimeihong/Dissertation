@@ -11,10 +11,10 @@ Router.post('/collection',function(req,res){
     .catch(function(err){
         res.send(msg.sendData(-1,'商品收藏出错',null));
     })					
-	})
+})
 Router.post('/delecollection',function(req,res){
     var {UserName,bianhao}=req.body;
-        collectionModel.deleteOne({UserName,bianhao})
+        collectionModel.deleteOne({bianhao,UserName})
             .then(function(data){
                 res.send(msg.sendData(0,'此收藏商品已被移除',null))
             })
@@ -38,4 +38,15 @@ Router.post('/onecollection',function(req,res){
         console.log(err)
 		})
 });
+//查找所有收藏商品
+Router.post('/shoucang',function(req,res){
+	var {UserName}=req.body
+    collectionModel.find({UserName})
+    .then(function(data){
+        res.send(msg.sendData(0,'收藏商品',data))	;
+    })
+    .catch(function(err){
+        res.send(msg.sendData(-1,'收藏商品',null));
+    })					
+})
 module.exports=Router;

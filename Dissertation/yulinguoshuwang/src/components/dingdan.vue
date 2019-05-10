@@ -14,7 +14,7 @@
             <!-- <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
                 商品已无效
             </p> -->
-			<img :src="JSON.parse(item.data).img.split(',')[0]" alt="" @click="toxiangqing(item)">
+			<img :src="JSON.parse(item.data).img.split(',')[0]" alt="" @click="toxiangqing(item.bianhao)">
 			<div class="good">
 				<p>{{JSON.parse(item.data).name}}</p>
 				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
@@ -46,7 +46,7 @@
                       @click="shouhuo(item.UserName,item.bianhao,item.BuyingTime)">
                       确认收货
                 </span>
-                <span v-show="item.fahuo==4?true:false">评价</span>
+                <span v-show="item.fahuo==4?true:false" @click="topingjia(item.bianhao,item.BuyingTime)">评价</span>
                 <span v-show="item.fahuo==4?true:false" class="yishou">已收货</span>
                 <span v-show="item.fahuo==5?true:false" class="yishou">退货商品</span>
                 <span v-show="item.fahuo==6?true:false" class="yishou">换货商品</span>
@@ -124,10 +124,30 @@ export default {
             console.log(err);
         })
     },
-    toxiangqing(data){
-            var xiangqingdata=JSON.stringify(data);
-            localStorage.setItem('xiangqing', xiangqingdata);
-            this.$router.push({name:'xiangqing'});
+    toxiangqing(bianhao){
+        this.$axios.post('http://127.0.0.1:3000/api/goods/onegoods',{ 'bianhao':bianhao})
+        .then((res) => {
+            console.log(res);
+            if(res.data.err==0){
+                var resdata=res.data.data
+                if(resdata.length>0 &&resdata[0].zhuangt==1 &&resdata[0].shuliang>0){                  
+                    var xiangqingdata=JSON.stringify(resdata[0]);
+                    localStorage.setItem('xiangqing', xiangqingdata);
+                    localStorage.setItem('xiangqingreturn', 'pinglun');
+                    this.$router.push({name:'xiangqing'});
+                    console.log(res.data.data)
+                }else{
+                    Toast({
+                    message: '该商品已失效',
+                    position: 'middle',
+                    duration: 2000
+                    });
+                }
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })      
     },
     shouhuo(name,bianhao,time){
       this.$axios.post('http://127.0.0.1:3000/api/shouhuo',{ 'UserName':name,'bianhao':bianhao,'BuyingTime':time})
@@ -146,6 +166,13 @@ export default {
         .catch((err) => {
             console.log(err);
         })
+    },
+    topingjia(pingjiabianhao,time){
+        console.log(time)
+        localStorage.setItem('pingjiabianhao', pingjiabianhao);
+        localStorage.setItem('buytime', time);
+        localStorage.setItem('pingjiareturn', 'dingdan');
+        this.$router.push({name:'pingjia'});
     },
 },
     

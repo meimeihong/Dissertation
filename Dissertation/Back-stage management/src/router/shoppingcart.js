@@ -9,8 +9,6 @@ Router.post('/shoppingcart',function(req,res){
     var num=0;
     var search=req.body.search;
     var type=Number(search);
-	console.log(type)
-    console.log(req.body);
     if(search=='所有' || search==''){
         shoppingcartModel.find()
         .then(function(data){
@@ -67,12 +65,10 @@ Router.post('/addtocart',function(req,res){
     var jian=req.body.jiajian;
     shoppingcartModel.find({'bianhao':bianhao,'UserName':UserName})
     .then(function(data){
-        console.log(data[0]);
         if(data.length<=0){
             if(req.body.jiajian>0){
                 shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':jian,'delete':1})
                 .then(function(data){
-                    console.log('yes')
                     res.send(msg.sendData(0,'加入购物车成功',data))
                 })
                 .catch(function(err){
@@ -81,7 +77,6 @@ Router.post('/addtocart',function(req,res){
             }else{
                 shoppingcartModel.insertMany({'bianhao':bianhao,'UserName':UserName,'data':datas,'addnumber':1,'delete':1})
                 .then(function(data){
-                    console.log('yes')
                     res.send(msg.sendData(0,'加入购物车成功',data))
                 })
                 .catch(function(err){
@@ -121,7 +116,6 @@ Router.post('/cartlist',function(req,res){
 })
 Router.post('/deletecartdata',function(req,res){
     var {bianhao,UserName}=req.body;
-    console.log(1)
     shoppingcartModel.deleteOne({bianhao,UserName})
 		.then(function(data){
             res.send(msg.sendData(0,'购物车商品删除成功',data))

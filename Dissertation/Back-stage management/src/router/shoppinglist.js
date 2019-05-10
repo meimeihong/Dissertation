@@ -4,6 +4,7 @@ const msg=require('./msg.js');
 const shoppinglist=require('../model/ShoppingList.js');
 const goodsModel=require('../model/goodsModel.js');
 const shoppingcartModel=require('../model/ShoppingCartModel.js');
+const collectionModel=require('../model/collection.js');
 //2未发货   3已发货  4已收货未评价  5退货 6换货 7已评价
 Router.post('/shoppinglist',function(req,res){
     var pagesize=Number(req.body.pagesize);
@@ -91,10 +92,7 @@ Router.post('/addtogoodslist',function(req,res){
         var shu={addnumber};
         var updatedata={data};
             updatedata=JSON.parse( updatedata.data);
-            // console.log(updatedata.shuliang)
             updatedata.shuliang=updatedata.shuliang-shu.addnumber;
-            // console.log(updatedata.shuliang)
-            // console.log(shu.addnumber)
         updatedata=JSON.stringify(updatedata)
         shoppinglist.insertMany({UserName,bianhao,data,addnumber,fahuo,BuyingTime,deletes})
             .then(function(data){
@@ -105,7 +103,6 @@ Router.post('/addtogoodslist',function(req,res){
         goodsModel.find({bianhao})
         .then(function(data){
             var shul=Number(data[0].shuliang)-Number(shu.addnumber)
-            console.log(data[0].shuliang)
             goodsModel.updateOne({bianhao},{'shuliang':shul}, 
             function(err, resp) {
             console.log(err)
@@ -115,6 +112,10 @@ Router.post('/addtogoodslist',function(req,res){
             console.log(err)
         });
         shoppingcartModel.updateMany({bianhao},{$set:{'data':updatedata}}, 
+        function(err, resp) {
+        console.log(err)
+        });
+        collectionModel.updateMany({bianhao},{$set:{'data':updatedata}}, 
         function(err, resp) {
         console.log(err)
         });

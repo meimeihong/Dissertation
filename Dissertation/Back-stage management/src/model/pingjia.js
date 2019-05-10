@@ -10,6 +10,7 @@ const  mongoose=require('mongoose')
     haoping:{type:Number,required:true},
     res:{type:String,required:false},
     time:{type:String,required:true},
+    buytime:{type:Number,required:true}
   });
  let pingjiamodel=mongoose.model('pingjia', pingjiaSchema);
   module.exports=pingjiamodel;

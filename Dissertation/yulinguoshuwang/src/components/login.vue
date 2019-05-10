@@ -11,7 +11,7 @@
         </li>
         <li>
             <span><i class="fa fa-unlock" aria-hidden="true"></i></span>
-            <input type="text" placeholder="密码" v-model="pass">
+            <input type="password" placeholder="密码" v-model="pass">
         </li>
 	</ul>
     <span class="tishi">{{tishi}}</span>
@@ -31,8 +31,7 @@
                 tishi:'',
                 user:'',
                 pass:''
-			}
-			
+			}			
 		},
 		methods:{
 			login(){
@@ -44,8 +43,10 @@
 						}
 					)
 					.then((res) => {
+                        console.log(res.data.data)
 						if(res.data.err==0){
                             localStorage.setItem('loginuser', this.user);
+                            localStorage.setItem("shouhuodizhi",res.data.data);
 							this.$router.push({name:'home'})
 						}else{
 							this.tishi=res.data.msg;

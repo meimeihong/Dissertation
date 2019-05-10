@@ -10,7 +10,7 @@
            <p class="zhe" v-show="item.shuliang<1?true:false||item.zhuangt==0?true:false">
                 商品已无效
             </p>
-			<img :src="item.img.split(',')[0]" alt="">
+			<img :src="item.img.split(',')[0]" alt="" @click="toxiangqing(item)">
 			<div class="good">
 				<p>{{item.name}}</p>
 				<p style="color:gray;">{{item.miaoshu}}</p>
@@ -61,6 +61,12 @@ export default {
                 localStorage.setItem('searchname', this.searchcontent);
                 this.searchdata();
 			}
+        },
+        toxiangqing(data){
+            var xiangqingdata=JSON.stringify(data);
+            localStorage.setItem('xiangqing', xiangqingdata);
+            localStorage.setItem('xiangqingreturn', 'search');
+            this.$router.push({name:'xiangqing'});
         }
     },
     created() {

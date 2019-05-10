@@ -16,6 +16,7 @@ import zhekou from '../components/zhekou.vue'
 import dingdan from '../components/dingdan.vue'
 import pinglun from '../components/pinglun.vue'
 import pingjia from '../components/pingjia.vue'
+import shoucang from '../components/shoucang.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -99,7 +100,12 @@ export default new Router({
       path:"/pingjia",
       name:"pingjia",
       component:pingjia
+    },{
+      path:"/shoucang",
+      name:"shoucang",
+      component:shoucang
     }
+
 
   ]
 })

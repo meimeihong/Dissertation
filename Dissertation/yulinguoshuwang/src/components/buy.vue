@@ -25,8 +25,8 @@
 				<p>{{JSON.parse(item.data).name}}</p>
 				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
 				<p  v-show="JSON.parse(item.data).jiangjia>0?true:false">
-					<span style="color:red;">￥{{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}</span>
-          <s  style="color:gray;">{{JSON.parse(item.data).danjia}}</s>
+					<span style="color:red;">￥{{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia).toFixed(2)}}</span>
+          <s  style="color:gray;">{{JSON.parse(item.data).danjia.toFixed(2)}}</s>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 				</p>
         <p  v-show="JSON.parse(item.data).jiangjia==0?true:false">
@@ -35,7 +35,7 @@
 				</p>	
         <p class="jia" v-show="JSON.parse(item.data).jiangjia>0?true:false">
           <span>
-            {{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}
+            {{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia).toFixed(2)}}
           </span>
           <span>x</span>
           <span>

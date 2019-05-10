@@ -403,4 +403,16 @@ Router.post('/searchgoods',function(req,res){
 		res.send(msg.sendData(-1,'查找商品',err));
 	})
 })
+//单个商品查找
+Router.post('/onegoods',function(req,res){
+	var {bianhao}=req.body;
+	goodsModel.find({bianhao})
+	.then(function(data){
+		res.send(msg.sendData(0,'查找商品',data));
+	})
+	.catch(function(err){
+		console.log(err)
+		res.send(msg.sendData(-1,'查找商品',err));
+	})
+})
 module.exports=Router;

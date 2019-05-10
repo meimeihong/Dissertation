@@ -85,6 +85,7 @@ export default {
         toxiangqing(data){
             var xiangqingdata=JSON.stringify(data);
             localStorage.setItem('xiangqing', xiangqingdata);
+            localStorage.setItem('xiangqingreturn', 'classifycontent');
             this.$router.push({name:'xiangqing'});
         }
     },

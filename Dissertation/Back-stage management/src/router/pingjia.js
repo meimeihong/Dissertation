@@ -5,14 +5,14 @@ const pingjia=require('../model/pingjia.js');
 const shoppinglist=require('../model/ShoppingList.js');
 //添加评价
 Router.post('/addpingjia',function(req,res){
-    var {UserName,bianhao,content,wuliu,fuwu,zhiliang,haoping,time}=req.body;
+    var {UserName,bianhao,content,wuliu,fuwu,zhiliang,haoping,time,buytime}=req.body;
     var bianhao=req.body.bianhao;
-    var goodslisttime=Number(req.body.goodslisttime);
-    pingjia.insertMany({UserName,bianhao,content,wuliu,fuwu,zhiliang,haoping,time})
+    var buytime=Number(req.body.buytime);
+    pingjia.insertMany({UserName,bianhao,content,wuliu,fuwu,zhiliang,haoping,time,buytime})
     .then(function(data){
         shoppinglist.updateOne({
             'bianhao':bianhao,
-            'BuyingTime':goodslisttime
+            'BuyingTime':buytime
         },{
             $set:{'fahuo':7}
         },function(err,result){
@@ -28,7 +28,21 @@ Router.post('/addpingjia',function(req,res){
     })
 })
 //查看单条评价
-
+Router.post('/readpingjia',function(req,res){
+    var {UserName,bianhao,buytime}=req.body;
+    pingjia.find( {UserName,bianhao,buytime})
+    .then(function(data){
+          if(data.length>0){
+            res.send(msg.sendData(0,'评价',data))  
+          }else{
+            res.send(msg.sendData(-1,'该商品还没有评价',null)) 
+          }
+    })
+    .catch(function(err){
+        console.log(err)
+        res.send(msg.sendData(-1,'评价',null))
+    })
+})
 //查看所有评价
 
 //查看某商品的评价
@@ -54,5 +68,14 @@ Router.post('/onepingjia',function(req,res){
         console.log(err)
         res.send(msg.sendData(-1,'评价',null))
     })
+})
+//修改评价
+Router.post('/xiugaipingjia',function(req,res){
+	var {UserName,bianhao,content,wuliu,fuwu,zhiliang,haoping,time,buytime}=req.body;
+    pingjia.updateOne({UserName,bianhao,buytime},{UserName,bianhao,content,wuliu,fuwu,zhiliang,haoping,time,buytime}, 
+    function(err, resp) {
+        if(err){res.send(msg.sendData(-1,'商品信息修改失败',null))}
+        res.send(msg.sendData(0,'商品信息修改成功',null))
+    });
 })
 module.exports=Router;

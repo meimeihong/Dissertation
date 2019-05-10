@@ -66,7 +66,7 @@ Router.post('/login',function(req,res){
 	userModel.find({UserName,Password})
 	.then(function(data){
 	//    console.log(data);
-	   if (data.length>=1) { return res.send(msg.sendData(0,'您已成功登陆',null));}
+	   if (data.length>=1) { return res.send(msg.sendData(0,'您已成功登陆',data[0].dizhi));}
 	   	res.send(msg.sendData(-1,'登陆失败，请重新登陆',null));
 	})
 });
@@ -154,6 +154,12 @@ Router.post('/xiugai',function(req,res){
 			function(err, resp) {
 			if(err){res.send(msg.sendData(-1,'电话号码修改失败',null))}
 			res.send(msg.sendData(0,'电话号码修改成功',null))
+		});
+		}else if(xiugai=='地址'){
+			userModel.updateOne({UserName},{$set:{'dizhi':content}}, 
+			function(err, resp) {
+			if(err){res.send(msg.sendData(-1,'地址修改失败',null))}
+			res.send(msg.sendData(0,'地址修改成功',null))
 		});
 		}
 		}

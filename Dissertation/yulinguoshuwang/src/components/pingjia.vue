@@ -3,7 +3,7 @@
     <p class="top">
         <span @click="pingjiareturn()"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
         <span>发表评价</span>
-        <span class="fabu" @click="fabu">发布</span>
+        <span class="fabu" @click="fabu()">发布</span>
     </p>
     <div class="content">
         <p>在这里，您可以发表评论哦~~</p>
@@ -88,14 +88,26 @@ export default {
                 var content=this.cont.trim();
                 var loginuser = localStorage.getItem("loginuser");
                 var bianhao = localStorage.getItem("pingjiabianhao");
-                var goodslisttime = localStorage.getItem("pingjiatime");
+                var buytime = localStorage.getItem("buytime");
+                console.log(buytime)
                 var pingjiareturn=localStorage.getItem("pingjiareturn");
-                console.log(goodslisttime)
                 var time=new Date().getTime();
                 var haoping=Number(this.wuliuf)+Number(this.fuwuf)+Number(this.zhiliangf);
+                if(haoping<=3){
+                    haoping=1
+                }else if(haoping>3&&haoping<=6){
+                     haoping=2
+                }else if(haoping>6&&haoping<=9){
+                     haoping=3
+                }else if(haoping>9&&haoping<=12){
+                     haoping=4
+                }else if(haoping>12&&haoping<=15){
+                     haoping=5
+                }
                 this.$axios.post('http://127.0.0.1:3000/api/addpingjia',
                     {'UserName':loginuser,'bianhao':bianhao,'content':content,'wuliu':this.wuliuf,
-                    'fuwu':this.fuwuf,'zhiliang':this.zhiliangf,'haoping':haoping,'time':time,'goodslisttime':goodslisttime}
+                    'fuwu':this.fuwuf,'zhiliang':this.zhiliangf,'haoping':haoping,
+                    'time':time,'buytime':buytime}
                 )
                 .then((res) => {
                    console.log(res);

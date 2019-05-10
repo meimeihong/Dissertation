@@ -266,6 +266,7 @@
 				},
 			toxiangqing(data){
 				localStorage.setItem('xiangqing',data );
+				localStorage.setItem('xiangqingreturn', 'cart');
 				this.$router.push({name:'xiangqing'});
 			},
 			tobuy(){
@@ -273,7 +274,7 @@
 				localStorage.setItem('buydata', buydata);
 				localStorage.setItem('buyreturn', 'cart');  
 				var shouhuodizhi = localStorage.getItem("shouhuodizhi");
-				if(shouhuodizhi===undefined || shouhuodizhi==='' || shouhuodizhi===null){
+				if(shouhuodizhi===undefined || shouhuodizhi==='' || shouhuodizhi==='null'){
 					Toast({
                     message: '请您先填写收货地址',
                     position: 'bottom',

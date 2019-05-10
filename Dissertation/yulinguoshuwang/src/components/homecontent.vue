@@ -184,6 +184,7 @@
                 toxiangqing(data){
                     var xiangqingdata=JSON.stringify(data);
                      localStorage.setItem('xiangqing', xiangqingdata);
+                     localStorage.setItem('xiangqingreturn', 'home');
                      this.$router.push({name:'xiangqing'});
                 }
 
@@ -323,8 +324,8 @@
                 .fs(18);
             //  .mg(0,0,0,60);
             }
-        }
-		   }
+         }
+		}
         
     }
         .three{

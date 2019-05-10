@@ -55,6 +55,14 @@
 				   <span  class="tub"><i class="fa fa-commenting-o" aria-hidden="true"></i> </span>
 				   <span>商品评论</span>
 			   </li>
+			   <li  @click="tomsg('个人信息')">
+				   <span class="tub"><i class="fa fa-map-marker" aria-hidden="true"></i> </span>
+				   <span>收货地址</span>
+			   </li>
+			   <li  @click="tomsg('我的收藏')">
+				   <span class="tub" style="color:red;"><i class="fa fa-heart" aria-hidden="true"></i></span>
+				   <span>我的收藏</span>
+			   </li>
 		   </ul>
 		</div>
 		<div class="gerenmsg" v-show="togerenmsg">
@@ -87,7 +95,16 @@
 					<input type="text" v-model="usermsg.TelephoneNumber">
 					<span class="xiugai" @click="xiugai('电话',usermsg.TelephoneNumber)">修改</span>
 				</li>
+				<li>
+					<span class="tubiao">
+						<i class="fa fa-map-marker" aria-hidden="true"></i> 
+					</span>
+					<span>收货地址：</span>
+					<input type="text" v-model="usermsg.dizhi">
+					<span class="xiugai" @click="xiugai('地址',usermsg.dizhi)">修改</span>
+				</li>
 				<p class="tshi">{{tishi}}</p>
+				<p class="tui" @click="tuichu()">退出账号</p>
 			</ul>
 			<div class="nomsg" @click="togerenmsgfalse()">
              没有其他信息了哦~~~
@@ -130,9 +147,7 @@ import tab from './tab.vue';
 				this.$router.push({name:'reg'})
 			},
 			getusername(){
-				// localStorage.setItem('loginuser', '');
 				var loginuser = localStorage.getItem("loginuser");
-				console.log(loginuser)
 		       if(loginuser===undefined || loginuser==='' || loginuser===null){
 						 this.usernameshow=false;
 						 this.usernamehidden=true;
@@ -144,10 +159,19 @@ import tab from './tab.vue';
 					 }
 				
 			},
-			todingdan(name){		
-				localStorage.setItem('dingdan', name);
+			todingdan(name){
+				var loginuser = localStorage.getItem("loginuser");
+				if(loginuser===undefined || loginuser==='' || loginuser===null){
+					Toast({
+						message: '请您先登陆再访问',
+						position: 'middle',
+						duration: 2000,
+						className:'tankuang',
+                   });
+				}else{
+					localStorage.setItem('dingdan', name);
 				this.$router.push({name:'dingdan'});
-        
+				}    
 			},
 			tomsg(msg){
 				var loginuser = localStorage.getItem("loginuser");
@@ -165,6 +189,8 @@ import tab from './tab.vue';
 					this.msgcreated();
 				}else if(msg=='商品评论'){
 					this.$router.push({name:'pinglun'});
+				}else if(msg=='我的收藏'){
+					this.$router.push({name:'shoucang'});
 				}
 			},
 			togerenmsgfalse(){  
@@ -202,13 +228,15 @@ import tab from './tab.vue';
 					   this.tishi='您的用户名与上一个用户名相同，请重新设置'
 				   }
 					if(this.tishi=='') {
-                       console.log('修改')
-						
 						this.$axios.post('http://127.0.0.1:3000/api/user/xiugai', {'UserName':loginuser,'xiugai':name,'content':content})
 							.then((res) => {
 							console.log(res)
 							if(res.data.msg=='用户名修改成功'){
 								localStorage.setItem('loginuser', content);
+								this.msgcreated();
+							}
+							if(res.data.msg=='地址修改成功'){
+								localStorage.setItem("shouhuodizhi",content);
 								this.msgcreated();
 							}
 							if(res.data.err==-1){
@@ -228,6 +256,11 @@ import tab from './tab.vue';
 					}
 				   			
 			},
+			tuichu(){
+			  localStorage.setItem('loginuser', '');
+			  this.togerenmsgfalse()
+			  this.getusername();
+			}
 		},
 		created() {
 			   this.getusername();
@@ -424,6 +457,10 @@ import tab from './tab.vue';
 			text-align: center;
 			color:red;
 		}
+		.tui{   .w(375);
+				color:red;
+				text-align: center;
+			}
 		}
 	}
 	.nomsg{
