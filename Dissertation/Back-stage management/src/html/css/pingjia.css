@@ -1,0 +1,36 @@
+#box #head{
+    margin: 20px auto;
+    width: 1100px;
+    overflow: hidden;
+    background: #448cc7;
+    padding:10px 0;
+}
+#box #pingjialist {
+    margin: 20px auto;
+    width: 1100px;
+    overflow: hidden;
+    
+  }
+  #box #pingjialist ul li {
+    float: left;
+    width: 80px;
+    height: 25px;
+    line-height: 30px;
+    border: #D5D5D3 1px solid;
+    border-left: none;
+    text-align: center;
+    align-items: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 14px;
+      overflow: hidden;
+  }
+  #box #pingjialist ul:first-child li {
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+  }
+  
+  #box #pingjialist ul li:nth-child(1) {
+    border-left: #D5D5D3 1px solid;
+  }

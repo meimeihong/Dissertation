@@ -11,22 +11,26 @@ Router.post('/shoppinglist',function(req,res){
     var page=Number(req.body.page);
     var total=0;
     var num=0;
+    var zongjia=0;
     var search=req.body.search.toString();
     var type=Number(search);
-	console.log(type)
-    console.log(req.body);
     if(search=='所有' || search==''){
         shoppinglist.find()
-        .then(function(data){
+        .then(function(data){       
             for(var i=0;i<data.length;i++){
-                num+=data[i].shuliang;
+                 var datas=JSON.parse(data[i].data)
+                num+=data[i].addnumber;
+                if(datas.jiangjia>0&&datas.jiangjia<1){
+                    zongjia+= datas.danjia*datas.jiangjia*data[i].addnumber;  
+                }else{
+                    zongjia+= datas.danjia*data[i].addnumber;
+                }
             }
-            console.log(data)
             total=data.length;
             return shoppinglist.find().limit(pagesize).skip((page-1)*pagesize)
         })
         .then(function(data){
-            res.send(msg.sendData(0,'购物信息',{'total':total,'shoplist':data,'num':num}))
+            res.send(msg.sendData(0,'购物信息',{'total':total,'shoplist':data,'num':num,'zongjia':zongjia}))
         })
         .catch(function(err){
             console.log(err)
@@ -35,32 +39,41 @@ Router.post('/shoppinglist',function(req,res){
     }else if(type>=0){
         shoppinglist.find({$or:[{'fahuo':search},{'delete':search}]})
         .then(function(data){
-        console.log(data)
         for(var i=0;i<data.length;i++){
-            num+=data[i].shuliang;
+            var datas=JSON.parse(data[i].data)
+            num+=data[i].addnumber;
+            if(datas.jiangjia>0&&datas.jiangjia<1){
+                zongjia+= datas.danjia*datas.jiangjia*data[i].addnumber;  
+            }else{
+                zongjia+= datas.danjia*data[i].addnumber;
+            }
         }
         total=data.length;
         return shoppinglist.find({$or:[{'fahuo':search},{'delete':search}]}).limit(pagesize).skip((page-1)*pagesize)
        })
         .then(function(data){
-        res.send(msg.sendData(0,'购物信息',{'total':total,'shoplist':data,'num':num}))
+        res.send(msg.sendData(0,'购物信息',{'total':total,'shoplist':data,'num':num,'zongjia':zongjia}))
        })
        .catch(function(err){
         res.send(msg.sendData(-1,'购物信息获取出错',null))
       })
     }else{
-        console.log(1)
         shoppinglist.find({$or:[{'UserName':search},{'bianhao':search},{'name':search}]})
         .then(function(data){
-        console.log(data)
         for(var i=0;i<data.length;i++){
-            num+=data[i].shuliang;
+            var datas=JSON.parse(data[i].data)
+            num+=data[i].addnumber;
+            if(datas.jiangjia>0&&datas.jiangjia<1){
+                zongjia+= datas.danjia*datas.jiangjia*data[i].addnumber;  
+            }else{
+                zongjia+= datas.danjia*data[i].addnumber;
+            }
         }
         total=data.length;
         return shoppinglist.find({$or:[{'UserName':search},{'bianhao':search},{'name':search}]}).limit(pagesize).skip((page-1)*pagesize)
        })
         .then(function(data){
-        res.send(msg.sendData(0,'购物信息',{'total':total,'shoplist':data,'num':num}))
+        res.send(msg.sendData(0,'购物信息',{'total':total,'shoplist':data,'num':num,'zongjia':zongjia}))
        })
        .catch(function(err){
         res.send(msg.sendData(-1,'购物信息获取出错',null))
@@ -78,7 +91,7 @@ Router.post('/update',function(req,res){
             'fahuo':3
         }
     },function(err,result){
-           if(err){console.log('a')}
+           if(err){console.log(err)}
            res.send(msg.sendData(0,'已发货',null))
            return
     })
@@ -125,10 +138,7 @@ Router.post('/addtogoodslist',function(req,res){
 }) .catch(function(err){
     console.log(err)
     res.send(msg.sendData(-1,'商品购买失败',null))
-})
-    
-   
-    
+    })   
 })
 Router.post('/dingdan',function(req,res){
     var dingdan=req.body.dingdan;

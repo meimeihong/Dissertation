@@ -3,8 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="./css/header.css"/>
-		<link rel="stylesheet" type="text/css" href="./css/user.css"/>
+        <link rel="stylesheet" type="text/css" href="./css/header.css"/>
+        <link rel="stylesheet" type="text/css" href="./css/user.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/pingjia.css"/>
 		<style type="text/css">
 		</style>
 	</head>
@@ -30,24 +31,23 @@
 					
 		<hr>
 		</div>
-                <div id="shophead">
-                    <span>购物信息表</span>
+                <div id="head">
+                    <span>用户信息表</span>
                     显示&nbsp;&nbsp;<input type="number" name="" id="show" value="5" />&nbsp;条数据
                     <input class="int" type="text">
                     <input class="search" type="button" value="查询">
                 </div>
-				<div id="shoppinglist">
+				<div id="pingjialist">
 					<ul>
-						<!-- <li><input type="checkbox" name="" id="checkall" value="" /></li> -->
-						<li>用户名</li>
-						<li>商品编号</li>
-                        <li>商品名称</li>
-                        <li>商品价格</li>
-                        <li>购买数量</li>
-                        <li>发货状态</li>
-                        <li>商品状态</li>
-                        <li>是否发货</li>
-                        <!-- <input type="button" value="" disabled="disabled"> -->
+                        <li>用户名</li>
+                        <li>商品编号</li>
+						<li  style="width:265px;">评论内容</li>
+                        <li>物流配送</li>
+                        <li>服务态度</li>
+                        <li>商品质量</li>
+                        <li>总评分</li>
+                        <li  style="width:265px;">回复内容</li>
+                        <li>回复</li>
 					</ul>
 				</div>
 				<div id="pagejump">
@@ -58,14 +58,10 @@
 					<button id="jump">跳转</button>
 					<button id="next">下一页</button>
 					<button id="last">尾页</button>
-                </div>
-                <div id="tongji">
-					购物商品总数量：&nbsp;&nbsp;<span class="addnumber"></span><br>
-					购物商品总价：&nbsp;&nbsp;￥<span class="zongjia"></span>
-                </div>
+				</div>	
 		</div>
 	</body>
 </html>
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script type="text/javascript" src="./js/header.js"></script>
-<script type="text/javascript" src="./js/shoppinglist.js"></script>
+<script type="text/javascript" src="./js/pingjia.js"></script>

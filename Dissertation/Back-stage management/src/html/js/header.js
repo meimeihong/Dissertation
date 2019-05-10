@@ -30,6 +30,9 @@ $('#box #header .hright .back').on('click',function(){
  function guanli(){
 	window.location.href=('http://localhost:3000/admin.html');
  }
+ function pingjia(){
+	window.location.href=('http://localhost:3000/pingjia.html');
+ }
 var server = 'http://127.0.0.1:3000';
 	//信息显示条数的限制
 	$('#show').on('click', function() {
