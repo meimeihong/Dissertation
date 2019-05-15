@@ -173,12 +173,15 @@ export default {
         })      
     },
     readpingjia(bianhao,buytime,data){
+        // this.pingjiashow=true;
+        console.log('a')
         var loginuser = localStorage.getItem("loginuser");
         localStorage.setItem('pingjiabianhao', bianhao);
         localStorage.setItem('buytime', buytime);
        this.$axios.post('http://127.0.0.1:3000/api/readpingjia',
        { 'UserName':loginuser,'bianhao':bianhao,'buytime':buytime})
         .then((res) => {
+            console.log(res)
             if(res.data.err==0){
                 this.goodsdata=data;
                 this.readpingjiadata=res.data.data;

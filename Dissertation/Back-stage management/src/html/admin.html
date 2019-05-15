@@ -11,20 +11,20 @@
    		 	overflow: hidden;
     		background: #448cc7;
 			padding:10px 0;
-			text-align: center;
+			/* text-align: center; */
 		 }
 		 #box #admin span{
-			 margin-left: 15px;
+			 margin-left: 100px;
 		 }
 		 #box #adminlist {
     margin: 20px auto;
-    width: 800px;
+    width: 900px;
     overflow: hidden;
     
   }
 		 #box #adminlist ul li {
     float: left;
-    width: 215px;
+    width: 175px;
     height: 25px;
     line-height: 30px;
     border: #D5D5D3 1px solid;
@@ -58,12 +58,17 @@
 				<ul class="hright">
 					<ul class="shouye"><p>商品信息</p></ul>
 					<ul>
-						<p>客户信息</p>
-						<li onclick="yonghu()">客户基本信息</li>
+						<p onclick="yonghu()">客户信息</p>
+					</ul>
+					<ul>
+						<p>购物信息</p>
 						<li onclick="gouwuche()">购物车信息</li>
 						<li onclick="gouwu()">订单信息</li>
 					</ul>
-					<ul><p class="zgl" onclick="guanli()"  style="background: #ef3c78;">管理员信息</p></ul>
+					<ul>
+						<p onclick="pingjia()">评价管理</p>	
+					</ul>
+					<ul><p class="zgl"  style="background: #ef3c78;" onclick="guanli()" >管理员信息</p></ul>
 					<span class="back">退出</span>
 				</ul>
 					
@@ -71,13 +76,17 @@
 		</div>
 				<div id="admin">
 				  <span>管理员名称:</span><input id="user" type="text" value=""/>
-				  <span>密码:</span><input id="pass" type="text" value="">
+					<span>密码:</span><input id="pass" type="text" value=""><br>
+					<span>管理员姓名:</span><input id="name" type="text" value=""/>
+				  <span>电话号码:</span><input id="dianhua" type="text" value="">
 				  <button class="joinadmin" onclick="joinadmin()">添加管理员</button>
 				</div>
 				<div id="adminlist">
 					<ul>
 						<li>管理员名称</li>
 						<li>密码</li>
+						<li>姓名</li>
+						<li>电话号码</li>
 						<li>是否删除</li>
 					</ul>
 				</div>
@@ -88,24 +97,31 @@
 <script type="text/javascript">
 
    function joinadmin(){
-        var name=$('#box #admin #user').val(); 
+    var user=$('#box #admin #user').val(); 
 		var pass=$('#box #admin #pass').val();
+		var name=$('#box #admin #name').val(); 
+		var dianhua=$('#box #admin #dianhua').val();
 		console.log(name,pass);
 		var nlen=name.length;
 		var plen=pass.length;
-		if(nlen==0 || plen==0){
+		var ulen=user.length;
+		var dlen=dianhua.length;
+		if(nlen==0 || plen==0||ulen==0 || dlen==0){
 			alert("请填写完整的注册信息")
 		}else{
-            $.ajax({
-		      type: "post",
+        $.ajax({
+		    type: "post",
 			  url: server + "/api/admin/reg",
 			  async: true,
 			  data: {
-				'UserName':name,
-				'Password':pass		
+				'UserName':user,
+				'Password':pass,
+				'xingming':name,
+				'dianhua':dianhua
 			  },
 			  success: function(res){
 				alert(res.msg)
+				$('#box #admin input').val(''); 
 				admin();
 			  }
 	        })
@@ -130,7 +146,10 @@
 								html += `
                           <ul class="list">
 						                <li class="name">${data[i].UserName}</li>
-						                <li class="pass">${data[i].Password}</li>
+														<li class="pass">${data[i].Password}</li>
+														<li class="xingming">${data[i].xingming}</li>
+						                <li class="dianhua">${data[i].dianhua}</li>
+														
 						                <li><span class="del" style="color:blue;cursor:pointer;">删除<span/></li>
 					                </ul>							
 						        `;

@@ -49,9 +49,9 @@ Router.post('/usertext',function(req,res){
 	})
 })
 Router.post('/reg',function(req,res){
-	var {UserName,Password,Email,TelephoneNumber}=req.body;
+	var {UserName,Password,Email,TelephoneNumber,dizhi}=req.body;
 	console.log(req.body);
-	userModel.insertMany({UserName,Password,Email,TelephoneNumber})
+	userModel.insertMany({UserName,Password,Email,TelephoneNumber,dizhi})
 	.then(function(){
 		res.send(msg.sendData(0,'注册成功，请登录',null));
 	})

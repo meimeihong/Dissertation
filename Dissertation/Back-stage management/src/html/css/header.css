@@ -38,7 +38,7 @@
     background: #448cc7;
   }
   #box #header ul {
-    width: 600px;
+    /* width: 600px; */
     height: 50px;
     line-height: 50px;
     display: block;
@@ -49,20 +49,21 @@
     padding-left:10px;
   }
   #box #header .hright{
+    /* width:900; */
     position: relative;
   }
   #box #header .hright ul {
     z-index: 500;
     position: relative;
     height: 50px;
-    width: 100px;
+    width: 90px;
     float: left;
   }
 
   #box #header .hright .back {
     position: absolute;
     top: 0px;
-    right: 0px;
+    right: -100px;
     width:50px;
     height:50px;
     line-height: 50px;
@@ -72,7 +73,8 @@
     cursor: pointer;
   }
   #box #header .hright ul p {
-    line-height: 50px;
+    width:90
+;    line-height: 50px;
     text-align: center;
     cursor: pointer;  
     border-left:1px solid black;
@@ -83,7 +85,7 @@
   } */
   #box #header .hright ul li {
     top: 35px;
-    width: 100px;
+    width: 90px;
     height: 31px;
     line-height: 31px;
     display: none;

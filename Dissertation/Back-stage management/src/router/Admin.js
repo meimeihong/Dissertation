@@ -22,13 +22,13 @@ Router.post('/login',function(req,res){
 	})
 });
 Router.post('/reg',function(req,res){
-	var {UserName,Password}=req.body
+	var {UserName,Password,xingming,dianhua}=req.body
     adminModel.find({UserName})
 	.then(function(data){
 		if(data.length>0){
            res.send(msg.sendData(0,'该用户名已被注册',null))
 		}else{
-			adminModel.insertMany({UserName,Password})
+			adminModel.insertMany({UserName,Password,xingming,dianhua})
 			.then(function(data){
                 res.send(msg.sendData(0,'该用户名已注册成功',null))	
 			})

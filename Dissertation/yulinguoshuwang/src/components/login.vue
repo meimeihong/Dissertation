@@ -46,7 +46,7 @@
                         console.log(res.data.data)
 						if(res.data.err==0){
                             localStorage.setItem('loginuser', this.user);
-                            localStorage.setItem("shouhuodizhi",res.data.data);
+                            localStorage.setItem("shouhuodizhi",res.data.data.dizhi);
 							this.$router.push({name:'home'})
 						}else{
 							this.tishi=res.data.msg;

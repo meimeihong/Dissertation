@@ -73,7 +73,8 @@
                              'UserName':this.user,
                              'Password':this.pass,
                              'Email':this.email,
-                             'TelephoneNumber':this.phone
+                             'TelephoneNumber':this.phone,
+                             'dizhi':''
 						}
 					)
 					.then((res) => {
