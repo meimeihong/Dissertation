@@ -56,6 +56,9 @@
     <div class="dibu" v-show="dibushow">
          已经到底啦~~~
 	</div>
+    <div class="nodingdan" v-show="nodingdan">
+         您目前还没有该订单哦~~ 
+    </div>
   </div>
 </template>
 <script> 
@@ -69,37 +72,11 @@ export default {
         onecheck:'全部订单',
         sort:false,
         datas:[],
-        dibushow:false    
+        dibushow:false,
+        nodingdan:false
     }
     },
     methods:{
-    addtocart(bianhao,data){
-                    var loginuser = localStorage.getItem("loginuser");
-                    if(loginuser===undefined || loginuser==='' || loginuser===null){
-                        Toast({
-                            message: '请先登陆',
-                            position: 'middle',
-                            duration: 2000
-                        });
-					 }else{
-						var addtocartdata=JSON.stringify(data);
-                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
-                        {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':-1})
-                        .then((res)=>{
-                            console.log(res);
-                            Toast({
-                                message: res.data.msg,
-                                position: 'bottom',
-                                duration: 2000,
-                                className:'tankuang',
-                                });
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        })
-					 }
-                    
-                },
     returnmy(){
           this.$router.push({name:'my'});
       },
@@ -108,7 +85,8 @@ export default {
     },
     data(select){
           this.onecheck=select;
-        this.$axios.post('http://127.0.0.1:3000/api/dingdan',{ 'dingdan':select})
+          var loginuser = localStorage.getItem("loginuser");
+        this.$axios.post('http://127.0.0.1:3000/api/dingdan',{ 'dingdan':select,'UserName':loginuser})
         .then((res) => {
             console.log(res);
             if(res.data.err==0){
@@ -117,6 +95,11 @@ export default {
                   this.dibushow=true;
                 }else{
                     this.dibushow=false;
+                }
+                if(res.data.data.length<1){
+                  this.nodingdan=true;
+                }else{
+                    this.nodingdan=false;
                 }
             }
         })
@@ -353,6 +336,15 @@ export default {
 			text-align: center;
 			color:#ccc;
 			background: white;
+    }
+    .nodingdan{
+        .w(375);
+        .h(400);
+        text-align:center;
+        .lh(400);
+        .fs(25);
+        background: rgb(252, 249, 249);
+        color:gray;
     }
 }
 </style>

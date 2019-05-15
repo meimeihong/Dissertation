@@ -2,8 +2,7 @@
   <div id="classifym">
       <div class="header">
           <span @click="returnhome"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-             <input type="text" placeholder="搜索">
-             <span><i class="fa fa-search"></i></span>
+             <span>{{leibie}}</span>
         </div>
     <ul class="select">
         <li v-for="(item, index) in select" :key="index"  v-bind:class="onecheck===item?'active':''" @click="data(item)">
@@ -46,7 +45,8 @@ export default {
             prices:['价格'],
             onecheck:'所有',
             sort:false,
-            datas:[]          
+            datas:[],
+            leibie:''    
 		}
     },
     methods:{
@@ -83,6 +83,7 @@ export default {
     data(select){
           this.onecheck=select;
           var dleibie= localStorage.getItem("classifym");
+          this.leibie=dleibie;
           this.$axios.post('http://127.0.0.1:3000/api/goods/classifym',
 						 {
                              'select':select,
@@ -144,18 +145,10 @@ export default {
                 font-weight: 800;
                 color:rgb(66, 216, 103);
             }
-            input{
-                .w(280);
-                .h(25);
-                .fs(16);
-                color:gray;
-                border:none;
-                border-radius: 15px;
-                .mg(0,0,0,15);
-                .pd(0,0,0,10);
-                outline: none;
-                background: rgb(218, 218, 218);
-                box-sizing: border-box;
+            span:last-child{
+                display:inline-block;
+                .w(300);
+                text-align: center;
             }
         }	
   .select{

@@ -142,8 +142,9 @@ Router.post('/addtogoodslist',function(req,res){
 })
 Router.post('/dingdan',function(req,res){
     var dingdan=req.body.dingdan;
+    var username=req.body.UserName;
     if(dingdan=='全部订单'){
-        shoppinglist.find().sort({BuyingTime:-1})
+        shoppinglist.find({'UserName':username}).sort({BuyingTime:-1})
         .then(function(data){
             res.send(msg.sendData(0,'全部订单信息',data))
         })
@@ -152,7 +153,7 @@ Router.post('/dingdan',function(req,res){
             res.send(msg.sendData(-1,'订单信息获取出错',null))
         })
     }else if(dingdan=='待配送'){
-        shoppinglist.find({'fahuo':2})
+        shoppinglist.find({'UserName':username,'fahuo':2})
         .then(function(data){
             res.send(msg.sendData(0,'待配送订单信息',data))
         })
@@ -161,7 +162,7 @@ Router.post('/dingdan',function(req,res){
             res.send(msg.sendData(-1,'待配送信息获取出错',null))
         })
     }else if(dingdan=='待自提'){
-        shoppinglist.find({'fahuo':3})
+        shoppinglist.find({'UserName':username,'fahuo':3})
         .then(function(data){
             res.send(msg.sendData(0,'待自提订单信息',data))
         })
@@ -169,8 +170,8 @@ Router.post('/dingdan',function(req,res){
             console.log(err)
             res.send(msg.sendData(-1,'待自提信息获取出错',null))
         })
-    }else if(dingdan=='已收货'||dingdan=='未评价订单'){
-        shoppinglist.find({'fahuo':4})
+    }else if(dingdan=='已收货'){
+        shoppinglist.find({$or:[{'UserName':username,'fahuo':4},{'UserName':username,'fahuo':7}]})
         .then(function(data){
             res.send(msg.sendData(0,'收货商品信息',data))
         })
@@ -179,7 +180,7 @@ Router.post('/dingdan',function(req,res){
             res.send(msg.sendData(-1,'收货商品信息获取出错',null))
         })
     }else if(dingdan=='退换货'){
-        shoppinglist.find({$or:[{'fahuo':5},{'fahuo':6}]})
+        shoppinglist.find({$or:[{'UserName':username,'fahuo':5},{'UserName':username,'fahuo':6}]})
         .then(function(data){
             res.send(msg.sendData(0,'退换货订单信息',data))
         })
@@ -188,13 +189,22 @@ Router.post('/dingdan',function(req,res){
             res.send(msg.sendData(-1,'退换货信息获取出错',null))
         })
     }else if(dingdan=='已评价订单'){
-        shoppinglist.find({'fahuo':7})
+        shoppinglist.find({'UserName':username,'fahuo':7})
         .then(function(data){
-            res.send(msg.sendData(0,'退换货订单信息',data))
+            res.send(msg.sendData(0,'已评价订单信息',data))
         })
         .catch(function(err){
             console.log(err)
-            res.send(msg.sendData(-1,'退换货信息获取出错',null))
+            res.send(msg.sendData(-1,'已评价信息获取出错',null))
+        })
+    }else if(dingdan=='未评价订单'){
+        shoppinglist.find({'UserName':username,'fahuo':4})
+        .then(function(data){
+            res.send(msg.sendData(0,'未评价订单信息',data))
+        })
+        .catch(function(err){
+            console.log(err)
+            res.send(msg.sendData(-1,'未评价信息获取出错',null))
         })
     }
 

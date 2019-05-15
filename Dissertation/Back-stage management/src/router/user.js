@@ -50,7 +50,6 @@ Router.post('/usertext',function(req,res){
 })
 Router.post('/reg',function(req,res){
 	var {UserName,Password,Email,TelephoneNumber,dizhi}=req.body;
-	console.log(req.body);
 	userModel.insertMany({UserName,Password,Email,TelephoneNumber,dizhi})
 	.then(function(){
 		res.send(msg.sendData(0,'注册成功，请登录',null));
@@ -97,6 +96,7 @@ Router.post('/password',function(req,res){
 //	console.log(req.body);
 	if(emails.send!==prov){
 		return res.send(msg.sendData(-1,'验证码错误,请重新获取验证码',null))
+		emails.send=null;
 	}else{
 		userModel.updateOne({UserName},{$set:{Password}}, 
 	    function(err, resp) {

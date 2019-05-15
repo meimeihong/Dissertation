@@ -7,7 +7,7 @@
 	<ul>
 		<li>
             <span><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
-           <input type="text" placeholder="用户名" v-model="user" >
+           <input type="text" placeholder="用户名/电话号码" v-model="user" >
         </li>
         <li>
             <span><i class="fa fa-unlock" aria-hidden="true"></i></span>
@@ -39,14 +39,13 @@
 					this.$axios.post('http://127.0.0.1:3000/api/user/login',
 						 {
                              'UserName':this.user,
-                             'Password':this.pass
+                             'Password':this.pass,
 						}
 					)
 					.then((res) => {
-                        console.log(res.data.data)
 						if(res.data.err==0){
                             localStorage.setItem('loginuser', this.user);
-                            localStorage.setItem("shouhuodizhi",res.data.data.dizhi);
+                            localStorage.setItem("shouhuodizhi",res.data.data);
 							this.$router.push({name:'home'})
 						}else{
 							this.tishi=res.data.msg;

@@ -17,8 +17,9 @@
         <i>{{emailtext}}</i>
         <li>
             <span class="fa fa-reddit-alien" aria-hidden="true"></span>
-            <input type="text" placeholder="验证码" v-model="prov">
+            <input type="text" placeholder="验证码" v-model="prov" @keyup="provt">
         </li>
+        <i>{{provtext}}</i>
         <li>
             <span class="fa fa-key" aria-hidden="true"> </span>
             <input type="password" placeholder="新密码" v-model="newpass" @keyup="fpass">
@@ -50,6 +51,7 @@
                 passtext:'',
                 passy:'',
                 prov:'',
+                provtext:'',
                 tishi:''
 			}
 			
@@ -62,6 +64,9 @@
 			fpass(){
 				this.passtext= /^.{6,}$/.test(this.newpass) ? '' : '密码必须六位以上';
             },
+            provt(){
+				this.provtext= /^.{4,}$/.test(this.prov) ? '' : '请填写正确的验证码';
+            },
             passconfirm(){
                 if(this.newpass!==this.confirmpass){
                       this.passy="新密码设置不一致";
@@ -70,7 +75,7 @@
                 }
             },
             proving(){
-                 if(this.emailtext==''){
+                 if(this.emailtext==''&&this. email!==''&&this.user!==''&&this.provtext==''){
                      this.$axios.post('http://127.0.0.1:3000/api/user/proving',
 						 {
                              'Email':this.email,
@@ -78,19 +83,20 @@
 						}
 					)
 					.then((res) => {
-						if(res.data.err==0){
-							this.tishi='';
-						}else{
-							this.tishi=res.data.msg;
-						}	
+                            this.tishi=res.data.msg;	
 					})
 					.catch((err) => {
 						console.log(err);
 					})
+                 }else{
+                     this.tishi='请填写 用户名和邮箱';
                  }
             },
 			findpassword(){
-				if(this.passy=='' && this.passtext=='' && this.emailtext=='' && this.user!=='' && this.tishi==''){
+                if(this.newpass=='' || this.confirmpass=='' || this.user=='' || this.email==''){
+                        this.tishi='请您填写完整修改信息'
+                }else{
+                    if(this.passy=='' && this.passtext=='' && this.emailtext==''&&this.provtext==''){
 					this.$axios.post('http://127.0.0.1:3000/api/user/password',
 						 {
                              'UserName':this.user,
@@ -100,16 +106,21 @@
 						}
 					)
 					.then((res) => {
+                        console.log(res)
 						if(res.data.err==0){
-							this.$router.push({name:'login'})
+							this.$router.push({name:'my'})
 						}else{
-							this.success=res.data.msg;
+							this.tishi=res.data.msg;
 						}	
 					})
 					.catch((err) => {
 						console.log(err);
 					})
-				}
+				 }else{
+                     this.tishi='请填写正确的信息格式'
+                 }
+                }
+				
             },
             returnmy(){
                 this.$router.push({name:'my'})

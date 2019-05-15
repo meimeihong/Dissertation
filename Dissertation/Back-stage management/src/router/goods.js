@@ -146,7 +146,6 @@ Router.post('/goodsdelete',function(req,res){
 //删除选中的商品
 Router.post('/checkdel',function(req,res){
 	var data=req.body;
-	console.log(data);
 	for(var i in data){
 //		console.log(data[i])
 		goodsModel.deleteOne({bianhao:data[i]})
@@ -182,7 +181,6 @@ goodsModel.find()
 })
 Router.post('/xiaoleibie',function(req,res){
 	var {leibie}=req.body;
-	console.log(req.body);
 	const xiaoleibie=[];
 	var xiaolb=[]
 	goodsModel.find({leibie})
@@ -205,11 +203,9 @@ Router.post('/xiaoleibie',function(req,res){
 		})	
 })
 Router.post('/classifycontent',function(req,res){
-	var {xiaoleibie}=req.body;
-	console.log(req.body)
-	goodsModel.find({xiaoleibie})
+	var xiaoleibie=req.body.xiaoleibie;
+	goodsModel.find({'xiaoleibie':xiaoleibie,'zhuangt':1})
 	.then(function(data){
-		console.log(data)
 		res.send(msg.sendData(0,{xiaoleibie},data));
 	})
 	.catch(function(err){
@@ -218,12 +214,12 @@ Router.post('/classifycontent',function(req,res){
 
 })
 Router.post('/classifym',function(req,res){
-	var {leibie}=req.body;
+	var leibie=req.body.leibie;
 	var select=req.body.select;
 	var paixu=req.body.paixu;
 	if(select=='价格'){
           if(paixu){
-			goodsModel.find({leibie}).sort({danjia:1})
+			goodsModel.find({'leibie':leibie,'zhuangt':1}).sort({danjia:1})
 			.then(function(data){
 				console.log(data)
 				res.send(msg.sendData(0,select,data));
@@ -242,27 +238,24 @@ Router.post('/classifym',function(req,res){
 			})
 		       }
 	}else if(select=='销量'){
-		goodsModel.find({leibie}).sort({shuliang:-1})
+		goodsModel.find({'leibie':leibie,'zhuangt':1}).sort({shuliang:-1})
 		.then(function(data){
-			console.log(data)
 			res.send(msg.sendData(0,select,data));
 		})
 		.catch(function(err){
 			console.log(err)
 		})
 	}else if(select=='新品'){
-		goodsModel.find({leibie}).sort({NewTime:-1})
+		goodsModel.find({'leibie':leibie,'zhuangt':1}).sort({NewTime:-1})
 		.then(function(data){
-			console.log(data)
 			res.send(msg.sendData(0,select,data));
 		})
 		.catch(function(err){
 			console.log(err)
 		})
 	}else{
-		goodsModel.find({leibie})
+		goodsModel.find({'leibie':leibie,'zhuangt':1})
 		.then(function(data){
-			console.log(data)
 			res.send(msg.sendData(0,select,data));
 		})
 		.catch(function(err){
@@ -271,7 +264,7 @@ Router.post('/classifym',function(req,res){
 	}
 })
 Router.post('/zhekou',function(req,res){
-	goodsModel.find()
+	goodsModel.find({'zhuangt':1})
 		.then(function(data){
 			var zhekou=[]
 			for(var i in data){
@@ -291,30 +284,30 @@ Router.post('/zhekou',function(req,res){
 //轮播图
 Router.post('/banner',function(req,res){
 	var banner=[];
-	goodsModel.find({'leibie':'新鲜水果'}).sort({shuliang:-1}).limit(1)
+	goodsModel.find({'leibie':'新鲜水果','zhuangt':1}).sort({shuliang:-1}).limit(1)
 			.then(function(data){
 				banner=banner.concat(data)				
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'精选肉类'}).sort({shuliang:-1}).limit(1)
+				goodsModel.find({'leibie':'精选肉类','zhuangt':1}).sort({shuliang:-1}).limit(1)
 				.then(function(data){
 					banner=banner.concat(data);					
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'新鲜蔬菜'}).sort({shuliang:-1}).limit(1)
+				goodsModel.find({'leibie':'新鲜蔬菜','zhuangt':1}).sort({shuliang:-1}).limit(1)
 				.then(function(data){
 					banner=banner.concat(data);
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'海鲜水产'}).sort({shuliang:-1}).limit(1)
+				goodsModel.find({'leibie':'海鲜水产','zhuangt':1}).sort({shuliang:-1}).limit(1)
 				.then(function(data){
 					banner=banner.concat(data);
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'酒水饮料'}).sort({shuliang:-1}).limit(1)
+				goodsModel.find({'leibie':'酒水饮料','zhuangt':1}).sort({shuliang:-1}).limit(1)
 				.then(function(data){
 					banner=banner.concat(data);
 					res.send(msg.sendData(0,'推荐',banner));
@@ -327,30 +320,30 @@ Router.post('/banner',function(req,res){
 //主页推荐
 Router.post('/tuijian',function(req,res){
 	var tuijian=[]
-			goodsModel.find({'leibie':'新鲜水果'}).sort({NewTime:-1}).limit(2)
+			goodsModel.find({'leibie':'新鲜水果','zhuangt':1}).sort({NewTime:-1}).limit(2)
 			.then(function(data){
 				tuijian=tuijian.concat(data)				
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'新鲜蔬菜'}).sort({NewTime:-1}).limit(3)
+				goodsModel.find({'leibie':'新鲜蔬菜','zhuangt':1}).sort({NewTime:-1}).limit(3)
 				.then(function(data){
 					tuijian=tuijian.concat(data);
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'海鲜水产'}).sort({NewTime:-1}).limit(2)
+				goodsModel.find({'leibie':'海鲜水产','zhuangt':1}).sort({NewTime:-1}).limit(2)
 				.then(function(data){
 					tuijian=tuijian.concat(data);
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'酒水饮料'}).sort({NewTime:-1}).limit(2)
+				goodsModel.find({'leibie':'酒水饮料','zhuangt':1}).sort({NewTime:-1}).limit(2)
 				.then(function(data){
 					tuijian=tuijian.concat(data);
 				})
 			})
 			.then(function(data){
-				goodsModel.find({'leibie':'精选肉类'}).sort({NewTime:1}).limit(3)
+				goodsModel.find({'leibie':'精选肉类','zhuangt':1}).sort({NewTime:1}).limit(3)
 				.then(function(data){
 					tuijian=tuijian.concat(data);
 					res.send(msg.sendData(0,'推荐',tuijian));
@@ -363,25 +356,25 @@ Router.post('/tuijian',function(req,res){
 //安心蔬菜
 Router.post('/all',function(req,res){
 	var all={};
-	goodsModel.find({'leibie':'新鲜蔬菜'}).sort({shuliang:-1})
+	goodsModel.find({'leibie':'新鲜蔬菜','zhuangt':1}).sort({shuliang:-1})
 	.then(function(data){
 		all.shucai=data;
 		// res.send(msg.sendData(0,'安心蔬菜',data));
 	})
 	.then(function(data){
-		goodsModel.find({'leibie':'精选肉类'}).sort({shuliang:-1})
+		goodsModel.find({'leibie':'精选肉类','zhuangt':1}).sort({shuliang:-1})
 		.then(function(data){
 			all.roulei=data;	
 		})
 	})
 	.then(function(data){
-		goodsModel.find({'leibie':'休闲零食'}).sort({shuliang:-1})
+		goodsModel.find({'leibie':'休闲零食','zhuangt':1}).sort({shuliang:-1})
 		.then(function(data){
 			all.lingshi=data;	
 		})
 	})
 	.then(function(data){
-		goodsModel.find({'leibie':'新鲜水果'}).sort({shuliang:-1})
+		goodsModel.find({'leibie':'新鲜水果','zhuangt':1}).sort({shuliang:-1})
 		.then(function(data){
 			all.shuiguo=data;
 			res.send(msg.sendData(0,'首页内容数据',all));	
@@ -394,7 +387,7 @@ Router.post('/all',function(req,res){
 //移动端商品查找
 Router.post('/searchgoods',function(req,res){
 	var searchgoods=req.body.searchname;
-	goodsModel.find({$or:[{'leibie':searchgoods},{'name':searchgoods},{'xiaoleibie':searchgoods}]})
+	goodsModel.find({$or:[{'leibie':searchgoods,'zhuangt':1},{'name':searchgoods,'zhuangt':1},{'xiaoleibie':searchgoods,'zhuangt':1}]})
 	.then(function(data){
 		res.send(msg.sendData(0,'查找商品',data));
 	})

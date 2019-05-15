@@ -62,7 +62,7 @@ export default {
                                 });
 					 }else{
 						 var addtocartdata=JSON.stringify(data);
-                        this.$axios.post('http://127.0.0.1:3009/api/cart/addtocart',
+                        this.$axios.post('http://127.0.0.1:3000/api/cart/addtocart',
                         {'bianhao':bianhao,'data':addtocartdata,'UserName':loginuser,'jiajian':-1})
                         .then((res)=>{
                             console.log(res);

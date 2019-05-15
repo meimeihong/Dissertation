@@ -15,7 +15,7 @@
 				<p>{{item.name}}</p>
 				<p style="color:gray;">{{item.miaoshu}}</p>
 				<p>
-					<span style="color:red;">￥{{item.danjia}}</span>
+					<span style="color:red;">￥{{item.danjia.toFixed(2)}}</span>
 					<span  style="color:#ccc;">/{{item.guige}}</span>
                     <span class="cart3"  @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
 				</p>						

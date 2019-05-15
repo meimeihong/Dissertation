@@ -124,7 +124,8 @@ export default {
       },
     data(select){
         this.onecheck=select;
-        this.$axios.post('http://127.0.0.1:3000/api/dingdan',{ 'dingdan':select})
+        var loginuser = localStorage.getItem("loginuser");
+        this.$axios.post('http://127.0.0.1:3000/api/dingdan',{ 'dingdan':select,'UserName':loginuser})
         .then((res) => {
             console.log(res);
             if(res.data.err==0){
