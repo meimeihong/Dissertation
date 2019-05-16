@@ -106,8 +106,11 @@
 		var plen=pass.length;
 		var ulen=user.length;
 		var dlen=dianhua.length;
-		if(nlen==0 || plen==0||ulen==0 || dlen==0){
+		dhua=/^[1][3,4,5,7,8][0-9]{9}$/.test(dianhua)?'':'请输入正确手机号码';
+		if(user=='' || pass==''||name=='' || dianhua==''){
 			alert("请填写完整的注册信息")
+		}else if(dhua!==''){
+       alert(dhua)
 		}else{
         $.ajax({
 		    type: "post",

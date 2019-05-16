@@ -65,6 +65,7 @@
 	
 	//用户信息查询
 	$('#head .search').on('click', function() {
+		page=1;
 		search=$('#head .int').val();
 		console.log(search);
 		com();

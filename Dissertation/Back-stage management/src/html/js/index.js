@@ -75,6 +75,7 @@
 	
 	//商品查询
 	$('#head #search').on('click', function() {
+		page=1;
 		search=$('#hptext').val();
 		console.log(search);
 		com();

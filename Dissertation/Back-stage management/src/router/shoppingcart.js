@@ -15,7 +15,6 @@ Router.post('/shoppingcart',function(req,res){
             for(var i=0;i<data.length;i++){
                 num+=data[i].addnumber;
             }
-            console.log(data)
             total=data.length;
             return shoppingcartModel.find().limit(pagesize).skip((page-1)*pagesize)
         })

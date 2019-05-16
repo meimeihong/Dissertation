@@ -9,7 +9,6 @@ Router.post('/userlist',function(req,res){
 		var page=Number(req.body.page);
 		var total=0;
 		var search=req.body.search;
-		console.log(req.body);
 		if(search=='所有' || search==''){
 			userModel.find()
 			.then(function(data){
@@ -23,10 +22,10 @@ Router.post('/userlist',function(req,res){
 				res.send(msg.sendData(-1,'用户信息获取出错',null))
 			})
 		}else{
-		userModel.find({$or:[{'UserName':search},{'Email':search},{'TelephoneNumber':search}]})
+		userModel.find({$or:[{'UserName':search},{'Email':search},{'dizhi':search},{'TelephoneNumber':search}]})
 		.then(function(data){
 			total=data.length;
-			return userModel.find({$or:[{'UserName':search},{'Email':search},{'TelephoneNumber':search}]}).limit(pagesize).skip((page-1)*pagesize)
+			return userModel.find({$or:[{'UserName':search},{'Email':search},{'dizhi':search},{'TelephoneNumber':search}]}).limit(pagesize).skip((page-1)*pagesize)
 		})
 		.then(function(data){
 			res.send(msg.sendData(0,'用户信息',{'total':total,'userlist':data}))

@@ -28,15 +28,11 @@
                     amount = res.data.total; 	
                     var html = ``;
 					for(var i = 0; i < length; i++) {
-                        var time=Number(data[i].time);
-						var times=new Date(time);
-						var year=times.getFullYear();
-						var month=times.getMonth();
-						var dates=times.getDate();
-						var hours=times.getHours() ;
-						var minutes=times.getMinutes();
-						var second=times.getSeconds() 
-						var timess=year+'/'+month+'/'+dates		
+                       if(data[i].res==undefined){
+						   var res='';
+					   }else{
+						   var res=data[i].res;
+					   }	
 						html += `
                                 <ul class="list">
                                     <li>${data[i].UserName}</li>
@@ -49,8 +45,8 @@
                                     <li>${data[i].haoping}</li>
                                     <li class="time" style="display:none;">${data[i].time}</li>
                                     <li  style="width:265px"> 
-                                    <input id="rescont" type="text" value="${data[i].res}" style="width:265px;border:none;outline:none;"></li>
-                                    <li style="color:blue;" class="res">回复</li>
+                                    <input id="rescont" type="text" value="${res}" style="width:265px;border:none;outline:none;"></li>
+                                    <li style="color:blue;cursor: pointer;" class="res">回复</li>
                                 </ul>
 							    
 						        `;
@@ -73,32 +69,37 @@
     $('#pingjialist').on('click', '.res', function() {
         var content = $(this).parent().find('#rescont').val();
         var time = Number($(this).parent().find('.time').text());
-        console.log(content,time)
-		$.ajax({
-			type: "post",
-			url: server + "/api/findpingjia",
-			async: true,
-			data: {
-				'time': time,			
-			},
-			success: function(res) {
-                var data=res.data[0]
-                data.res=content;
-               console.log(data);
-               data=JSON.stringify(data)
-                $.ajax({
-                    type: "post",
-                    url: server + "/api/respingjia",
-                    async: true,
-                    data: {
-                        'data': data,
-                        'time':time			
-                    },
-                    success: function(res) {
-                        console.log(res);
-                    }
-                })
-            }
-       })
+		console.log(content,time)
+		if(content!==''){
+            $.ajax({
+				type: "post",
+				url: server + "/api/findpingjia",
+				async: true,
+				data: {
+					'time': time,			
+				},
+				success: function(res) {
+					var data=res.data[0]
+					data.res=content;
+				   console.log(data);
+				   data=JSON.stringify(data)
+					$.ajax({
+						type: "post",
+						url: server + "/api/respingjia",
+						async: true,
+						data: {
+							'data': data,
+							'time':time			
+						},
+						success: function(res) {
+							alert(res.msg);
+						}
+					})
+				}
+		   })
+		}else{
+			alert('回复内容为空，请填写回复内容')
+		}
+		
 
 	});

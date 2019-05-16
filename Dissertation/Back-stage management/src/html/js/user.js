@@ -33,10 +33,15 @@
                         console.log(amount)				
 					var html = ``;
 					for(var i = 0; i < length; i++) {
+						if(data[i].dizhi==undefined){
+							var dizhi='';
+						}else{
+							var dizhi=data[i].dizhi;
+						}
 						html += `
                                     <ul class="list">
 						                <li>${data[i].UserName}</li>
-						                <li  style="width:335px;">${data[i].dizhi}</li>
+						                <li  style="width:335px;">${dizhi}</li>
 						                <li style="width:250px;">${data[i].Email}</li>
 						                <li>${data[i].TelephoneNumber}</li>
 					                </ul>
@@ -54,6 +59,7 @@
 	
 	//用户信息查询
 	$('#head .search').on('click', function() {
+		page=1;
 		search=$('#head .int').val();
 		console.log(search);
 		com();
