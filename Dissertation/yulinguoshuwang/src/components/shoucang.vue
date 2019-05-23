@@ -14,7 +14,7 @@
                 <p>{{JSON.parse(item.data).name}}</p>
                 <p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
                 <p style="color:red;">
-                    <span>￥</span><span>{{JSON.parse(item.data).danjia}}</span>
+                    <span>￥</span><span>{{Number(JSON.parse(item.data).danjia).toFixed(2)}}</span>
                     <span class="guige" style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span> 
                </p>
                <p class="cang">
@@ -138,8 +138,8 @@ export default {
            .rlzhe{
                 .fs(16);
                 .w(150);
-                .h(220);
-                .lh(220);
+                .h(240);
+                .lh(240);
                 z-index: 60;
                 text-align: center;
                 color:white;
@@ -180,6 +180,7 @@ export default {
                 .pd(0,10,0,0);
                 box-sizing: border-box;
                 .fs(20);
+                z-index: 80;
             }
          }
 		}

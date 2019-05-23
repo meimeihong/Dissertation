@@ -29,7 +29,7 @@
 							<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
 							<p>
 								<span style="color:red;">￥</span>
-								<span style="color:red;">{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
+								<span style="color:red;">{{Number(JSON.parse(item.data).danjia).toFixed(2)}}</span>
 								<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 								<span class="numb">
 									 <span class="jian" @click.stop="reduce(index,JSON.parse(item.data).bianhao,item.data)" >-</span>
@@ -54,7 +54,7 @@
 					 <p>{{item.name}}</p>
 					 <p style="color:gray;">{{item.miaoshu}}</p>
 					 <p style="color:red;">
-							<span>￥</span><span>{{item.danjia}}</span>
+							<span>￥</span><span>{{item.danjia.toFixed(2)}}</span>
 							<span class="guige" style="color:#ccc;">/{{item.guige}}</span> 
 							<span class="carts" @click="addtocart(item.bianhao,JSON.stringify(item),-1)">
 								<i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -448,6 +448,7 @@
 							background: black;
 							color:white;
 							opacity: 0.5;
+							z-index: 70;
 						}
 						.dele{
 								display:inline-block;

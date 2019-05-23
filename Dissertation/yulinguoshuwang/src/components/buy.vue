@@ -24,18 +24,18 @@
 			<div class="good">
 				<p>{{JSON.parse(item.data).name}}</p>
 				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
-				<p  v-show="JSON.parse(item.data).jiangjia>0?true:false">
-					<span style="color:red;">￥{{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia).toFixed(2)}}</span>
-          <s  style="color:gray;">{{JSON.parse(item.data).danjia.toFixed(2)}}</s>
+				<p  v-show="Number(JSON.parse(item.data).jiangjia)>0?true:false">
+					<span style="color:red;">￥{{(Number(JSON.parse(item.data).danjia)*Number(JSON.parse(item.data).jiangjia)).toFixed(2)}}</span>
+          <s  style="color:gray;">{{Number(JSON.parse(item.data).danjia).toFixed(2)}}</s>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 				</p>
-        <p  v-show="JSON.parse(item.data).jiangjia==0?true:false">
-					<span style="color:red;">￥{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
+        <p  v-show="Number(JSON.parse(item.data).jiangjia)==0?true:false">
+					<span style="color:red;">￥{{Number(JSON.parse(item.data).danjia).toFixed(2)}}</span>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 				</p>	
-        <p class="jia" v-show="JSON.parse(item.data).jiangjia>0?true:false">
+        <p class="jia" v-show="Number(JSON.parse(item.data).jiangjia)>0?true:false">
           <span>
-            {{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia).toFixed(2)}}
+            {{(Number(JSON.parse(item.data).danjia)*Number(JSON.parse(item.data).jiangjia)).toFixed(2)}}
           </span>
           <span>x</span>
           <span>
@@ -46,9 +46,9 @@
             金额小计：￥{{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia*item.addnumber).toFixed(2)}}
           </span>
         </p>	
-         <p class="jia"  v-show="JSON.parse(item.data).jiangjia==0?true:false">
+         <p class="jia"  v-show="Number(JSON.parse(item.data).jiangjia)==0?true:false">
           <span>
-            {{JSON.parse(item.data).danjia.toFixed(2)}}
+            {{Number(JSON.parse(item.data).danjia).toFixed(2)}}
           </span>
           <span>x</span>
           <span>
@@ -107,10 +107,10 @@ export default {
          }
          console.log(this.data)
          for(var i=0;i<this.data.length;i++){
-           var addn=this.data[i].addnumber;
+           var addn=Number(this.data[i].addnumber);
             this.jianshu+=addn
             var onedata=JSON.parse(this.data[i].data);
-            if(onedata.jiangjia>0){
+            if(Number(onedata.jiangjia)>0){
                this.zongjiner+= onedata.danjia*onedata.jiangjia*addn;
             }else{
               this.zongjiner+= onedata.danjia*addn;

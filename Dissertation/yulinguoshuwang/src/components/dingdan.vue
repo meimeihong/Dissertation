@@ -18,23 +18,23 @@
 			<div class="good">
 				<p>{{JSON.parse(item.data).name}}</p>
 				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
-				<p v-show="JSON.parse(item.data).jiangjia>0?true:false">
+				<p v-show="Number(JSON.parse(item.data).jiangjia)>0?true:false">
                     
-					<span style="color:red;">￥{{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}</span>
-                    <s>{{JSON.parse(item.data).danjia.toFixed(2)}}</s>
+					<span style="color:red;">￥{{Number(JSON.parse(item.data).danjia)*Number(JSON.parse(item.data).jiangjia).toFixed(2)}}</span>
+                    <s>{{Number(JSON.parse(item.data).danjia).toFixed(2)}}</s>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 				</p>
-                <p  v-show="JSON.parse(item.data).jiangjia==0?true:false">
-					<span style="color:red;">￥{{JSON.parse(item.data).danjia.toFixed(2)}}</span>
+                <p  v-show="Number(JSON.parse(item.data).jiangjia)==0?true:false">
+					<span style="color:red;">￥{{Number(JSON.parse(item.data).danjia).toFixed(2)}}</span>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
 				</p>
-                <p class="jia" v-show="JSON.parse(item.data).jiangjia>0?true:false">
+                <p class="jia" v-show="Number(JSON.parse(item.data).jiangjia)>0?true:false">
                  <span>购买数量：</span>
                  <span>{{item.addnumber}}</span>
                  <span>金额小计：</span>
-                 <span>{{(JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia)*item.addnumber.toFixed(2)}}</span>
+                 <span>{{(Number(JSON.parse(item.data).danjia)*JSON.parse(item.data).jiangjia)*item.addnumber.toFixed(2)}}</span>
                 </p>
-                <p  class="jia" v-show="JSON.parse(item.data).jiangjia==0?true:false">
+                <p  class="jia" v-show="Number(JSON.parse(item.data).jiangjia)==0?true:false">
                  <span>购买数量：</span>
                  <span>{{item.addnumber}}</span>
                  <span>金额小计：</span>
@@ -116,7 +116,7 @@ export default {
                 if(resdata.length>0 &&resdata[0].zhuangt==1 &&resdata[0].shuliang>0){                  
                     var xiangqingdata=JSON.stringify(resdata[0]);
                     localStorage.setItem('xiangqing', xiangqingdata);
-                    localStorage.setItem('xiangqingreturn', 'pinglun');
+                    localStorage.setItem('xiangqingreturn', 'dingdan');
                     this.$router.push({name:'xiangqing'});
                     console.log(res.data.data)
                 }else{

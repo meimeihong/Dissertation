@@ -50,7 +50,6 @@ Router.post('/onepingjia',function(req,res){
     var {bianhao}=req.body;
     pingjia.find({bianhao})
     .then(function(data){
-        console.log(data)
           if(data.length>0){
               var haoping=[]
               for(var i=0;i<data.length;i++){

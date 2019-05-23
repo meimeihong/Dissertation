@@ -108,7 +108,12 @@
 					.then((res) => {
                         console.log(res)
 						if(res.data.err==0){
-							this.$router.push({name:'my'})
+                            this.tishi=res.data.msg;
+                            localStorage.setItem('loginuser', '');
+                            localStorage.setItem("shouhuodizhi",'');
+                            var that=this
+                            setTimeout(function(){
+                            that.$router.push({name:'my'});  },3000) 
 						}else{
 							this.tishi=res.data.msg;
 						}	

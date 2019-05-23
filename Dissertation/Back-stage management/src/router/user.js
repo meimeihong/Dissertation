@@ -73,10 +73,11 @@ Router.post('/proving',function(req,res){
 	var {Email,UserName}=req.body;
 	userModel.find({Email,UserName})
 	.then(function(data){
-            if(data.length>=1){
+        if(data.length==1){
 				var num=(parseInt(Math.random(0,1)*1000+1000)).toString();
 				mail.sendmail(Email,num)
-	            .then(function(){
+	      .then(function(){
+					console.log(num)
 					emails.send=num;
 					res.send(msg.sendData(0,'验证码已发送',null))
 				})

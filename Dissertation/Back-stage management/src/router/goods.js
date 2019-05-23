@@ -2,6 +2,8 @@ const express=require('express');
 const Router=express.Router();
 const msg=require('./msg.js');
 const goodsModel=require('../model/goodsModel.js');
+const shoppingcartModel=require('../model/ShoppingCartModel.js');
+const collectionModel=require('../model/collection.js');
 //添加商品信息
 Router.post('/addgoods',function(req,res){
 	console.log(req.body)
@@ -36,7 +38,6 @@ Router.post('/goodslist',function(req,res){
 	if(leibie=='所有' || leibie==''){
 		goodsModel.find()
 		.then(function(resdb){
-			console.log(resdb)
 			if(req.body.sortdown=='sortdown'){
 				total=resdb.length;
 				return goodsModel.find().sort({NewTime:-1}).limit(pagesize).skip((page-1)*pagesize)
@@ -50,7 +51,6 @@ Router.post('/goodslist',function(req,res){
 			
 		})
 		.then(function(data){
-			console.log(data)
 			res.send(msg.sendData(0,'商品信息',{'total':total,'goodslist':data}))
 		})
 		.catch(function(err){
@@ -122,11 +122,21 @@ Router.post('/update',function(req,res){
 //更新页面商品信息的修改
 Router.post('/goodsupdate',function(req,res){
 	var {bianhao,name,leibie,xiaoleibie,guige,img,miaoshu,shuliang,danjia,jiangjia,zhuangt,NewTime}=req.body;
-	var id=req.body.bianhao;
-	goodsModel.updateOne({bianhao:id},{bianhao,name,leibie,xiaoleibie,guige,img,miaoshu,shuliang,danjia,jiangjia,zhuangt,NewTime}, 
+	var bianhao=req.body.bianhao;
+	var data=JSON.parse(req.body.data);
+	    data=JSON.stringify(data);
+	goodsModel.updateOne({bianhao},{bianhao,name,leibie,xiaoleibie,guige,img,miaoshu,shuliang,danjia,jiangjia,zhuangt,NewTime}, 
 	function(err, resp) {
 		if(err){res.send(msg.sendData(-1,'商品信息修改失败',null))}
 		res.send(msg.sendData(0,'商品信息修改成功',null))
+	shoppingcartModel.updateMany({bianhao},{$set:{'data':data}}, 
+	function(err, resp) {
+	console.log(err)
+	});
+	collectionModel.updateMany({bianhao},{$set:{'data':data}}, 
+	function(err, resp) {
+	console.log(err)
+	});
 });
 });
 //删除单个商品

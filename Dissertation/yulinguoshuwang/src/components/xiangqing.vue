@@ -15,16 +15,16 @@
       <p class="miaoshu">{{data.miaoshu}}</p>
       <p class="price" v-show="jiang">
           <span>￥</span>
-          <span>{{(data.danjia*data.jiangjia).toFixed(2)}}</span>
+          <span>{{(Number(data.danjia)*Number(data.jiangjia)).toFixed(2)}}</span>
            <span class="jiang">
-            <s>￥{{data.danjia.toFixed(2)}}</s>          
+            <s>￥{{Number(data.danjia).toFixed(2)}}</s>          
           </span>
           <span style="color:#ccc;font-size:12px;">/{{data.guige}}</span>
          
       </p>
       <p class="price"  v-show="nojiang">
           <span>￥</span>
-          <span>{{data.danjia.toFixed(2)}}</span>
+          <span>{{Number(data.danjia).toFixed(2)}}</span>
           <span style="color:#ccc;font-size:12px;">/{{data.guige}}</span>
          
       </p>

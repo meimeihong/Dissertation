@@ -45,10 +45,13 @@ var server = 'http://127.0.0.1:3000';
 		imgstr=imgs.toString();
 		// var imgsrc=$('img')[0].dataset.src;	
 		var time=new Date().getTime();
+		var data=JSON.stringify({'bianhao':bianhao,'name':name,'leibie':leibie,'xiaoleibie':xiaoleibie,'guige':guige,'img':imgstr,'miaoshu':miaoshu,'shuliang':shuliang,
+		'danjia':danjia,'jiangjia':jiangjia,
+	'zhuangt':zhuangt,'NewTime':time});
 		$.post(server+'/api/goods/goodsupdate',
 		{'bianhao':bianhao,'name':name,'leibie':leibie,'xiaoleibie':xiaoleibie,'guige':guige,'img':imgstr,'miaoshu':miaoshu,'shuliang':shuliang,
 		'danjia':danjia,'jiangjia':jiangjia,
-	'zhuangt':zhuangt,'NewTime':time},
+	'zhuangt':zhuangt,'NewTime':time,'data':data},
 		function(res){
 			alert(res.msg);
 			if(res.err==0){

@@ -13,7 +13,7 @@
             <p>{{item.name}}</p>
             <p style="color:gray;">{{item.miaoshu}}</p>
             <p style="color:red;">
-                <span>￥</span><span>{{item.danjia}}</span>
+                <span>￥</span><span>{{item.danjia.toFixed(2)}}</span>
                 <span class="guige">/{{item.guige}}</span> 
             <span class="carts" @click="addtocart(item.bianhao,item)"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
         </p>
