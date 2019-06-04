@@ -85,7 +85,7 @@ Router.post('/update',function(req,res){
     shoppinglist.updateOne({
         'UserName':req.body.user,
         'bianhao':req.body.bianh,
-        'fahuo':2
+        'BuyingTime':req.body.BuyingTime
     },{
         $set:{
             'fahuo':3

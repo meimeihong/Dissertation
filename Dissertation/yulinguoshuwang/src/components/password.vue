@@ -14,22 +14,22 @@
             <input type="text" placeholder="邮箱" v-model="email" @keyup="femail" style="width:200px;">
             <input type="button" value="获取验证码" @click="proving" >
         </li>
-        <i>{{emailtext}}</i>
+        <i :class="emailtext!==''?'tshow':''">{{emailtext}}</i>
         <li>
             <span class="fa fa-reddit-alien" aria-hidden="true"></span>
             <input type="text" placeholder="验证码" v-model="prov" @keyup="provt">
         </li>
-        <i>{{provtext}}</i>
+        <i :class="provtext!==''?'tshow':''">{{provtext}}</i>
         <li>
             <span class="fa fa-key" aria-hidden="true"> </span>
             <input type="password" placeholder="新密码" v-model="newpass" @keyup="fpass">
         </li>
-        <i>{{passtext}}</i>
+        <i :class="passtext!==''?'tshow':''">{{passtext}}</i>
         <li>
             <span class="fa fa-key" aria-hidden="true"></span>
             <input type="password" placeholder="确认新密码" v-model="confirmpass" @keyup="passconfirm">
         </li>
-        <i>{{passy}}</i>
+        <i :class="passy!==''?'tshow':''">{{passy}}</i>
 	</ul>
     <span class="tishi">{{tishi}}</span>
     <div class="zhaohui">
@@ -58,14 +58,14 @@
 		},
 		methods:{
 			femail(){
-				this.emailtext=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(this.email) ? '' : '请输入正确邮箱格式';
+				this.emailtext=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(this.email) || /^$/.test(this.email) ? '' : '请输入正确邮箱格式';
 				
 			},
 			fpass(){
-				this.passtext= /^.{6,}$/.test(this.newpass) ? '' : '密码必须六位以上';
+				this.passtext= /^.{6,}$/.test(this.newpass) || /^$/.test(this.newpass) ? '' : '密码必须六位以上';
             },
             provt(){
-				this.provtext= /^.{4,}$/.test(this.prov) ? '' : '请填写正确的验证码';
+				this.provtext= /^.{4,}$/.test(this.prov) || /^$/.test(this.prov) ? '' : '请填写正确的验证码';
             },
             passconfirm(){
                 if(this.newpass!==this.confirmpass){
@@ -165,8 +165,10 @@
             justify-content:flex-start;
             align-items:center;
             .mg(50,0,0,0);
-            i{
+            .tshow{
                 .w(375);
+                .h(30);
+                .lh(30);
                 border-bottom: 1px solid rgb(197, 193, 193);
                 text-align: center;
                 color:red;

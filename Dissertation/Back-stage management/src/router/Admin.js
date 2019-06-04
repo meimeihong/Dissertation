@@ -26,11 +26,11 @@ Router.post('/reg',function(req,res){
     adminModel.find({UserName})
 	.then(function(data){
 		if(data.length>0){
-           res.send(msg.sendData(0,'该用户名已被注册',null))
+           res.send(msg.sendData(0,'该管理员名称已被注册',null))
 		}else{
 			adminModel.insertMany({UserName,Password,xingming,dianhua})
 			.then(function(data){
-                res.send(msg.sendData(0,'该用户名已注册成功',null))	
+                res.send(msg.sendData(0,'该管理员名称已注册成功',null))	
 			})
 			.catch(function(err){
 				res.send(msg.sendData(-1,'管理员信息插入出错',null))

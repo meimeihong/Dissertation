@@ -67,8 +67,7 @@
 				localStorage.setItem('searchname', this.searchname);
 				localStorage.setItem('searchreturn', 'home');
 				this.$router.push({name:'search'})
-				}
-				
+				}		
 			}
 		},
 		created() {

@@ -62,7 +62,8 @@
                                         <li>${listdata.danjia}</li>
                                         <li>${data[i].addnumber}</li>
                                         <li>${fahuo}</li>
-                                        <li>${dele}</li>
+										<li>${dele}</li>
+										<li class="time" style="display:none;">${data[i].BuyingTime}</li>
                                         <li><input class="wei" type="button" value="发货" /></li>
 					                </ul>
 							
@@ -89,7 +90,6 @@
 					$(' #tongji .addnumber').text(num);
 					$(' #tongji .zongjia').text(zongjia.toFixed(2));
 				}
-
 			}
 		});
 	}
@@ -103,15 +103,16 @@
     })
     $('#box #shoppinglist').on('click', '.wei', function() {
 		var user = $(this).parent().parent().find('.user').text();
-		var bianh=$(this).parent().parent().find('.bianh').text();;
-        console.log(1,user,bianh);
+		var bianh=$(this).parent().parent().find('.bianh').text();
+		var time=$(this).parent().parent().find('.time').text();;
 		$.ajax({
             type: "post",
 			url: server + "/api/update",
 			async: true,
 			data: {
 				'user': user,
-                'bianh':bianh			
+				'bianh':bianh,
+				'BuyingTime':time		
 			},
 			success: function(res){
                 console.log(res)

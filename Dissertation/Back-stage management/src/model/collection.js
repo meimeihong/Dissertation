@@ -4,6 +4,7 @@ const  mongoose=require('mongoose')
     UserName:{type:String,required:true},
     bianhao:{type:String,required:true},
     data:{type:String,required:true},
+    delete:{type:String,required:false}
   });
  let collectionmodel=mongoose.model('Collection', collectionSchema);
   module.exports= collectionmodel;

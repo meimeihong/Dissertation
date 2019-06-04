@@ -21,6 +21,15 @@ Router.post('/addgoods',function(req,res){
 			.catch(function(err){
 				res.send(msg.sendData(-1,'添加商品信息失败',null))
 			})
+
+			shoppingcartModel.updateMany({'bianhao':bianhaof},{$set:{'delete':1}}, 
+			function(err, resp) {
+			console.log(err)
+			});
+			collectionModel.updateMany({'bianhao':bianhaof},{$set:{'delete':1}}, 
+			function(err, resp) {
+			console.log(err)
+			});
 		}else{
 			res.send(msg.sendData(-1,'商品编号冲突，请重新设置编号',null))
 		}
@@ -149,19 +158,33 @@ Router.post('/goodsdelete',function(req,res){
 	.catch(function(err){
 		res.send(msg.sendData(-1,'商品信息删除失败',null))
 	})
+	shoppingcartModel.updateMany({'bianhao':id},{$set:{'delete':0}}, 
+	function(err, resp) {
+	console.log(err)
+	});
+	collectionModel.updateMany({'bianhao':id},{$set:{'delete':0}}, 
+	function(err, resp) {
+	console.log(err)
+	});
 });
 //删除选中的商品
 Router.post('/checkdel',function(req,res){
 	var data=req.body;
 	for(var i in data){
-//		console.log(data[i])
 		goodsModel.deleteOne({bianhao:data[i]})
-		.then(function(data){
-//		console.log(data)
+		.then(function(data){	
 		})
 		.catch(function(err){
 		console.log(err)
 		})
+	shoppingcartModel.updateMany({'bianhao':data[i]},{$set:{'delete':0}}, 
+	function(err, resp) {
+	console.log(err)
+	});
+	collectionModel.updateMany({'bianhao':data[i]},{$set:{'delete':0}}, 
+	function(err, resp) {
+	console.log(err)
+	});
 	}
 	res.send(msg.sendData(0,'商品信息删除成功',null));
 })

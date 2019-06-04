@@ -6,11 +6,11 @@
     </div>
 	<ul>
 		<li><span>*</span><input type="text" placeholder="用户名" v-model="user" @keyup="usertext"></li>
-        <i>{{usert}}</i>
+        <i  :class="usert!==''?'tshow':''">{{usert}}</i>
         <li><span>*</span><input type="password" placeholder="密码" v-model="pass" @keyup="fpass"></li>
-        <i>{{passtext}}</i>
+        <i :class="passtext!==''?'tshow':''">{{passtext}}</i>
         <li><span>*</span><input type="text" placeholder="邮箱" v-model="email" @keyup="femail"></li>
-        <i>{{emailtext}}</i>
+        <i :class="emailtext!==''?'tshow':''">{{emailtext}}</i>
         <li><span>*</span><input type="text" placeholder="电话号码" v-model="phone" @keyup="fphone"></li>
 	</ul>
     <span class="tishi">{{success}}</span>
@@ -38,14 +38,14 @@
 		},
 		methods:{
 			femail(){
-				this.emailtext=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(this.email) ? '' : '请输入正确邮箱格式';
+				this.emailtext=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(this.email) || /^$/.test(this.email)? '' : '请输入正确邮箱格式';
 				
 			},
 			fpass(){
-				this.passtext= /^.{6,}$/.test(this.pass) ? '' : '密码必须六位以上';
+				this.passtext= /^.{6,}$/.test(this.pass) || /^$/.test(this.pass) ? '' : '密码必须六位以上';
             },
             fphone(){
-                 this.success=/^[1][3,4,5,7,8][0-9]{9}$/.test(this.phone)?'':'请输入手机号码';
+                 this.success=/^[1][3,4,5,7,8][0-9]{9}$/.test(this.phone) || /^$/.test(this.phone)?'':'请输入手机号码';
             },
 			usertext(){
 					this.$axios.post('http://127.0.0.1:3000/api/user/usertext',
@@ -127,8 +127,10 @@
             justify-content:flex-start;
             align-items:center;
             .mg(50,0,0,0);
-            i{
+            .tshow{
                 .w(375);
+                .h(25);
+                .lh(25);
                 border-bottom: 1px solid rgb(197, 193, 193);
                 text-align: center;
                 color:red;

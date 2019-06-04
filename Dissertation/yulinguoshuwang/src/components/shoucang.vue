@@ -7,7 +7,7 @@
      <div class="content">
          <ul class="two">
             <li v-for="(item, index) in shoucangdata" :key="index">
-                <p class="rlzhe" v-show="JSON.parse(item.data).shuliang<1?true:false||item.zhuangt==0?true:false">
+                <p class="rlzhe" v-show="Number(JSON.parse(item.data).shuliang)<1?true:false||Number(JSON.parse(item.data).zhuangt)==0?true:false">
                     商品已失效
                 </p>
                 <img :src="JSON.parse(item.data).img.split(',')[0]" alt="" @click="toxiangqing(item.data)">

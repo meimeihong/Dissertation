@@ -7,7 +7,7 @@
 	<ul>
 		<li>
             <span><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
-           <input type="text" placeholder="用户名/电话号码" v-model="user" >
+           <input type="text" placeholder="用户名" v-model="user" >
         </li>
         <li>
             <span><i class="fa fa-unlock" aria-hidden="true"></i></span>

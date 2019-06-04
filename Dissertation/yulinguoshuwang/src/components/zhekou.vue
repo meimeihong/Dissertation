@@ -2,8 +2,8 @@
   <div id="classifym">
       <div class="header">
           <span @click="returnhome"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-             <input type="text" placeholder="搜索">
-             <span><i class="fa fa-search"></i></span>
+             <input type="text" placeholder="搜索" v-model="searchname">
+             <span @click="tosearch()"><i class="fa fa-search"></i></span>
         </div>
     <ul class="list">
         <li  v-for="(item,index) in datas" :key="index">
@@ -33,7 +33,8 @@ export default {
   name: 'classifym',
   data() {
 		return {
-            datas:[]          
+            datas:[],
+            searchname:null     
 		}
     },
     methods:{
@@ -81,7 +82,16 @@ export default {
             var xiangqingdata=JSON.stringify(data);
             localStorage.setItem('xiangqing', xiangqingdata);
             this.$router.push({name:'xiangqing'});
-        }
+    },
+    tosearch(){
+				this.searchname=this.searchname.trim();
+				if(this.searchname!==''){
+				localStorage.setItem('searchname', this.searchname);
+				localStorage.setItem('searchreturn', 'zhekou');
+				this.$router.push({name:'search'})
+				}
+				
+			}
     },
     created() {
 			this.zhekoudata();

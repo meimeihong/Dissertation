@@ -14,3 +14,4 @@ const  mongoose=require('mongoose')
   });
  let pingjiamodel=mongoose.model('pingjia', pingjiaSchema);
   module.exports=pingjiamodel;
+  

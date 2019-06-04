@@ -15,8 +15,7 @@
 			<div class="good">
 				<p>{{JSON.parse(item.data).name}}</p>
 				<p style="color:gray;">{{JSON.parse(item.data).miaoshu}}</p>
-				<p v-show="JSON.parse(item.data).jiangjia>0?true:false">
-                    
+				<p v-show="JSON.parse(item.data).jiangjia>0?true:false">        
 					<span style="color:red;">￥{{JSON.parse(item.data).danjia*JSON.parse(item.data).jiangjia.toFixed(2)}}</span>
                     <s>{{JSON.parse(item.data).danjia.toFixed(2)}}</s>
 					<span  style="color:#ccc;">/{{JSON.parse(item.data).guige}}</span>
@@ -57,7 +56,7 @@
           </p>
           <p><span>评价内容：</span></p>
            <p class="cont">             
-              <textarea name="" id="" cols="45" rows="6" v-model="content"></textarea>
+              <textarea name="" id="" cols="40" rows="6" v-model="content"></textarea>
           </p>
           <p>评价分数:</p>
           <p class="fen">
