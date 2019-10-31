@@ -16,7 +16,7 @@
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "mint-ui": "^2.2.13",
-    "mongoose": "^5.3.8",
+    "mongoose": "^5.7.5",
     "multer": "^1.4.1",
     "nodemailer": "^4.6.8",
     "path": "^0.12.7",
