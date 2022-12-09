@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "element-ui": "^2.7.2",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "mint-ui": "^2.2.13",
     "mongoose": "^5.3.8",
